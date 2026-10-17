@@ -1884,3 +1884,8 @@ body[data-mmm-pagina="7"] .t-NavigationBar-menu .a-Menu-item:has(a[href*="/sobre
   max-block-size: calc(var(--mmm-visivel, 100dvh) - 8px - 68px) !important;
   overflow-y: auto;
 }
+
+/* ---------- Já assistimos na ficha: o aviso do que acontece, antes da pergunta das pipocas ---------- */
+.mmm-NotaPainel-aviso { margin: 0; color: var(--mmm-texto-2); font-size: 14px; line-height: 1.4; text-align: center; }
+/* na ficha os filhos ja tem margem lateral: com a largura de 100% o painel passava da borda */
+.mmm-Ficha > .mmm-NotaPainel { width: auto; }

@@ -19,7 +19,13 @@ create or replace package MMM_PKG_INGRESSO as
     procedure rasgar(p_id_assistido in number);
     procedure dar_nota(p_id_assistido in number, p_pipocas in number);
 
-    -- MMM_INGRESSO (x01 = RASGAR, NOTA ou DADOS, x02 = ID_ASSISTIDO ou x04 = ID_SESSAO, x03 = pipocas, x10 = grupo da tela)
+    -- Ja assistimos, na ficha da pagina 1: o titulo da lista vira assistido hoje, ja rasgado por quem marcou, sai da lista
+    -- (filme ou serie: marcar na ficha quer dizer que terminaram) e leva a nota de quem marcou; os outros dao a nota pela
+    -- pagina 6. Devolve o ID_ASSISTIDO
+    function marcar_assistido(p_id_item in number, p_pipocas in number) return number;
+
+    -- MMM_INGRESSO (x01 = RASGAR, NOTA, MARCAR ou DADOS, x02 = ID_ASSISTIDO, ou ID_LISTA_ITEM no MARCAR, ou x04 = ID_SESSAO,
+    -- x03 = pipocas, x10 = grupo da tela)
     procedure ajax;
 
 end MMM_PKG_INGRESSO;
@@ -211,7 +217,7 @@ create or replace package body MMM_PKG_INGRESSO as
 
         -- o que ja assistiram, com as notas
         l_tem := false;
-        for r in (select a.ID_ASSISTIDO, t.TITULO, t.POSTER_PATH, a.DATA_ASSISTIDO, s.MODO_DESFECHO,
+        for r in (select a.ID_ASSISTIDO, a.ID_SESSAO, t.TITULO, t.POSTER_PATH, a.DATA_ASSISTIDO, s.MODO_DESFECHO,
                          (select avg(n.PIPOCAS) from MMM_NOTA n where n.ID_ASSISTIDO = a.ID_ASSISTIDO) as MEDIA,
                          (select count(*) from MMM_NOTA n where n.ID_ASSISTIDO = a.ID_ASSISTIDO) as NOTAS,
                          (select n.PIPOCAS from MMM_NOTA n where n.ID_ASSISTIDO = a.ID_ASSISTIDO and n.ID_MEMBRO = l_me) as MINHA
@@ -231,7 +237,8 @@ create or replace package body MMM_PKG_INGRESSO as
             poster(r.POSTER_PATH);
             add('<div class="mmm-AssistidoItem-texto"><span class="mmm-AssistidoItem-data">'
                 || to_char(r.DATA_ASSISTIDO, 'DD/MM/YYYY') || '</span><b>' || esc(r.TITULO) || '</b><span>'
-                || decidido(r.MODO_DESFECHO) || '</span>');
+                -- marcado na ficha (Ja assistimos) nao tem sessao
+                || case when r.ID_SESSAO is null then 'Fora da Hora do Cinema' else decidido(r.MODO_DESFECHO) end || '</span>');
             if r.NOTAS > 0 then
                 add('<div class="mmm-Notas"><span class="mmm-Notas-media" role="img" aria-label="Média de '
                     || pipocas_txt(r.MEDIA) || ' de 5 pipocas, ' || r.NOTAS || case r.NOTAS when 1 then ' nota' else ' notas' end || '">'
@@ -262,7 +269,8 @@ create or replace package body MMM_PKG_INGRESSO as
 
         if not l_tem and dbms_lob.getlength(l_html) < 40 then
             add('<p class="mmm-AssistidosNotas-vazio">Nada assistido ainda. Quando vocês escolherem um filme na Hora do Cinema, '
-                || 'ele aparece aqui; depois do filme, rasguem o ingresso e deem a nota.</p>');
+                || 'ele aparece aqui; depois do filme, rasguem o ingresso e deem a nota. Assistiram algo da lista fora do jogo? '
+                || 'Toquem em Já assistimos na ficha do título.</p>');
         end if;
         add('</div>');
         return l_html;
@@ -353,6 +361,71 @@ create or replace package body MMM_PKG_INGRESSO as
               values (x.ID_ASSISTIDO, x.ID_MEMBRO, p_pipocas);
     end dar_nota;
 
+    function marcar_assistido(p_id_item in number, p_pipocas in number) return number is
+        e_ocupado  exception;
+        pragma exception_init(e_ocupado, -30006);
+        l_me       number := MMM_PKG_SEGURANCA.id_membro_atual;
+        l_grupo    MMM_LISTA_ITEM.ID_GRUPO%type;
+        l_titulo   MMM_LISTA_ITEM.ID_TITULO%type;
+        l_retirado MMM_LISTA_ITEM.RETIRADO_EM%type;
+        l_id       MMM_ASSISTIDO.ID_ASSISTIDO%type;
+        l_demo     MMM_GRUPO.FL_DEMO%type;
+    begin
+        if p_pipocas is null or p_pipocas not in (1, 2, 3, 4, 5) then
+            raise_application_error(-20802, 'Escolha de 1 a 5 pipocas.');
+        end if;
+        if l_me is null then
+            raise_application_error(-20805, 'Esse título não é da lista do grupo aberto.');
+        end if;
+        -- a linha travada: quem marca junto com outra pessoa espera a primeira e depois ve o titulo fora da lista
+        -- (o VPD so mostra o item do grupo ativo)
+        begin
+            select ID_GRUPO, ID_TITULO, RETIRADO_EM
+              into l_grupo, l_titulo, l_retirado
+              from MMM_LISTA_ITEM
+             where ID_LISTA_ITEM = p_id_item
+               for update wait 3;
+        exception
+            when no_data_found then
+                raise_application_error(-20805, 'Esse título não é da lista do grupo aberto.');
+            when e_ocupado then
+                raise_application_error(-20807, 'Outra pessoa está marcando este título agora. Tente de novo.');
+        end;
+        if l_retirado is not null then
+            raise_application_error(-20806, 'Esse título já saiu da lista.');
+        end if;
+        -- serie escolhida na Hora do Cinema continua na lista com o ingresso inteiro: e esse assistido que fica rasgado (o
+        -- rasgar ja da as notas dos robos da demo), e nao um segundo, que deixaria o ingresso do jogo pedindo para rasgar
+        select max(ID_ASSISTIDO)
+          into l_id
+          from MMM_ASSISTIDO
+         where ID_GRUPO   = l_grupo
+           and ID_TITULO  = l_titulo
+           and RASGADO_EM is null;
+        if l_id is not null then
+            rasgar(l_id);
+        else
+            insert into MMM_ASSISTIDO (ID_GRUPO, ID_TITULO, DATA_ASSISTIDO, RASGADO_EM, ID_MEMBRO_RASGOU)
+            values (l_grupo, l_titulo, MMM_PKG_UTIL.hoje_br, systimestamp, l_me)
+            returning ID_ASSISTIDO into l_id;
+            select FL_DEMO
+              into l_demo
+              from MMM_GRUPO
+             where ID_GRUPO = l_grupo;
+        end if;
+        update MMM_LISTA_ITEM
+           set RETIRADO_EM       = systimestamp,
+               MOTIVO_RETIRADA   = 'ASSISTIDO',
+               ID_MEMBRO_RETIROU = l_me
+         where ID_LISTA_ITEM = p_id_item;
+        dar_nota(l_id, p_pipocas);
+        -- na demo, Marina e Rafa dao a nota como no Rasgar
+        if l_demo = 'S' then
+            notas_dos_robos(l_id);
+        end if;
+        return l_id;
+    end marcar_assistido;
+
     procedure ajax is
         l_acao  varchar2(10) := upper(apex_application.g_x01);
         l_id    number := to_number(apex_application.g_x02 default null on conversion error);
@@ -386,6 +459,8 @@ create or replace package body MMM_PKG_INGRESSO as
         case l_acao
             when 'RASGAR' then rasgar(l_id);
             when 'NOTA'   then dar_nota(l_id, l_nota);
+            -- no MARCAR o x02 e o item da lista; dali em diante l_id e o assistido que nasceu, para a media
+            when 'MARCAR' then l_id := marcar_assistido(l_id, l_nota);
             else raise_application_error(-20804, 'Pedido desconhecido.');
         end case;
         commit;

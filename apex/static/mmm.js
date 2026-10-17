@@ -388,6 +388,15 @@
     botoes.appendChild(linkExterno("t-Button", t.tmdbUrl, "Ver no TMDB"));
     corpo.appendChild(botoes);
 
+    // Já assistimos: só na página 1, onde está a lista e o mmm-ingresso.js traz o painel das pipocas
+    if (t.item && String(apex.env.APP_PAGE_ID) === "1" && mmm.ingresso && mmm.ingresso.painelNota) {
+      var vimos = el("button", "t-Button mmm-Botao--largo js-mmm-assistimos", "Já assistimos");
+      vimos.type = "button";
+      vimos.dataset.itemId = String(t.item.id);
+      vimos.dataset.nome = t.titulo;
+      corpo.appendChild(vimos);
+    }
+
     if (t.item) {
       var tirar = el("button", "t-Button t-Button--danger mmm-Botao--largo js-mmm-tirar", "Tirar da lista");
       tirar.type = "button";
@@ -571,6 +580,29 @@
         mmm.fecharGaveta("mmm-ficha");
       }
       tirar(this.dataset.itemId, this.dataset.nome || "O título");
+    })
+    // a nota de quem marcou leva o título para os assistidos de hoje; os outros dão a nota na página 6
+    .on("click.mmm", ".js-mmm-assistimos", function () {
+      var b = this;
+      var itemId = b.dataset.itemId;
+      var nome = b.dataset.nome || "O título";
+      if (!mmm.ingresso || !mmm.ingresso.painelNota || b.parentNode.querySelector(".mmm-NotaPainel")) { return; }
+      // como no Tirar da lista: o foco volta ao lugar do título na grade, e não ao primeiro pôster
+      var lugar = lugarNaGrade(itemId);
+      var sair = function () {
+        mmm.fecharGaveta("mmm-ficha");
+        atualizarLista().then(function () { focarLugar(lugar); });
+      };
+      var painel = mmm.ingresso.painelNota({ id: "ficha-" + itemId }, sair, {
+        aviso: "Vai para os assistidos de hoje e sai da lista. Os outros dão a nota deles em Assistidos.",
+        enviar: function (n) { return mmm.chamar("MMM_INGRESSO", { x01: "MARCAR", x02: itemId, x03: n }); },
+        texto: function () { return nome + " foi para os assistidos"; },
+        // outra pessoa marcou antes: a ficha fecha e a lista volta sem o título (a nota vai pela página 6)
+        falhou: function (e) { if (e && e.recusado && /já saiu da lista/.test(e.message || "")) { sair(); } }
+      });
+      b.parentNode.insertBefore(painel.no, b);
+      b.remove();
+      painel.focar();
     })
     .on("click.mmm", ".js-mmm-minha-vez", function () {
       var b = this;

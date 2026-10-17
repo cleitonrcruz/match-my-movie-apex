@@ -53,14 +53,17 @@ apex.jQuery(function () {
     dd.appendChild(meta(d));
     topo.appendChild(dd);
     t.appendChild(topo);
-    var campos = el("div", "mmm-Ingresso-campos");
-    [["Começa", d.inicio || "—"], ["Termina", d.fim || "Quando cansar"], ["Sala", "Sofá"]].forEach(function (x) {
-      var c = el("div");
-      c.appendChild(el("span", "mmm-Ingresso-rotulo", x[0]));
-      c.appendChild(el("b", null, x[1]));
-      campos.appendChild(c);
-    });
-    t.appendChild(campos);
+    // o horário e a sala são da sessão: marcado na ficha (Já assistimos) não tem sessão nem código
+    if (d.codigo) {
+      var campos = el("div", "mmm-Ingresso-campos");
+      [["Começa", d.inicio || "—"], ["Termina", d.fim || "Quando cansar"], ["Sala", "Sofá"]].forEach(function (x) {
+        var c = el("div");
+        c.appendChild(el("span", "mmm-Ingresso-rotulo", x[0]));
+        c.appendChild(el("b", null, x[1]));
+        campos.appendChild(c);
+      });
+      t.appendChild(campos);
+    }
     var picote = el("div", "mmm-Ingresso-picote");
     picote.setAttribute("aria-hidden", "true");
     t.appendChild(picote);
@@ -114,9 +117,18 @@ apex.jQuery(function () {
     });
   }
 
-  // de 1 a 5 pipocas, como um grupo de rádio (setas mudam, espaço e Enter marcam)
-  function painelNota(d, guardou) {
+  // de 1 a 5 pipocas, como um grupo de rádio (setas mudam, espaço e Enter marcam). A ficha usa o mesmo painel para o Já
+  // assistimos: opcoes.enviar troca a chamada, opcoes.texto a mensagem do fim, opcoes.aviso entra antes da pergunta e
+  // opcoes.falhou recebe a recusa do servidor
+  function painelNota(d, guardou, opcoes) {
+    opcoes = opcoes || {};
     var p = el("div", "mmm-NotaPainel");
+    var idAviso = "mmm-nota-aviso-" + d.id;
+    if (opcoes.aviso) {
+      var aviso = el("p", "mmm-NotaPainel-aviso", opcoes.aviso);
+      aviso.id = idAviso;
+      p.appendChild(aviso);
+    }
     var idPergunta = "mmm-nota-pergunta-" + d.id;
     var pergunta = el("p", "mmm-NotaPainel-pergunta", d.minhaNota ? "Quer trocar a sua nota?" : "Que nota você dá?");
     pergunta.id = idPergunta;
@@ -124,10 +136,13 @@ apex.jQuery(function () {
     var grupo = el("div", "mmm-NotaPainel-pipocas");
     grupo.setAttribute("role", "radiogroup");
     grupo.setAttribute("aria-labelledby", idPergunta);
+    // o leitor de tela ouve o aviso junto com as pipocas e com o Guardar
+    if (opcoes.aviso) { grupo.setAttribute("aria-describedby", idAviso); }
     var rotulo = el("p", "mmm-NotaPainel-rotulo", d.minhaNota ? ROTULOS[d.minhaNota] : "Toque nas pipocas");
     rotulo.setAttribute("aria-live", "polite");
     var guardar = el("button", "mmm-JogoBotao mmm-JogoBotao--pri", "Guardar nota");
     guardar.type = "button";
+    if (opcoes.aviso) { guardar.setAttribute("aria-describedby", idAviso); }
     var nota = d.minhaNota || 0;
     var botoes = [];
     function marcar(n, focar) {
@@ -165,15 +180,17 @@ apex.jQuery(function () {
     guardar.addEventListener("click", function () {
       if (!nota || guardar.getAttribute("aria-busy") === "true") { return; }
       guardar.setAttribute("aria-busy", "true");
-      mmm.chamar("MMM_INGRESSO", { x01: "NOTA", x02: d.id, x03: nota }).then(function (r) {
+      var envio = opcoes.enviar ? opcoes.enviar(nota) : mmm.chamar("MMM_INGRESSO", { x01: "NOTA", x02: d.id, x03: nota });
+      envio.then(function (r) {
         guardar.removeAttribute("aria-busy");
-        var texto = "Nota guardada" + (r.media ? ". Média do grupo: " + r.media : "");
+        var texto = opcoes.texto ? opcoes.texto(r, nota) : "Nota guardada" + (r.media ? ". Média do grupo: " + r.media : "");
         mmm.toast(texto);
         mmm.anunciar(texto);
         guardou(r, nota);
       }, function (e) {
         guardar.removeAttribute("aria-busy");
         mmm.erro(e);
+        if (opcoes.falhou) { opcoes.falhou(e); }
       });
     });
     p.appendChild(guardar);
@@ -222,6 +239,7 @@ apex.jQuery(function () {
   // o mmm-sessao.js chama depois de desenhar o ingresso: pergunta ao servidor como ele está e põe o Rasgar, ou as pipocas
   // (rasgado por outra pessoa), ou a nota já dada, no lugar da dica
   mmm.ingresso = {
+    painelNota: painelNota,
     anexar: function (ticket, sessao, dica) {
       mmm.chamar("MMM_INGRESSO", { x01: "DADOS", x04: sessao }, true).then(function (r) {
         var d = r.ingresso;

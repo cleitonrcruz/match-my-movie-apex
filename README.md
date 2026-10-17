@@ -16,7 +16,7 @@
 
 ## O que faz
 
-<p align="justify">Cada grupo tem uma lista do que quer ver, com o catálogo do TMDB, os pôsteres, onde assistir no Brasil, quem sugeriu e quanta vontade a pessoa tem, de uma a três pipocas. Dá para adicionar pela busca, por filme, série, pessoa ou saga, ou colando a lista antiga do bloco de notas. Na Hora do Cinema, o grupo responde a abertura (filme ou série, tempo, clima, criança, aluguel e relógio por carta) e recebe um baralho de até 15 cartas, que cada um vota no próprio celular, com super e veto. A revelação é simultânea, o desempate sai por duelo ou roleta, e o vencedor vira um ingresso com o botão Assistir. Depois de assistir, alguém rasga o ingresso e cada um dá a sua nota. Os convites saem por link, com cartão de prévia no WhatsApp, ou por código; o push avisa quando a sessão começa e quem ainda falta votar; e o login é com a conta Google, com a opção de manter conectado no aparelho.</p>
+<p align="justify">Cada grupo tem uma lista do que quer ver, com o catálogo do TMDB, os pôsteres, onde assistir no Brasil, quem sugeriu e quanta vontade a pessoa tem, de uma a três pipocas. Dá para adicionar pela busca, por filme, série, pessoa ou saga, ou colando a lista antiga do bloco de notas. Na Hora do Cinema, o grupo responde a abertura (filme ou série, tempo, clima, criança, aluguel e relógio por carta) e recebe um baralho de até 15 cartas, que cada um vota no próprio celular, com super e veto. A revelação é simultânea, o desempate sai por duelo ou roleta, e o vencedor vira um ingresso com o botão Assistir. Depois de assistir, alguém rasga o ingresso e cada um dá a sua nota. O que viram fora do jogo também entra: na ficha do título, o Já assistimos pede a nota e leva o título da lista para os assistidos. Os convites saem por link, com cartão de prévia no WhatsApp, ou por código; o push avisa quando a sessão começa e quem ainda falta votar; e o login é com a conta Google, com a opção de manter conectado no aparelho.</p>
 
 ## Stack
 
@@ -57,7 +57,7 @@
 | `db/09_jogo.sql` | `MMM_PKG_JOGO`: abertura, baralho, votos, revelação, duelo, roleta e placar |
 | `db/10_retencao.sql` | `MMM_PKG_RETENCAO`: expurgos, a faxina da demo, a anonimização de contas e o alerta de renovação parada |
 | `db/11_lembrar.sql` | `MMM_PKG_LEMBRAR`: manter conectado no aparelho |
-| `db/12_ingresso.sql` | `MMM_PKG_INGRESSO`: o ingresso rasgado e as notas |
+| `db/12_ingresso.sql` | `MMM_PKG_INGRESSO`: o ingresso rasgado, as notas e o Já assistimos da ficha |
 | `db/jobs` | Os jobs do scheduler |
 | `apex/static` | O JavaScript e o CSS do app |
 | `worker` | O Worker do domínio e a configuração dele |
