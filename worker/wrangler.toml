@@ -1,0 +1,28 @@
+# Worker do subdominio do Match My Movie. Os valores de [vars] valem na publicacao.
+name = "mmm-dominio"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+# so no dominio proprio: sem endereco *.workers.dev nem URL de preview
+workers_dev = false
+preview_urls = false
+routes = [
+  { pattern = "mmm.cleitonrcruz.com.br", custom_domain = true },
+]
+
+[vars]
+ORIGEM = "https://gd9477458323ab8-gestorfin.adb.sa-saopaulo-1.oraclecloudapps.com"
+APP = "/ords/r/mmm/match-my-movie/"
+ARQUIVOS = "/ords/r/mmm/103/files/"
+# raiz do dominio: a tela de entrada (9999). Sem sessao, pagina protegida vai direto ao login do Google: no login social
+# do APEX 26.1 o Session Not Valid do esquema nao muda isso; na navegacao de pagina sem o pedido de login, o Worker
+# manda para ca em vez do Google
+INICIO = "/ords/r/mmm/match-my-movie/entrar"
+APP_ID = "103"
+APP_ALIAS = "MATCH-MY-MOVIE"
+CANONICO = "mmm.cleitonrcruz.com.br"
+# client id do Google (nao e segredo); vazio, a rota do token recusa tudo
+GOOGLE_CLIENT_ID = "378603613074-ul8meksu4n8hd9ivd23rlmjiecr9t2u8.apps.googleusercontent.com"
+# cookie da sessao do app 103 (esquema GOOGLE e VISITANTE): ganha validade de 30 dias no Set-Cookie; vazio, o Worker
+# nao mexe em cookie
+COOKIE_SESSAO = "__Host-MMM"
+# MMM_SEGREDO e secret do Worker (wrangler secret put), nunca aqui

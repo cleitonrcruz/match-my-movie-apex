@@ -1,0 +1,1886 @@
+/* Match My Movie: fontes, tokens e o Universal Theme (Vita - Dark) apontado para eles.
+   Static Application File (#APP_FILES#mmm.css?v=N); nada de <style> nem style="" na página, por causa da CSP. */
+
+/* fontes hospedadas no app (licença OFL; só o subconjunto latin do Google Fonts): fontes/OFL-*.txt */
+@font-face { font-family: "Bungee"; font-style: normal; font-weight: 400; font-display: swap; src: url("fontes/bungee-400-latin.woff2") format("woff2"); }
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("fontes/figtree-latin.woff2") format("woff2"); }
+@font-face { font-family: "DM Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("fontes/dmmono-400-latin.woff2") format("woff2"); }
+@font-face { font-family: "DM Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("fontes/dmmono-500-latin.woff2") format("woff2"); }
+
+:root {
+  color-scheme: dark;
+  --mmm-sala: #160f22;
+  --mmm-sala-2: #1d1430;
+  --mmm-veludo: #2a1c3e;
+  --mmm-veludo-2: #382650;
+  --mmm-linha: #4b3768;
+  --mmm-texto: #f6eefa;
+  --mmm-texto-2: #c3b3d4;
+  --mmm-texto-3: #9584a9;
+  --mmm-manteiga: #ffc94a;
+  --mmm-lampada: #ffe7a3;
+  --mmm-cortina: #f0566a;
+  --mmm-menta: #4fd6a6;
+  --mmm-papel: #f8edd8;
+  --mmm-tinta: #2b1a28;
+  --mmm-sombra: rgba(6, 2, 12, .55);
+  --mmm-f-letreiro: "Bungee", "Arial Black", Impact, system-ui, sans-serif;
+  --mmm-f-texto: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mmm-f-dado: "DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --mmm-raio: 16px;
+  --mmm-gutter: clamp(16px, 4vw, 32px);
+
+  /* o Core do tema deriva as outras cores destas */
+  --ut-body-background-color: var(--mmm-sala);
+  --ut-body-text-color: var(--mmm-texto);
+  --ut-component-background-color: var(--mmm-sala-2);
+  --ut-component-border-color: var(--mmm-linha);
+  --ut-component-border-radius: var(--mmm-raio);
+  --ut-component-text-title-color: var(--mmm-texto);
+  --ut-component-text-default-color: var(--mmm-texto);
+  --ut-component-text-muted-color: var(--mmm-texto-3);
+  --ut-component-highlight-background-color: var(--mmm-veludo-2);
+  --ut-palette-primary: var(--mmm-manteiga);
+  --ut-palette-primary-contrast: var(--mmm-tinta);
+  --ut-link-text-color: var(--mmm-lampada);
+  --ut-focus-outline-color: var(--mmm-manteiga);
+}
+
+body { font-family: var(--mmm-f-texto); -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
+.mmm-Sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.mmm-Sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* cor do avatar por classe: style="--cor:..." é bloqueado pela CSP (MMM_MEMBRO.COR = 1..8) */
+.mmm-Cor--1 { --mmm-cor: #ffc94a; }
+.mmm-Cor--2 { --mmm-cor: #ff94b8; }
+.mmm-Cor--3 { --mmm-cor: #72d4ff; }
+.mmm-Cor--4 { --mmm-cor: #4fd6a6; }
+.mmm-Cor--5 { --mmm-cor: #b69cff; }
+.mmm-Cor--6 { --mmm-cor: #ff9f6b; }
+.mmm-Cor--7 { --mmm-cor: #9be37a; }
+.mmm-Cor--8 { --mmm-cor: #f2e6c9; }
+
+.mmm-Avatar {
+  display: inline-grid; place-items: center; flex: none;
+  width: 30px; height: 30px; border: 2px solid var(--mmm-sala); border-radius: 50%;
+  background: var(--mmm-cor, var(--mmm-manteiga)); color: var(--mmm-tinta);
+  font: 800 13px/1 var(--mmm-f-texto);
+}
+.mmm-Avatar--p { width: 22px; height: 22px; border-width: 1.5px; font-size: 10px; }
+
+/* pipocas por máscara: um elemento por pôster em vez de três SVG */
+.mmm-Pipocas {
+  display: inline-block; width: 42px; height: 13px;
+  background: linear-gradient(to right, var(--mmm-manteiga) var(--mmm-cheio, 33.34%), var(--mmm-linha) 0);
+  -webkit-mask: url("pipoca.svg") 0 0 / 14px 13px repeat-x;
+  mask: url("pipoca.svg") 0 0 / 14px 13px repeat-x;
+}
+.mmm-Pipocas--2 { --mmm-cheio: 66.67%; }
+.mmm-Pipocas--3 { --mmm-cheio: 100%; }
+
+/* classificação indicativa: texto escuro no L e no 14 e azul mais fechado no 10, onde o branco ficava abaixo de 4,5:1 */
+.mmm-Classind { display: inline-grid; place-items: center; min-width: 24px; height: 22px; padding: 0 5px; border-radius: 5px; font: 800 12px/1 var(--mmm-f-texto); }
+.mmm-Classind--L { background: #0c9447; color: #000; }
+.mmm-Classind--10 { background: #0b6aa6; color: #fff; }
+.mmm-Classind--12 { background: #f2b90f; color: #1b1300; }
+.mmm-Classind--14 { background: #e2711d; color: #000; }
+.mmm-Classind--16 { background: #d7262b; color: #fff; }
+.mmm-Classind--18 { background: #0d0d0d; color: #fff; box-shadow: inset 0 0 0 1.5px #fff; }
+
+/* grade de pôsteres (Template Component Pôster) */
+.mmm-Grade { display: grid; gap: 14px 12px; grid-template-columns: repeat(auto-fill, minmax(min(30%, 128px), 1fr)); }
+@media (min-width: 560px) { .mmm-Grade { grid-template-columns: repeat(auto-fill, minmax(136px, 1fr)); } }
+.mmm-Poster { position: relative; min-width: 0; }
+.mmm-Poster-abrir { display: grid; gap: 7px; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.mmm-Poster-abrir:focus-visible { outline: 3px solid var(--mmm-manteiga); outline-offset: 3px; border-radius: 12px; }
+.mmm-Poster-capa { position: relative; display: block; aspect-ratio: 2 / 3; overflow: hidden; border-radius: 12px; background: var(--mmm-veludo); box-shadow: 0 8px 18px var(--mmm-sombra); }
+.mmm-Poster-capa img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.mmm-Poster-semCapa { display: grid; place-items: center; height: 100%; padding: 10px; color: var(--mmm-texto-2); font-weight: 700; text-align: center; }
+.mmm-Poster-capa .mmm-Avatar { position: absolute; left: 6px; bottom: 6px; }
+.mmm-Poster-tipo { position: absolute; top: 6px; right: 6px; padding: 3px 6px; border-radius: 6px; background: rgba(22, 15, 34, .82); font: 500 10px/1 var(--mmm-f-dado); letter-spacing: .08em; text-transform: uppercase; }
+.mmm-Poster-sai { position: absolute; left: 6px; right: 6px; top: 6px; padding: 3px 6px; border-radius: 6px; background: var(--mmm-cortina); color: #fff; font: 700 11px/1.2 var(--mmm-f-texto); text-align: center; }
+.mmm-Poster-titulo { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; font-size: 13.5px; font-weight: 700; line-height: 1.25; }
+.mmm-Poster-meta { display: flex; align-items: center; gap: 6px; color: var(--mmm-texto-3); font-size: 12px; }
+
+/* modo Editar: o X só existe para quem está editando; área de toque de 44px */
+.mmm-Poster-tirar { position: absolute; top: -10px; left: -10px; z-index: 2; display: none; place-items: center; width: 44px; height: 44px; padding: 6px; border: 0; background: none; color: #fff; cursor: pointer; }
+.mmm-Poster-tirar .fa { display: grid; place-items: center; width: 32px; height: 32px; border: 2px solid var(--mmm-sala); border-radius: 50%; background: var(--mmm-cortina); box-shadow: 0 4px 10px var(--mmm-sombra); }
+.is-editando .mmm-Poster-tirar { display: grid; }
+@media (prefers-reduced-motion: no-preference) {
+  .is-editando .mmm-Poster-capa { animation: mmm-treme .32s ease-in-out infinite alternate; }
+  .is-editando .mmm-Grade-item:nth-child(2n) .mmm-Poster-capa { animation-delay: -.16s; }
+}
+@keyframes mmm-treme { from { transform: rotate(-1.1deg); } to { transform: rotate(1.1deg); } }
+
+/* toque não deixa realce preso no iPhone: efeito de mouse só onde há mouse */
+@media (hover: hover) { .mmm-Poster-abrir:hover .mmm-Poster-capa { transform: translateY(-2px); } }
+
+.mmm-Imagem--vazia { display: block; background: var(--mmm-veludo); }
+.mmm-Imagem--poster, .mmm-Imagem--mini { aspect-ratio: 2 / 3; }
+.mmm-Imagem--fundo { aspect-ratio: 16 / 9; }
+.mmm-Imagem--logo { width: 34px; height: 34px; border-radius: 9px; }
+
+/* aviso com Desfazer; fica acima das gavetas do tema */
+.mmm-Toast {
+  position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); z-index: 1100;
+  width: max-content; max-width: calc(100% - 2 * var(--mmm-gutter)); padding: 11px 16px; border-radius: 12px;
+  background: var(--mmm-papel); box-shadow: 0 10px 26px var(--mmm-sombra); color: var(--mmm-tinta);
+  font-weight: 700; text-align: center; opacity: 0; pointer-events: none;
+  transform: translateX(-50%) translateY(20px); transition: opacity .2s, transform .2s;
+}
+.mmm-Toast.is-visivel { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+.mmm-Toast-acao { min-height: 44px; margin-left: 10px; border: 0; background: none; color: var(--mmm-tinta); font-weight: 800; text-decoration: underline; }
+
+.mmm-Fab { position: fixed; right: max(var(--mmm-gutter), calc((100vw - 1280px) / 2 + var(--mmm-gutter))); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 5; }
+
+/* página modal aberta em iframe: sem o clarão branco do WebKit no tema escuro */
+.ui-dialog--apex iframe { color-scheme: light; background-color: var(--mmm-sala); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+/* o Vita - Dark 26.1 grava estas cores direto, sem derivar das --ut-* do :root acima:
+   cabeçalho, regiões, rodapé, página de login e botão principal também seguem os tokens do app */
+:root {
+  --ut-header-background-color: var(--mmm-sala);
+  --ut-header-text-color: var(--mmm-texto);
+  --ut-header-border-color: var(--mmm-linha);
+  --ut-region-background-color: var(--mmm-sala-2);
+  --ut-region-header-background-color: var(--mmm-sala-2);
+  --ut-region-text-color: var(--mmm-texto);
+  --ut-region-header-text-color: var(--mmm-texto);
+  --ut-footer-background-color: var(--mmm-sala);
+  --ut-login-page-background-color: var(--mmm-sala);
+  --ut-login-region-background-color: var(--mmm-sala-2);
+}
+.t-Button--hot {
+  --a-button-background-color: var(--mmm-manteiga);
+  --a-button-text-color: var(--mmm-tinta);
+  --a-button-hover-background-color: var(--mmm-lampada);
+  --a-button-active-background-color: var(--mmm-manteiga);
+}
+
+/* páginas de entrada (9999, 9998, 50 e 51): texto de apoio legível no tema escuro e os links em pilha */
+.mmm-Entrada-texto { margin: 0 0 16px; color: var(--mmm-texto-2); font-size: 15px; line-height: 1.5; text-align: center; }
+.mmm-Entrada-acoes { display: grid; gap: 12px; }
+.mmm-Convite-texto { margin: 0 0 12px; color: var(--mmm-texto); font-size: 18px; font-weight: 700; line-height: 1.35; }
+
+/* ---------- página 1 ---------- */
+
+/* marca no cabeçalho com o nome do app, no estilo do letreiro */
+.t-Header-logo-link, .t-Header-logo { color: var(--mmm-manteiga); }
+.t-Header-logo-link {
+  font: 400 clamp(17px, 4.6vw, 21px)/1 var(--mmm-f-letreiro); letter-spacing: .02em; text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(255, 201, 74, .35);
+}
+
+/* sem rodapé: o app não usa o "Release 1.0" nem o botão de voltar ao topo */
+.t-Footer { display: none; }
+
+/* cartões da página 2: as iniciais com as cores do app, não o azul do Vita */
+.a-CardView-initials.u-color { background-color: var(--mmm-veludo-2); color: var(--mmm-manteiga); }
+
+/* as regiões filhas vêm dentro da grade do UT (container > row > col): aqui a grade some e quem manda é o layout abaixo */
+/* o espaço entre os blocos vem da margem de cada um: bloco escondido (Instalar, dica do Editar) não deixa buraco */
+.mmm-Inicio > .container, .mmm-Inicio-lado > .container, .mmm-Inicio-lista > .container { display: grid; gap: 0; }
+.mmm-Inicio .row { display: contents; }
+.mmm-Inicio .col, .mmm-Inicio .row .col.col-start, .mmm-Inicio .row .col.col-end { flex: none; max-width: none; width: auto; min-width: 0; padding: 0; }
+.mmm-Inicio .col > .t-Form-fieldContainer { margin: 0; }
+/* a página 1 cuida da própria margem lateral: o recuo da grade do UT em volta dela sai */
+.t-Body-contentInner:has(.mmm-Inicio) { padding-inline: 0; }
+.t-Body-contentInner:has(.mmm-Inicio) > .container > .row { margin-inline: 0; }
+.t-Body-contentInner:has(.mmm-Inicio) > .container > .row > .col { padding-inline: 0; }
+.mmm-Inicio { max-width: 1280px; margin-inline: auto; padding: 4px var(--mmm-gutter) calc(96px + env(safe-area-inset-bottom, 0px)); }
+.mmm-Inicio-lado { margin-bottom: 22px; }
+.mmm-Grupo, .mmm-Letreiro { margin-bottom: 16px; }
+.mmm-Instalar:not([hidden]) { margin-bottom: 16px; }
+.mmm-SecaoCab { margin-bottom: 14px; }
+
+/* ---------- cartão do grupo ---------- */
+.mmm-Grupo {
+  display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+  background: var(--mmm-sala-2); border: 1px solid var(--mmm-linha); border-radius: var(--mmm-raio);
+}
+.mmm-Grupo > a-dynamic-content { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.mmm-Avatares { display: flex; flex: none; }
+.mmm-Avatares .mmm-Avatar + .mmm-Avatar { margin-left: -8px; }
+.mmm-Avatar--mais { background: var(--mmm-veludo-2); color: var(--mmm-texto); font-size: 11px; }
+.mmm-Grupo-texto { min-width: 0; flex: 1; }
+.mmm-Grupo-nome { margin: 0; overflow: hidden; color: var(--mmm-texto); font-size: 16px; font-weight: 800; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
+.mmm-Grupo-info { margin: 0; color: var(--mmm-texto-2); font-size: 13px; }
+.mmm-Grupo .t-Button { flex: none; }
+/* botões secundários (Convidar, Editar, trocar de grupo, Agora não do cartão Instalar) */
+.mmm-Grupo .t-Button, .mmm-BotaoSec.t-Button, .mmm-Instalar .t-Button {
+  --a-button-background-color: var(--mmm-veludo);
+  --a-button-text-color: var(--mmm-texto);
+  --a-button-border-color: var(--mmm-linha);
+  --a-button-hover-background-color: var(--mmm-veludo-2);
+  --a-button-hover-text-color: var(--mmm-texto);
+  --a-button-hover-border-color: var(--mmm-linha);
+  --a-button-focus-background-color: var(--a-button-background-color);
+  --a-button-focus-text-color: var(--a-button-text-color);
+  --a-button-focus-border-color: var(--a-button-border-color);
+  --a-button-active-background-color: var(--a-button-hover-background-color);
+  --a-button-font-size: 14px;
+  min-height: 44px; padding-inline: 12px; border-width: 1px; border-style: solid; border-radius: 12px; font-weight: 700;
+}
+.mmm-Grupo .t-Button--noLabel { min-width: 44px; padding-inline: 10px; }
+
+/* ---------- letreiro: o único lugar com lâmpadas ---------- */
+.mmm-Letreiro { position: relative; display: block; width: 100%; border-radius: 22px; color: inherit; text-align: left; text-decoration: none; isolation: isolate; }
+a.mmm-Letreiro:hover, a.mmm-Letreiro:focus { color: inherit; text-decoration: none; }
+a.mmm-Letreiro:focus-visible { outline: 3px solid var(--mmm-manteiga); outline-offset: 3px; }
+.mmm-Letreiro-caixa {
+  position: relative; display: block; overflow: hidden; padding: 22px 22px 20px; border-radius: 22px;
+  background: linear-gradient(160deg, #3d2557 0%, #2a1840 55%, #231436 100%);
+  box-shadow: 0 18px 40px var(--mmm-sombra), inset 0 0 0 2px #5a3f80;
+}
+.mmm-Letreiro-caixa::before, .mmm-Letreiro-caixa::after {
+  content: ""; position: absolute; inset: 0; padding: 7px; border-radius: 22px; pointer-events: none;
+  background: radial-gradient(circle, var(--mmm-lampada) 0 2.6px, rgba(255, 231, 163, .15) 3.2px, transparent 4px) 0 0 / 14px 14px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+.mmm-Letreiro-caixa::after { background-position: 7px 7px; opacity: .25; }
+@media (prefers-reduced-motion: no-preference) {
+  .mmm-Letreiro-caixa::before { animation: mmm-pisca 1.1s steps(1) infinite; }
+  .mmm-Letreiro-caixa::after { animation: mmm-pisca 1.1s steps(1) infinite reverse; }
+  a.mmm-Letreiro:active .mmm-Letreiro-caixa { transform: scale(.99); }
+}
+@keyframes mmm-pisca { 0% { opacity: 1; } 50% { opacity: .25; } }
+.mmm-Letreiro-sobre { display: block; color: var(--mmm-texto-2); font: 500 12px/1 var(--mmm-f-dado); letter-spacing: .14em; text-transform: uppercase; }
+.mmm-Letreiro-titulo {
+  display: block; margin: 10px 0 8px; color: var(--mmm-manteiga);
+  font: 400 clamp(30px, 9vw, 46px)/.95 var(--mmm-f-letreiro); text-shadow: 0 0 22px rgba(255, 201, 74, .45);
+}
+.mmm-Letreiro-linha { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.mmm-Letreiro-info { color: var(--mmm-texto); font-size: 14px; font-weight: 600; }
+.mmm-Letreiro-acao {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 11px 16px; border-radius: 999px;
+  background: var(--mmm-manteiga); box-shadow: 0 6px 18px rgba(255, 201, 74, .35); color: var(--mmm-tinta); font-weight: 800;
+}
+/* sem a página da sessão ainda: o letreiro não leva a lugar nenhum e o "Em breve" não parece botão */
+.mmm-Letreiro.is-semLink .mmm-Letreiro-acao { background: var(--mmm-veludo-2); box-shadow: none; color: var(--mmm-texto-2); }
+
+/* ---------- cartão Instalar (iPhone fora do app instalado) ---------- */
+.mmm-Instalar {
+  display: grid; gap: 8px; justify-items: start; padding: 14px; border: 1px solid var(--mmm-linha); border-radius: var(--mmm-raio);
+  background: var(--mmm-sala-2); color: var(--mmm-texto-2); font-size: 14px;
+}
+.mmm-Instalar p { margin: 0; }
+.mmm-Instalar strong { color: var(--mmm-texto); }
+.mmm-Instalar .t-Button { min-height: 44px; }
+
+/* ---------- cabeçalho da lista ---------- */
+.mmm-SecaoCab > .container > .row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; margin: 0; }
+.mmm-SecaoCab .col { flex: 0 1 auto; max-width: 100%; width: auto; min-width: 0; padding: 0; }
+.mmm-SecaoCab-titulo { margin: 0; color: var(--mmm-texto); font: 800 20px/1.1 var(--mmm-f-texto); }
+.mmm-SecaoCab-sub { margin: 2px 0 0; color: var(--mmm-texto-2); font-size: 13px; }
+.mmm-SecaoCab-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.mmm-SecaoCab-acoes > .container { width: auto; }
+.mmm-SecaoCab-acoes .row, .mmm-SecaoCab-acoes .col { display: contents; }
+.mmm-SecaoCab-acoes .t-Form-fieldContainer { padding: 0; }
+.mmm-SecaoCab-acoes #mmm-editar { min-height: 52px; }
+.mmm-Inicio .mmm-DicaEditar { display: none; margin: -4px 0 24px; color: var(--mmm-texto-2); font-size: 13.5px; }
+.mmm-Inicio-lista:has(#lista.is-editando) .mmm-DicaEditar { display: block; }
+/* no modo Editar o X ocupa o canto do pôster: o selo de saída desce para baixo dele */
+.is-editando .mmm-Poster-sai { top: 32px; }
+#mmm-editar[aria-pressed="true"] {
+  --a-button-background-color: var(--mmm-manteiga);
+  --a-button-text-color: var(--mmm-tinta);
+  --a-button-border-color: var(--mmm-manteiga);
+  --a-button-hover-background-color: var(--mmm-lampada);
+  --a-button-hover-text-color: var(--mmm-tinta);
+  --a-button-hover-border-color: var(--mmm-lampada);
+}
+
+/* pílulas (Radio Group com Display as Pill Button): um par de abas, pelas variáveis de botão do tema */
+.t-Form-fieldContainer--radioButtonGroup .apex-item-group--rc {
+  --a-button-background-color: transparent;
+  --a-button-text-color: var(--mmm-texto-2);
+  --a-button-border-color: transparent;
+  --a-button-hover-background-color: var(--mmm-veludo);
+  --a-button-hover-text-color: var(--mmm-texto);
+  --a-button-hover-border-color: transparent;
+  --a-button-focus-background-color: transparent;
+  --a-button-focus-text-color: var(--mmm-texto);
+  --a-button-focus-border-color: transparent;
+  --ut-pillbutton-font-size: 13px;
+  --ut-pillbutton-line-height: 18px;
+  --ut-pillbutton-padding-y: 13px;
+  --ut-pillbutton-padding-x: 12px;
+  padding: 3px; border: 1px solid var(--mmm-linha); border-radius: 12px; background: var(--mmm-sala-2);
+}
+/* o tema divide as opções em colunas de largura fixa (texto vazava): aqui cada pílula tem a largura do próprio texto */
+.t-Form-fieldContainer--radioButtonGroup .t-Form-itemWrapper > .apex-item-group--rc { display: inline-flex; width: auto; max-width: 100%; }
+.t-Form-fieldContainer--radioButtonGroup .apex-item-group--rc .apex-item-grid { display: block; width: auto; }
+.t-Form-fieldContainer--radioButtonGroup .apex-item-group--rc .apex-item-grid-row { display: flex; flex-wrap: wrap; }
+/* o !important vence a regra do tema para telas estreitas, que fixa 50% e 33% por opção */
+.t-Form-fieldContainer--radioButtonGroup .apex-item-group--rc .apex-item-grid-row .apex-item-option { display: block; flex: none; width: auto !important; float: none; }
+.t-Form-fieldContainer--radioButtonGroup .apex-item-group--rc .apex-item-option label { min-height: 44px; justify-content: center; border-radius: 9px !important; font-weight: 700; white-space: nowrap; }
+.t-Form-fieldContainer--radioButtonGroup .apex-item-group--rc input:checked + label {
+  --a-button-background-color: var(--mmm-veludo-2);
+  --a-button-text-color: var(--mmm-texto);
+  --a-button-hover-background-color: var(--mmm-veludo-2);
+  --a-button-hover-text-color: var(--mmm-texto);
+  --a-button-active-background-color: var(--mmm-veludo-2);
+  --a-button-active-text-color: var(--mmm-texto);
+  --a-button-focus-background-color: var(--mmm-veludo-2);
+  --a-button-focus-text-color: var(--mmm-texto);
+}
+.t-Form-fieldContainer--radioButtonGroup .apex-item-group--rc input:focus-visible + label { outline: 3px solid var(--mmm-manteiga); outline-offset: 1px; }
+
+/* ---------- grade: título e sinal de série nas capas sem imagem ---------- */
+.mmm-Grade-item { min-width: 0; }
+.mmm-Poster-capa { transition: transform .15s; }
+.mmm-Poster-capa .mmm-Avatar { z-index: 1; }
+#lista .a-GV-noDataMsg, #lista .apex-no-data-found, #lista .t-Report-noDataMsg { color: var(--mmm-texto-2); }
+
+/* ---------- botão flutuante Adicionar ---------- */
+.t-Button.mmm-Fab {
+  --a-button-background-color: var(--mmm-papel);
+  --a-button-text-color: var(--mmm-tinta);
+  --a-button-hover-background-color: #fff6e6;
+  --a-button-hover-text-color: var(--mmm-tinta);
+  --a-button-focus-background-color: var(--mmm-papel);
+  --a-button-focus-text-color: var(--mmm-tinta);
+  --a-button-active-background-color: #fff6e6;
+  --a-button-font-size: 15px;
+  display: inline-flex; align-items: center; gap: 8px; min-height: 52px; padding: 14px 18px; border: 0; border-radius: 999px;
+  box-shadow: 0 10px 28px var(--mmm-sombra); font-weight: 800;
+}
+.t-Button.mmm-Fab .t-Icon { color: var(--mmm-tinta); }
+
+/* ---------- gavetas (Inline Drawer de baixo) ---------- */
+/* o Universal Theme fixa a gaveta de baixo com !important (100dvw, 25rem, sem canto); a folha do app vale por cima */
+.ui-dialog.t-Drawer--pullOutBottom.mmm-Folha {
+  left: 0 !important; right: 0 !important; margin-inline: auto !important;
+  inline-size: min(100%, 560px) !important; max-inline-size: 100% !important;
+  height: auto !important; max-block-size: 90dvh !important;
+  border-radius: 22px 22px 0 0 !important; overflow: hidden;
+  background: var(--mmm-sala-2); color: var(--mmm-texto); box-shadow: 0 30px 70px rgba(0, 0, 0, .6);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.ui-dialog.mmm-Folha .ui-dialog-titlebar { padding: 14px 14px 10px 18px; border: 0; background: none; }
+.ui-dialog.mmm-Folha .ui-dialog-title { color: var(--mmm-texto); font-size: 18px; font-weight: 800; }
+.ui-dialog.mmm-Folha .ui-dialog-titlebar-close { width: 44px; height: 44px; border: 1px solid var(--mmm-linha); border-radius: 12px; background: var(--mmm-sala); color: var(--mmm-texto-2); }
+.ui-dialog.mmm-Folha .ui-dialog-content { background: none; }
+.ui-dialog.mmm-Folha .t-DrawerRegion-body { padding: 0 18px 18px; }
+.ui-widget-overlay { background: rgba(8, 4, 14, .72); opacity: 1; }
+
+/* a ficha não tem barra de título: o nome do título vem no corpo e o fechar fica sobre a imagem */
+.ui-dialog.mmm-Folha--ficha .ui-dialog-titlebar { position: absolute; top: 0; right: 0; z-index: 2; padding: 12px; }
+.ui-dialog.mmm-Folha--ficha .ui-dialog-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ui-dialog.mmm-Folha--ficha .ui-dialog-titlebar-close { background: rgba(22, 15, 34, .8); }
+.ui-dialog.mmm-Folha--ficha .t-DrawerRegion-body { padding: 0; }
+
+/* ---------- ficha ---------- */
+.mmm-Ficha { display: grid; gap: 14px; padding-bottom: 18px; }
+.mmm-Ficha > :not(.mmm-Ficha-fundo) { margin-inline: 18px; }
+.mmm-Ficha-fundo { position: relative; aspect-ratio: 16 / 8; overflow: hidden; background: var(--mmm-veludo); }
+.mmm-Ficha-fundo img, .mmm-Ficha-fundo .mmm-Imagem--vazia { display: block; width: 100%; height: 100%; object-fit: cover; }
+.mmm-Ficha-fundo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, var(--mmm-sala-2), rgba(29, 20, 48, 0) 70%); }
+.mmm-Ficha-titulo { margin-block: -6px -8px; color: var(--mmm-texto); font: 800 24px/1.1 var(--mmm-f-texto); text-wrap: balance; }
+.mmm-Ficha-titulo:focus { outline: none; }
+.mmm-LinhaMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; color: var(--mmm-texto-2); font-size: 13px; }
+.mmm-LinhaMeta-item + .mmm-LinhaMeta-item::before { content: "·"; margin-right: 10px; color: var(--mmm-texto-3); }
+.mmm-Sugestao { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px; border-radius: 12px; background: var(--mmm-sala-2); font-size: 13.5px; }
+.mmm-Sugestao-texto { flex: 1; min-width: 0; color: var(--mmm-texto); }
+.mmm-Ficha-sinopse { margin: 0; color: var(--mmm-texto-2); font-size: 15px; line-height: 1.5; }
+.mmm-Ficha-sinopse.is-vazia { font-style: italic; }
+.mmm-Onde { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--mmm-linha); border-radius: var(--mmm-raio); background: var(--mmm-sala); }
+.mmm-Onde h3 { margin: 0; color: var(--mmm-texto); font-size: 15px; font-weight: 800; }
+.mmm-Onde p { margin: 0; color: var(--mmm-texto-2); }
+.mmm-Servico { display: flex; align-items: center; gap: 10px; color: var(--mmm-texto); font-weight: 700; }
+.mmm-Servico img, .mmm-Servico .mmm-Imagem--vazia { flex: none; width: 34px; height: 34px; border-radius: 9px; }
+.mmm-Servico small { display: block; color: var(--mmm-texto-3); font-size: 12px; font-weight: 500; }
+.mmm-Servico small.mmm-Servico-sai { color: #ffc2ca; }
+.mmm-Credito { margin: 0; color: var(--mmm-texto-3); font-size: 12px; }
+.mmm-Botoes { display: flex; flex-wrap: wrap; gap: 10px; }
+.mmm-Ficha .t-Button, .mmm-Resultados .t-Button:not(.t-Button--hot) {
+  --a-button-background-color: var(--mmm-veludo);
+  --a-button-text-color: var(--mmm-texto);
+  --a-button-border-color: var(--mmm-linha);
+  --a-button-hover-background-color: var(--mmm-veludo-2);
+  --a-button-hover-text-color: var(--mmm-texto);
+  --a-button-hover-border-color: var(--mmm-linha);
+  --a-button-focus-background-color: var(--a-button-background-color);
+  --a-button-focus-text-color: var(--a-button-text-color);
+  --a-button-focus-border-color: var(--a-button-border-color);
+  --a-button-active-background-color: var(--a-button-hover-background-color);
+  border-width: 1px; border-style: solid; border-radius: 12px; font-weight: 700;
+}
+.mmm-Botoes > .t-Button { flex: 1 1 140px; justify-content: center; min-height: 44px; }
+.mmm-Botao--largo { width: auto; min-height: 44px; justify-content: center; }
+.mmm-Ficha .t-Button.t-Button--danger {
+  --a-button-background-color: rgba(240, 86, 106, .1);
+  --a-button-text-color: #ffc2ca;
+  --a-button-border-color: rgba(240, 86, 106, .55);
+  --a-button-hover-background-color: rgba(240, 86, 106, .2);
+  --a-button-hover-text-color: #ffc2ca;
+  --a-button-hover-border-color: rgba(240, 86, 106, .55);
+}
+
+/* ---------- gaveta Adicionar: campos com a cara do app, resultados da busca e da nota ---------- */
+.mmm-Gaveta .t-Form-fieldContainer {
+  --a-field-input-background-color: var(--mmm-sala);
+  --a-field-input-border-color: var(--mmm-linha);
+  --a-field-input-border-radius: 12px;
+  --a-field-input-text-color: var(--mmm-texto);
+  --a-field-input-focus-border-color: var(--mmm-manteiga);
+}
+.mmm-Gaveta .t-Form-label { color: var(--mmm-texto); font-weight: 700; }
+.mmm-Gaveta .apex-item-text, .mmm-Gaveta .apex-item-textarea, .mmm-Gaveta .apex-item-select { min-height: 44px; padding: 10px 14px; }
+.mmm-Gaveta .t-Button.mmm-BotaoSec, .mmm-Gaveta #mmm-reconhecer { min-height: 44px; }
+.mmm-Resultados { display: grid; gap: 8px; }
+.mmm-Resultados:empty { display: none; }
+.mmm-Resultado { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px; border-radius: 12px; background: var(--mmm-sala); }
+.mmm-Resultado > img, .mmm-Resultado > .mmm-Imagem--vazia { width: 44px; border-radius: 6px; aspect-ratio: 2 / 3; object-fit: cover; }
+.mmm-Resultado > div { min-width: 0; }
+.mmm-Resultado b { display: block; overflow-wrap: anywhere; color: var(--mmm-texto); }
+.mmm-Resultado span { color: var(--mmm-texto-3); font-size: 12.5px; }
+.mmm-Resultado .t-Button { min-height: 44px; }
+.mmm-Resultado--nota { grid-template-columns: minmax(0, 1fr); }
+.mmm-Resultado--nota select { width: 100%; min-height: 44px; }
+.mmm-Resultados .mmm-Credito { padding: 4px 2px; }
+#mmm-adicionar-nota { min-height: 44px; }
+
+/* vontade com as pipocas: fichas soltas (quebram linha no celular), cada uma com 1, 2 ou 3 pipocas */
+.t-Form-fieldContainer--radioButtonGroup .t-Form-itemWrapper > #P1_VONTADE { padding: 0; border: 0; background: none; }
+#P1_VONTADE .apex-item-grid-row { gap: 8px; }
+#P1_VONTADE .apex-item-option input + label {
+  --a-button-background-color: var(--mmm-sala-2);
+  --a-button-border-color: var(--mmm-linha);
+  --a-button-hover-border-color: var(--mmm-linha);
+  border-radius: 999px !important;
+}
+#P1_VONTADE .apex-item-option input:checked + label {
+  --a-button-background-color: var(--mmm-veludo-2);
+  --a-button-border-color: var(--mmm-manteiga);
+  --a-button-hover-border-color: var(--mmm-manteiga);
+  --a-button-focus-border-color: var(--mmm-manteiga);
+}
+#P1_VONTADE .apex-item-option label { flex-direction: row; align-items: center; gap: 6px; }
+/* o ::before do rádio do tema é absoluto (a bolinha): aqui ele é a fileira de pipocas, no fluxo */
+#P1_VONTADE .apex-item-option label::before { position: static; flex: none; border: 0; border-radius: 0; box-shadow: none; transform: none; }
+#P1_VONTADE .apex-item-option label::before {
+  content: ""; display: inline-block; width: 42px; height: 13px;
+  background: linear-gradient(to right, var(--mmm-manteiga) var(--mmm-cheio, 33.34%), var(--mmm-linha) 0);
+  -webkit-mask: url("pipoca.svg") 0 0 / 14px 13px repeat-x;
+  mask: url("pipoca.svg") 0 0 / 14px 13px repeat-x;
+}
+#P1_VONTADE .apex-item-option:nth-child(2) label::before { --mmm-cheio: 66.67%; }
+#P1_VONTADE .apex-item-option:nth-child(3) label::before { --mmm-cheio: 100%; }
+
+/* ---------- iPad deitado: 340px fixos com o cartão e o letreiro, a lista ao lado ---------- */
+@media (min-width: 900px) and (orientation: landscape) {
+  .mmm-Inicio > .container { grid-template-columns: 340px minmax(0, 1fr); align-items: start; column-gap: 28px; }
+  .mmm-Inicio-lado { margin-bottom: 0; }
+  /* o item da grade é a coluna do UT em volta do lado: o sticky vai nela (no próprio lado não teria para onde andar) */
+  .mmm-Inicio .col:has(> .mmm-Inicio-lado) { position: sticky; top: calc(var(--ut-header-height, 48px) + 12px); }
+}
+
+/* ---------- páginas 4, 5, 6, 9, 7, 8 e 12 ---------- */
+
+/* coluna de leitura: o celular usa a largura toda; no iPad e no computador o texto não passa de 760px */
+.mmm-Pagina .t-Body-title, .mmm-Pagina .t-Body-contentInner { width: 100%; max-width: 760px; margin-inline: auto; }
+.mmm-Pagina .t-Body-contentInner { padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
+
+/* título da página (Title Bar do tema): o caminho de volta em cima, o nome do grupo e o h1. O tema embaça e satura o
+   fundo atrás do título (backdrop-filter), o que tingia a faixa de outra cor */
+.mmm-Pagina .t-Body-title { background: none; border: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.mmm-Topo.t-BreadcrumbRegion { padding: 10px var(--mmm-gutter) 6px; background: none; border: 0; box-shadow: none; }
+.mmm-Topo .t-BreadcrumbRegion-top { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 0; padding: 0; }
+.mmm-Topo .t-BreadcrumbRegion-buttons--start { margin: 0 0 0 -8px; padding: 0; }
+.mmm-Topo .t-BreadcrumbRegion-buttons--end:empty { display: none; }
+.mmm-Topo .t-BreadcrumbRegion-body { display: block; width: 100%; padding: 0; }
+.mmm-Topo .t-BreadcrumbRegion-breadcrumb { padding: 0; }
+.mmm-Topo .t-BreadcrumbRegion-title { padding: 0; }
+.mmm-Topo .t-BreadcrumbRegion-titleText {
+  margin: 2px 0 0; color: var(--mmm-texto); font: 800 clamp(24px, 6.4vw, 30px)/1.15 var(--mmm-f-texto); white-space: normal; text-wrap: balance;
+}
+.mmm-Topo-grupo {
+  margin: 4px 0 0; overflow: hidden; color: var(--mmm-texto-2); font: 500 12px/1.35 var(--mmm-f-dado); letter-spacing: .12em;
+  text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap;
+}
+.t-Button.mmm-Voltar {
+  --a-button-background-color: transparent;
+  --a-button-text-color: var(--mmm-texto-2);
+  --a-button-hover-background-color: var(--mmm-veludo);
+  --a-button-hover-text-color: var(--mmm-texto);
+  --a-button-focus-background-color: transparent;
+  --a-button-focus-text-color: var(--mmm-texto);
+  --a-button-font-size: 14px;
+  min-height: 44px; padding-inline: 8px; border-radius: 12px; font-weight: 700;
+}
+.t-Button.mmm-Voltar .t-Icon { color: inherit; }
+
+/* regiões como cartões */
+.mmm-Pagina .t-Region { margin-bottom: 16px; }
+.mmm-Pagina .t-Region-header { border-bottom-color: var(--mmm-linha); }
+.mmm-Pagina .t-Region-title { color: var(--mmm-texto); font-size: 17px; font-weight: 800; }
+.mmm-Pagina .t-Region-body { color: var(--mmm-texto-2); }
+.mmm-Texto { margin: 0 0 12px; color: var(--mmm-texto-2); font-size: 15px; line-height: 1.5; }
+.mmm-Texto strong { color: var(--mmm-texto); overflow-wrap: anywhere; }
+.mmm-Acoes > .container, .mmm-Acoes .row, .mmm-Acoes .col { display: contents; }
+.mmm-Acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.mmm-Acoes .t-Button { min-height: 44px; margin: 0; }
+.mmm-Aviso p {
+  margin: 0 0 16px; padding: 12px 14px; border: 1px solid var(--mmm-linha); border-radius: 12px;
+  background: var(--mmm-veludo); color: var(--mmm-texto); font-size: 14.5px;
+}
+
+/* botões: o principal já vem do .t-Button--hot; o secundário é o de veludo e o de perigo, a borda vermelha da ficha */
+.mmm-Pagina .t-Button.mmm-BotaoSec, .mmm-Pagina .t-Button.mmm-BotaoPerigo {
+  --a-button-background-color: var(--mmm-veludo);
+  --a-button-text-color: var(--mmm-texto);
+  --a-button-border-color: var(--mmm-linha);
+  --a-button-hover-background-color: var(--mmm-veludo-2);
+  --a-button-hover-text-color: var(--mmm-texto);
+  --a-button-hover-border-color: var(--mmm-linha);
+  --a-button-focus-background-color: var(--a-button-background-color);
+  --a-button-focus-text-color: var(--a-button-text-color);
+  --a-button-focus-border-color: var(--a-button-border-color);
+  --a-button-active-background-color: var(--a-button-hover-background-color);
+  --a-button-font-size: 14px;
+  display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding-inline: 14px;
+  border-width: 1px; border-style: solid; border-radius: 12px; font-weight: 700;
+}
+.mmm-Pagina .t-Button.mmm-BotaoPerigo {
+  --a-button-background-color: rgba(240, 86, 106, .1);
+  --a-button-text-color: #ffc2ca;
+  --a-button-border-color: rgba(240, 86, 106, .55);
+  --a-button-hover-background-color: rgba(240, 86, 106, .2);
+  --a-button-hover-text-color: #ffd7dc;
+  --a-button-hover-border-color: rgba(240, 86, 106, .7);
+}
+.mmm-Pagina .t-Button.t-Button--hot { min-height: 44px; padding-inline: 16px; border-radius: 12px; font-weight: 800; }
+
+/* campos com a cara do app (os rótulos flutuantes da página 2 continuam) */
+.mmm-Pagina .t-Form-fieldContainer {
+  --a-field-input-background-color: var(--mmm-sala);
+  --a-field-input-border-color: var(--mmm-linha);
+  --a-field-input-border-radius: 12px;
+  --a-field-input-text-color: var(--mmm-texto);
+  --a-field-input-focus-border-color: var(--mmm-manteiga);
+}
+.mmm-Pagina .t-Form-label { color: var(--mmm-texto); font-weight: 700; }
+/* o triângulo de obrigatório do tema acompanha o canto do campo, mas com 8px de caixa para 12px de canto ele sobrava
+   para fora: com a caixa do tamanho do canto, a curva dele cai em cima da do campo */
+.mmm-Pagina .t-Form-itemRequired-marker::before { width: 12px; height: 12px; }
+.mmm-Pagina .apex-item-text, .mmm-Pagina .apex-item-select { min-height: 48px; }
+
+/* ---------- página 4: link do convite, lista de membros e ações ---------- */
+.mmm-Link .t-Form-itemWrapper {
+  display: block; width: 100%; padding: 12px 14px; border: 1px dashed var(--mmm-linha); border-radius: 12px; background: var(--mmm-sala);
+}
+.mmm-Link .display_only {
+  display: block; padding: 0; border: 0; background: none; color: var(--mmm-lampada); font: 500 14px/1.45 var(--mmm-f-dado);
+  overflow-wrap: anywhere; user-select: all; -webkit-user-select: all;
+}
+
+.mmm-Membros .t-ContentRow-item { padding-block: 4px; border-color: var(--mmm-linha); }
+.mmm-Membros .t-ContentRow-wrap { align-items: center; gap: 12px; padding-inline: 0; }
+.mmm-Membros .t-ContentRow-avatar { margin: 0; }
+.mmm-Membros .t-ContentRow-avatar .t-Avatar {
+  width: 42px; height: 42px; border: 2px solid var(--mmm-sala); background-color: var(--mmm-cor, var(--mmm-manteiga));
+  color: var(--mmm-tinta); font: 800 17px/1 var(--mmm-f-texto);
+}
+.mmm-Membros .t-ContentRow-avatar .t-Avatar.u-color { background-color: var(--mmm-cor, var(--mmm-manteiga)); color: var(--mmm-tinta); }
+/* no celular o nome vem em cima e as ações embaixo, à esquerda; do iPad em diante, lado a lado */
+.mmm-Membros .t-ContentRow-body { align-items: flex-start; gap: 8px 12px; }
+.mmm-Membros .t-ContentRow-content { min-width: 0; text-align: start; }
+.mmm-Membros .t-ContentRow-title { margin: 0; color: var(--mmm-texto); font-size: 16px; font-weight: 800; overflow-wrap: anywhere; }
+.mmm-Membros .t-ContentRow-description { margin-top: 3px; }
+.mmm-Membros .t-ContentRow-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+.mmm-Membros .t-ContentRow-actions .t-Button { margin: 0; }
+@media (min-width: 640px) { .mmm-Membros .t-ContentRow-body { align-items: center; } }
+.mmm-Selo {
+  display: inline-block; margin: 2px 6px 0 0; padding: 2px 9px; border-radius: 999px; background: var(--mmm-veludo-2);
+  color: var(--mmm-texto-2); font-size: 12px; font-weight: 700; line-height: 1.5;
+}
+.mmm-Selo:empty { display: none; }
+.mmm-Selo--dono { background: var(--mmm-manteiga); color: var(--mmm-tinta); }
+
+/* ---------- página 5: serviços com o logo (Checkbox Group; o nome acessível é o do serviço) ---------- */
+#P5_SERVICOS {
+  --a-checkbox-checked-background-color: var(--mmm-manteiga);
+  --a-checkbox-checked-text-color: var(--mmm-tinta);
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: 8px; width: 100%;
+}
+#P5_SERVICOS .apex-item-option {
+  float: none; width: auto; margin: 0; padding: 0; border: 1px solid var(--mmm-linha); border-radius: 12px; background: var(--mmm-sala);
+}
+#P5_SERVICOS .apex-item-option:has(input:checked) { border-color: var(--mmm-manteiga); background: var(--mmm-veludo); }
+#P5_SERVICOS .apex-item-option label {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; padding: 8px 12px 8px 42px;
+  color: var(--mmm-texto); font-size: 15px; font-weight: 700; line-height: 1.2; cursor: pointer;
+}
+#P5_SERVICOS .apex-item-option label::before { left: 14px; top: 50%; margin-top: -8px; }
+#P5_SERVICOS .apex-item-option label::after { left: 15px; top: 50%; margin-top: -7px; }
+#P5_SERVICOS .apex-item-option input:focus-visible + label { outline: 3px solid var(--mmm-manteiga); outline-offset: 2px; border-radius: 12px; }
+.mmm-ServicoLogo { flex: none; width: 34px; height: 34px; border-radius: 9px; object-fit: cover; background: var(--mmm-veludo); }
+
+/* ---------- página 6: placar de justiça e assistidos ---------- */
+.mmm-Justica.t-Region { background: linear-gradient(135deg, #2f2046, #241838); }
+.mmm-Justica .t-Region-header { background: none; }
+.mmm-Placar { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.mmm-Placar-item {
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px 5px 5px; border-radius: 999px; background: var(--mmm-sala);
+  color: var(--mmm-texto); font-size: 13.5px; font-weight: 600; overflow-wrap: anywhere;
+}
+.mmm-Placar-item .mmm-Avatar { width: 26px; height: 26px; border-width: 1.5px; font-size: 11px; }
+.mmm-Placar-item.is-carta { box-shadow: inset 0 0 0 2px var(--mmm-manteiga); }
+.mmm-CartaVez {
+  display: inline-flex; align-items: center; gap: 8px; margin: 12px 8px 0 0; padding: 7px 12px; border-radius: 8px; background: var(--mmm-manteiga);
+  color: var(--mmm-tinta); font-size: 13.5px; font-weight: 800; overflow-wrap: anywhere;
+}
+.mmm-Justica-regra { margin: 12px 0 0; color: var(--mmm-texto-2); font-size: 13.5px; line-height: 1.45; }
+
+.mmm-Assistidos .t-ContentRow-item { border-color: var(--mmm-linha); }
+.mmm-Assistidos .t-ContentRow-wrap { align-items: center; gap: 12px; padding-inline: 0; }
+.mmm-Assistidos .t-ContentRow-avatar { margin: 0; }
+/* pôster w92 na proporção 2:3; sem caminho válido fica o quadro vazio, sem o ícone de pessoa que o Avatar põe */
+.mmm-Assistidos .t-ContentRow-avatar .t-Avatar {
+  width: 46px; height: 69px; overflow: hidden; border-radius: 8px; background: var(--mmm-veludo); color: transparent;
+}
+.mmm-Assistidos .t-ContentRow-avatar .t-Avatar::before { content: none; }
+.mmm-Assistidos .t-ContentRow-avatar .t-Avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.mmm-Assistidos .t-ContentRow-overline { color: var(--mmm-texto-3); font: 500 12px/1.3 var(--mmm-f-dado); letter-spacing: .06em; }
+.mmm-Assistidos .t-ContentRow-title { margin: 2px 0; color: var(--mmm-texto); font-size: 15.5px; font-weight: 800; overflow-wrap: anywhere; }
+.mmm-Assistidos .t-ContentRow-description { color: var(--mmm-texto-2); font-size: 13.5px; }
+.mmm-Pagina .a-TMV-noDataMsg, .mmm-Pagina .t-Report-noDataMsg, .mmm-Pagina .nodatafound { color: var(--mmm-texto-2); }
+
+/* ---------- página 9: conta, apelido e cor ---------- */
+.mmm-Conta-nome { margin: 0; color: var(--mmm-texto); font-size: 17px; font-weight: 800; overflow-wrap: anywhere; }
+.mmm-Conta-detalhe { margin: 3px 0 0; color: var(--mmm-texto-2); font-size: 14.5px; overflow-wrap: anywhere; }
+#P9_COR { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; }
+#P9_COR .apex-item-option { display: block; float: none; width: auto; margin: 0; }
+#P9_COR .apex-item-option label {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 6px 14px 6px 8px; border: 1px solid var(--mmm-linha);
+  border-radius: 999px; background: var(--mmm-sala); color: var(--mmm-texto); font-weight: 700; cursor: pointer;
+}
+/* a bolinha do rádio do tema vira a amostra da cor (decorativa: o nome da cor é o rótulo) */
+#P9_COR .apex-item-option label::before {
+  position: static; flex: none; width: 22px; height: 22px; margin: 0; border: 2px solid var(--mmm-sala-2); border-radius: 50%;
+  background: var(--mmm-amostra, var(--mmm-manteiga)); box-shadow: 0 0 0 1px var(--mmm-linha); transform: none;
+}
+#P9_COR .apex-item-option label::after { content: none; }
+#P9_COR .apex-item-option input:checked + label { border-color: var(--mmm-manteiga); background: var(--mmm-veludo-2); }
+#P9_COR .apex-item-option input:checked + label::before { box-shadow: 0 0 0 2px var(--mmm-manteiga); }
+#P9_COR .apex-item-option input:focus-visible + label { outline: 3px solid var(--mmm-manteiga); outline-offset: 2px; }
+#P9_COR .apex-item-option:nth-child(1) { --mmm-amostra: #ffc94a; }
+#P9_COR .apex-item-option:nth-child(2) { --mmm-amostra: #ff94b8; }
+#P9_COR .apex-item-option:nth-child(3) { --mmm-amostra: #72d4ff; }
+#P9_COR .apex-item-option:nth-child(4) { --mmm-amostra: #4fd6a6; }
+#P9_COR .apex-item-option:nth-child(5) { --mmm-amostra: #b69cff; }
+#P9_COR .apex-item-option:nth-child(6) { --mmm-amostra: #ff9f6b; }
+#P9_COR .apex-item-option:nth-child(7) { --mmm-amostra: #9be37a; }
+#P9_COR .apex-item-option:nth-child(8) { --mmm-amostra: #f2e6c9; }
+
+/* ---------- páginas 7, 8 e 12: texto para ler ---------- */
+.mmm-TextoLongo .t-Region-body { color: var(--mmm-texto-2); font-size: 15.5px; line-height: 1.6; }
+.mmm-TextoLongo p { margin: 0 0 12px; }
+.mmm-TextoLongo p:last-child { margin-bottom: 0; }
+.mmm-TextoLongo ul { margin: 0; padding-left: 20px; }
+.mmm-TextoLongo li { margin: 0 0 10px; }
+.mmm-TextoLongo a { color: var(--mmm-lampada); text-decoration: underline; text-underline-offset: 2px; }
+.mmm-Tmdb img { display: block; width: 185px; max-width: 100%; height: auto; }
+.mmm-Rodape { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 16px; margin: 8px 0 0; }
+.mmm-Rodape .t-Button--link { min-height: 44px; color: var(--mmm-lampada); font-size: 15px; font-weight: 700; }
+/* página de entrada (9999): Sobre, Privacidade e Termos aparecem agora; alvo de toque de 44px */
+.t-PageBody--login .t-Login-container .t-Button--link { min-height: 44px; font-size: 15px; }
+
+/* ---------- confirmações (apex.message.confirm e a confirmação nativa dos botões) ---------- */
+.ui-dialog--notification .ui-dialog-buttonpane .ui-button { min-height: 44px; padding-inline: 16px; border-radius: 12px; font-weight: 700; }
+.ui-dialog--notification .ui-dialog-buttonpane .ui-button:not(.js-confirmBtn) {
+  border: 1px solid var(--mmm-linha); background: var(--mmm-veludo); color: var(--mmm-texto);
+}
+.ui-dialog--notification .ui-dialog-buttonpane .ui-button:not(.js-confirmBtn):hover { background: var(--mmm-veludo-2); }
+
+/* ---------- entrada (9999) e demonstração (9998): a fachada do cinema ----------
+   parede de cartazes da lista da demo ao fundo, o letreiro com o nome do app e as ações ao alcance do polegar */
+.mmm-Entrada { min-height: 100dvh; background: var(--mmm-sala); overflow-x: hidden; }
+.mmm-Entrada .t-Login-bg { display: none; }
+.mmm-Entrada .t-Login-container {
+  display: flex; flex-direction: column; justify-content: flex-end;
+  width: 100%; max-width: 440px; min-height: 100dvh; margin: 0 auto; padding: 32vh var(--mmm-gutter) 0;
+  background: none; border: 0; border-radius: 0; box-shadow: none;
+}
+.mmm-Entrada .t-Login-containerHeader:empty { display: none; }
+.mmm-Entrada .t-Login-containerBody { flex: none; padding: 0; background: none; }
+.mmm-Entrada .t-Login-containerBody .container,
+.mmm-Entrada .t-Login-containerBody .row,
+.mmm-Entrada .t-Login-containerBody .col { padding: 0; margin: 0; }
+.mmm-Palco, .mmm-Entrada .t-Login-containerFooter, .mmm-Entrada .t-Body-alert { position: relative; z-index: 2; }
+
+/* parede: decoração, fora da leitura de tela; parada quando o aparelho pede menos movimento */
+.mmm-Parede {
+  position: fixed; inset: -12vh -30vw auto -30vw; z-index: 0; height: 72vh;
+  display: grid; align-content: start; gap: 14px;
+  transform: rotate(-9deg); transform-origin: 50% 0; pointer-events: none;
+}
+.mmm-Parede-faixa { display: flex; gap: 14px; width: max-content; }
+.mmm-Parede-faixa img {
+  width: clamp(92px, 26vw, 150px); height: auto; aspect-ratio: 2 / 3; object-fit: cover;
+  border-radius: 10px; background: var(--mmm-veludo); box-shadow: 0 10px 24px var(--mmm-sombra);
+  filter: saturate(.9) brightness(.82);
+}
+.mmm-Parede-faixa:nth-child(2) { margin-left: -70px; }
+.mmm-Parede-faixa:nth-child(3) { margin-left: -20px; }
+@media (prefers-reduced-motion: no-preference) {
+  .mmm-Parede-faixa { animation: mmm-rola 70s linear infinite; }
+  .mmm-Parede-faixa:nth-child(2) { animation-direction: reverse; animation-duration: 85s; }
+  .mmm-Parede-faixa:nth-child(3) { animation-duration: 95s; }
+}
+@keyframes mmm-rola { to { transform: translateX(-50%); } }
+/* o veludo cobre a parede de baixo para cima: o texto fica sempre sobre fundo escuro */
+.mmm-Parede-veu {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(22, 15, 34, .25) 0%, rgba(22, 15, 34, .55) 30%, var(--mmm-sala) 58%),
+    radial-gradient(120% 60% at 50% 0%, transparent 0%, rgba(22, 15, 34, .6) 100%);
+}
+
+/* palco: letreiro, chamada e ações */
+.mmm-Palco { display: grid; gap: 18px; padding-bottom: 8px; }
+.mmm-Entrada-letreiro .mmm-Letreiro-caixa { padding: 20px 22px 18px; text-align: center; }
+.mmm-Entrada-letreiro .mmm-Letreiro-sobre { letter-spacing: .16em; }
+.mmm-Entrada-logo {
+  margin: 12px 0 4px; color: var(--mmm-manteiga); text-transform: uppercase;
+  font: 400 clamp(34px, 10.5vw, 48px)/.95 var(--mmm-f-letreiro); letter-spacing: .01em;
+  text-shadow: 0 0 22px rgba(255, 201, 74, .45);
+}
+.mmm-Entrada-logo span { display: block; }
+.mmm-Entrada-chamada { margin: 0; text-align: center; }
+.mmm-Entrada-chamada b { display: block; color: var(--mmm-texto); font-size: 20px; font-weight: 800; line-height: 1.2; }
+.mmm-Entrada-chamada span { display: block; margin-top: 6px; color: var(--mmm-texto-2); font-size: 15px; line-height: 1.45; }
+.mmm-Entrada .mmm-Entrada-acoes { display: grid; gap: 12px; margin-top: 4px; }
+
+/* botão do Google no tema escuro das diretrizes de marca (developers.google.com/identity/branding-guidelines):
+   fundo #131314, contorno #8E918F, texto #E3E3E3 e o G colorido sem mudança; 48px de altura, na mesma proporção */
+.mmm-Google {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  height: 48px; padding: 0 16px 0 14px; border-radius: 999px;
+  background: #131314; color: #e3e3e3; box-shadow: inset 0 0 0 1px #8e918f;
+  font: 500 15px/20px Roboto, Arial, sans-serif; letter-spacing: .25px; text-decoration: none;
+}
+.mmm-Google:hover, .mmm-Google:focus { color: #e3e3e3; text-decoration: none; background: #1f1f20; }
+.mmm-Google svg { width: 20px; height: 20px; flex: none; }
+
+/* demonstração e os botões do tema na fachada (Começar, Voltar, Sair e Voltar ao app): pílula de 48px */
+.mmm-Entrada-demo, .mmm-Entrada .mmm-Palco .t-Button {
+  display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+  min-height: 48px; padding: 0 18px; border-radius: 999px;
+  background: var(--mmm-veludo); border: 1px solid var(--mmm-linha); box-shadow: none;
+  color: var(--mmm-texto); font: 700 15px/1.2 var(--mmm-f-texto); text-decoration: none;
+}
+.mmm-Entrada-demo:hover, .mmm-Entrada-demo:focus { color: var(--mmm-texto); text-decoration: none; background: var(--mmm-veludo-2); }
+.mmm-Entrada .mmm-Palco .t-Button--hot {
+  background: var(--mmm-manteiga); border-color: var(--mmm-manteiga); color: var(--mmm-tinta); font-weight: 800;
+  box-shadow: 0 6px 18px rgba(255, 201, 74, .3);
+}
+/* botões soltos no palco já ganham o espaço da grade; os de uma sub-região (Já conectado) precisam da margem */
+.mmm-Entrada .mmm-Palco > * .t-Button + .t-Button { margin: 12px 0 0; }
+.mmm-Entrada-play { width: 18px; height: 18px; fill: none; stroke: var(--mmm-manteiga); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.mmm-Entrada-nota { margin: -2px 0 0; color: var(--mmm-texto-3); font-size: 13px; text-align: center; }
+.mmm-Entrada .mmm-Entrada-texto { margin: 4px 0 12px; }
+
+/* rodapé: Sobre, Privacidade e Termos */
+.mmm-Entrada .t-Login-containerFooter {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0 22px;
+  padding: 12px 0 max(18px, env(safe-area-inset-bottom)); background: none; border: 0;
+}
+.mmm-Entrada .t-Login-containerFooter .t-Button--link { color: var(--mmm-texto-2); font-size: 14px; font-weight: 500; }
+.mmm-Entrada .t-Login-containerFooter .t-Button--link:hover { color: var(--mmm-manteiga); }
+
+/* iPad deitado e computador: a parede ocupa a tela toda e o palco fica no meio */
+@media (min-width: 900px) {
+  .mmm-Parede { inset: -18vh -12vw auto -12vw; height: 120vh; transform: rotate(-7deg); }
+  .mmm-Parede-faixa img { width: 150px; }
+  .mmm-Parede-veu { background: radial-gradient(50% 70% at 50% 55%, rgba(22, 15, 34, .94) 0%, rgba(22, 15, 34, .86) 45%, rgba(22, 15, 34, .55) 100%); }
+  .mmm-Entrada .t-Login-container { justify-content: center; padding-top: 6vh; }
+}
+
+/* ---------- busca por pessoa e saga: gaveta Adicionar e ficha ---------- */
+
+/* a pessoa e a saga abrem no lugar dos resultados; o atributo hidden vale por cima do display da classe */
+.mmm-Resultados[hidden], .mmm-Explorar[hidden] { display: none; }
+
+/* resultado em grupos: rótulo pequeno no estilo do letreiro e os itens logo abaixo */
+.mmm-ResultadoGrupo { display: grid; gap: 8px; }
+.mmm-ResultadoGrupo + .mmm-ResultadoGrupo { margin-top: 6px; }
+.mmm-ResultadoGrupo-titulo {
+  margin: 4px 2px 0; color: var(--mmm-texto-2);
+  font: 500 12px/1.2 var(--mmm-f-dado); letter-spacing: .12em; text-transform: uppercase;
+}
+.mmm-ResultadosLista { display: grid; gap: 8px; }
+
+/* pessoa e saga compactas: fichas de 52px com foto ou pôster, nome e uma linha de apoio */
+.mmm-Chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.mmm-Chip {
+  display: inline-flex; align-items: center; gap: 10px; max-width: 100%; min-height: 52px; padding: 6px 14px 6px 6px;
+  border: 1px solid var(--mmm-linha); border-radius: 999px; background: var(--mmm-sala);
+  color: var(--mmm-texto); font: inherit; text-align: left; cursor: pointer;
+}
+.mmm-Chip:hover { background: var(--mmm-veludo); }
+.mmm-Chip:focus-visible { outline: 3px solid var(--mmm-manteiga); outline-offset: 2px; }
+.mmm-Chip-texto { display: grid; min-width: 0; line-height: 1.25; }
+.mmm-Chip-texto b { overflow: hidden; font-size: 14px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.mmm-Chip-texto small { overflow: hidden; max-width: 220px; color: var(--mmm-texto-3); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.mmm-Chip--saga { border-radius: 14px; padding-left: 8px; }
+.mmm-Chip--saga > img, .mmm-Chip--saga > .mmm-Imagem--vazia { flex: none; width: 28px; border-radius: 5px; aspect-ratio: 2 / 3; object-fit: cover; }
+
+/* foto de pessoa (CDN w185) ou a inicial do nome, num círculo */
+.mmm-Foto { flex: none; display: block; width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: var(--mmm-veludo); }
+.mmm-Foto--inicial { display: grid; place-items: center; background: var(--mmm-veludo-2); color: var(--mmm-manteiga); font: 800 16px/1 var(--mmm-f-texto); }
+
+/* pessoa e saga abertas: Voltar à busca, quem é, e a lista */
+.mmm-Explorar { display: grid; gap: 12px; }
+.mmm-Explorar-cab { display: grid; gap: 12px; justify-items: start; }
+.mmm-Explorar .mmm-Explorar-voltar { min-height: 44px; }
+.mmm-Explorar-voltar .mmm-Seta { margin-right: 6px; font-size: 20px; line-height: 1; }
+.mmm-Explorar-quem { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.mmm-Explorar-quem .mmm-Foto { width: 56px; height: 56px; font-size: 22px; }
+.mmm-Explorar-quem > img:not(.mmm-Foto), .mmm-Explorar-quem > .mmm-Imagem--vazia { flex: none; width: 48px; border-radius: 8px; aspect-ratio: 2 / 3; object-fit: cover; }
+.mmm-Explorar-texto { display: grid; min-width: 0; }
+.mmm-Explorar-titulo { margin: 0; overflow-wrap: anywhere; color: var(--mmm-texto); font: 800 20px/1.15 var(--mmm-f-texto); }
+.mmm-Explorar-titulo:focus { outline: none; }
+.mmm-Explorar-sobre { color: var(--mmm-texto-2); font-size: 13px; }
+.mmm-Explorar-sobre:empty { display: none; }
+.mmm-Explorar-corpo { display: grid; gap: 10px; }
+.mmm-Explorar .mmm-Credito { padding: 0 2px; }
+.mmm-Explorar .mmm-Credito[hidden] { display: none; }
+
+/* Filmes e Séries: o mesmo par de pílulas da lista */
+.mmm-Abas {
+  display: inline-flex; justify-self: start; max-width: 100%; padding: 3px;
+  border: 1px solid var(--mmm-linha); border-radius: 12px; background: var(--mmm-sala-2);
+}
+.mmm-Aba {
+  min-height: 44px; padding: 0 14px; border: 0; border-radius: 9px; background: transparent;
+  color: var(--mmm-texto-2); font: 700 13px/1 var(--mmm-f-texto); white-space: nowrap; cursor: pointer;
+}
+.mmm-Aba:hover { color: var(--mmm-texto); }
+.mmm-Aba[aria-pressed="true"] { background: var(--mmm-veludo-2); color: var(--mmm-texto); }
+.mmm-Aba:focus-visible { outline: 3px solid var(--mmm-manteiga); outline-offset: 1px; }
+
+/* na linha: o papel embaixo do ano e as marcas (estreia e já vistos) */
+.mmm-Resultado .mmm-Resultado-papel { display: block; overflow-wrap: anywhere; color: var(--mmm-texto-2); }
+.mmm-Marcas { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.mmm-Resultado .mmm-Marca {
+  padding: 2px 7px; border-radius: 6px; background: var(--mmm-veludo);
+  color: var(--mmm-texto-2); font: 700 11px/1.35 var(--mmm-f-texto);
+}
+.mmm-Resultado .mmm-Marca--estreia { background: rgba(255, 201, 74, .14); color: var(--mmm-manteiga); }
+.mmm-Resultado .mmm-Marca--visto { background: rgba(79, 214, 166, .14); color: var(--mmm-menta); }
+
+/* Adicionar a saga inteira: o botão principal da saga, na largura toda */
+.mmm-Explorar .mmm-SagaInteira { width: 100%; min-height: 48px; justify-content: center; border-radius: 12px; font-weight: 800; }
+
+/* ---------- ficha: Faz parte da saga e Mais com ---------- */
+.mmm-FichaMais { display: grid; gap: 10px; }
+.mmm-FichaMais h3 { margin: 0; color: var(--mmm-texto); font-size: 15px; font-weight: 800; }
+.mmm-FichaMais-saga {
+  position: relative; display: grid; gap: 2px; width: 100%; min-height: 56px; padding: 10px 40px 10px 14px;
+  border: 1px solid var(--mmm-linha); border-radius: var(--mmm-raio); background: var(--mmm-sala);
+  color: var(--mmm-texto); font: inherit; text-align: left; cursor: pointer;
+}
+.mmm-FichaMais-saga .mmm-Seta { position: absolute; top: 50%; right: 16px; transform: translateY(-50%); color: var(--mmm-manteiga); font-size: 24px; line-height: 1; }
+.mmm-FichaMais-saga:hover { background: var(--mmm-veludo); }
+.mmm-FichaMais-saga:focus-visible { outline: 3px solid var(--mmm-manteiga); outline-offset: 2px; }
+.mmm-FichaMais-rotulo { color: var(--mmm-texto-3); font: 500 11px/1.2 var(--mmm-f-dado); letter-spacing: .1em; text-transform: uppercase; }
+.mmm-FichaMais-saga b { overflow-wrap: anywhere; font-size: 15px; }
+
+/* ---------- Hora do Cinema (página 20) e a sessão (página 30) ---------- */
+
+/* ícones do sprite da página 0 */
+.mmm-Icone { flex: none; width: 1.25em; height: 1.25em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- página 20: abertura do jogo ---------- */
+.mmm-PaginaAbertura .mmm-Topo .t-BreadcrumbRegion-titleText {
+  color: var(--mmm-manteiga); font: 400 clamp(26px, 7.4vw, 36px)/1 var(--mmm-f-letreiro); text-transform: uppercase;
+  text-shadow: 0 0 22px rgba(255, 201, 74, .35);
+}
+.mmm-PaginaAbertura .t-Body-contentInner { padding-inline: var(--mmm-gutter); }
+/* a barra de título do tema fica presa no alto da tela larga, sem fundo, e passava por cima das perguntas; aqui ela rola
+   com a página (o que fica preso é o rodapé) */
+.mmm-PaginaAbertura .t-Body-title { position: static; }
+.mmm-Abertura { display: grid; gap: 22px; }
+.mmm-Abertura-sub { margin: -8px 0 0; color: var(--mmm-texto-2); font-size: 15px; line-height: 1.45; }
+.mmm-Pergunta { display: grid; gap: 10px; min-width: 0; }
+.mmm-Pergunta[hidden] { display: none; }
+.mmm-Pergunta-titulo { margin: 0; color: var(--mmm-texto); font: 800 16px/1.3 var(--mmm-f-texto); }
+.mmm-Pergunta-dica { margin-left: 6px; color: var(--mmm-texto-3); font-size: 13px; font-weight: 500; }
+.mmm-Pergunta-dica:empty { display: none; }
+.mmm-Abertura :where(button) { font: inherit; cursor: pointer; }
+.mmm-Abertura button:focus-visible, .mmm-AberturaPe button:focus-visible { outline: 3px solid var(--mmm-manteiga); outline-offset: 3px; }
+
+.mmm-Tipos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mmm-Tipo {
+  display: flex; align-items: center; gap: 12px; min-height: 76px; padding: 12px 16px; border: 2px solid var(--mmm-linha); border-radius: 18px;
+  background: var(--mmm-sala-2); color: var(--mmm-texto); text-align: left;
+}
+.mmm-Tipo .mmm-Icone { width: 30px; height: 30px; color: var(--mmm-texto-2); }
+.mmm-Tipo-texto { min-width: 0; }
+.mmm-Tipo b { display: block; font-size: 19px; }
+.mmm-Tipo small { display: block; color: var(--mmm-texto-3); font-size: 12.5px; font-weight: 600; }
+.mmm-Tipo[aria-pressed="true"] { border-color: var(--mmm-manteiga); background: rgba(255, 201, 74, .12); }
+.mmm-Tipo[aria-pressed="true"] .mmm-Icone { color: var(--mmm-manteiga); }
+
+/* fichas soltas: sofá, recortes e serviços */
+.mmm-Opcoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.mmm-Opcao {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 13px; border: 1px solid var(--mmm-linha); border-radius: 999px;
+  background: var(--mmm-sala-2); color: var(--mmm-texto); font-size: 14px; font-weight: 600; line-height: 1.2;
+}
+.mmm-Opcao .mmm-Icone { width: 18px; height: 18px; }
+.mmm-Opcao-sub { color: var(--mmm-texto-2); font-size: 12px; font-weight: 500; }
+.mmm-Opcao-logo, .mmm-Opcao .mmm-Imagem--vazia { flex: none; width: 22px; height: 22px; border-radius: 6px; object-fit: cover; }
+.mmm-Opcao.is-doGrupo:not([aria-pressed="true"]) { border-color: rgba(255, 201, 74, .55); }
+.mmm-Opcao[aria-pressed="true"] { border-color: var(--mmm-manteiga); background: var(--mmm-manteiga); color: var(--mmm-tinta); }
+.mmm-Opcao[aria-pressed="true"] .mmm-Opcao-sub { color: var(--mmm-tinta); }
+.mmm-Opcao:disabled, .mmm-Clima:disabled { opacity: .38; cursor: not-allowed; }
+
+.mmm-Pessoa {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 6px 14px 6px 6px; border: 1px solid var(--mmm-linha); border-radius: 999px;
+  background: var(--mmm-sala-2); color: var(--mmm-texto); font-weight: 700;
+}
+.mmm-Pessoa-nome { overflow-wrap: anywhere; }
+.mmm-Pessoa-marca { color: var(--mmm-texto-3); font-size: 12px; font-weight: 500; }
+.mmm-Pessoa[aria-pressed="false"] { opacity: .55; }
+.mmm-Pessoa[aria-pressed="false"] .mmm-Avatar { filter: grayscale(1); }
+.mmm-Abertura .mmm-Pessoa.is-fixo { cursor: default; }
+
+.mmm-Climas { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 156px), 1fr)); }
+.mmm-Clima {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; min-height: 56px; padding: 10px 12px;
+  border: 1px solid var(--mmm-linha); border-radius: 14px; background: var(--mmm-sala-2); color: var(--mmm-texto); text-align: left;
+}
+.mmm-Clima .mmm-Icone { width: 24px; height: 24px; color: var(--mmm-texto-2); }
+.mmm-Clima b { display: block; font-size: 14.5px; line-height: 1.15; }
+.mmm-Clima small { display: block; color: var(--mmm-texto-3); font-size: 12px; font-weight: 500; }
+.mmm-Clima-qtd { color: var(--mmm-texto-2); font: 500 12px/1 var(--mmm-f-dado); }
+.mmm-Clima[aria-pressed="true"] { border-color: var(--mmm-manteiga); background: rgba(255, 201, 74, .12); }
+.mmm-Clima[aria-pressed="true"] .mmm-Icone { color: var(--mmm-manteiga); }
+
+/* chaves (Aluguel, Criança): o trilho dentro de um alvo de 44px */
+.mmm-Chave {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 8px 8px 14px; border: 1px solid var(--mmm-linha);
+  border-radius: 14px; background: var(--mmm-sala-2);
+}
+.mmm-Chave-texto { min-width: 0; }
+.mmm-Chave-texto strong { display: block; color: var(--mmm-texto); }
+.mmm-Chave-texto span { color: var(--mmm-texto-3); font-size: 13px; }
+.mmm-Interruptor { position: relative; flex: none; width: 60px; height: 44px; padding: 0; border: 0; border-radius: 999px; background: none; }
+.mmm-Interruptor::before { content: ""; position: absolute; top: 7px; left: 4px; width: 52px; height: 30px; border-radius: 999px; background: var(--mmm-linha); transition: background .2s; }
+.mmm-Interruptor::after {
+  content: ""; position: absolute; top: 10px; left: 7px; width: 24px; height: 24px; border-radius: 50%; background: var(--mmm-texto); transition: transform .2s;
+}
+.mmm-Interruptor[aria-checked="true"]::before { background: var(--mmm-menta); }
+.mmm-Interruptor[aria-checked="true"]::after { transform: translateX(22px); }
+
+.mmm-Segmento {
+  display: grid; grid-auto-columns: 1fr; grid-auto-flow: column; gap: 4px; padding: 4px; border: 1px solid var(--mmm-linha); border-radius: 14px;
+  background: var(--mmm-sala-2);
+}
+.mmm-Segmento-opcao {
+  min-height: 44px; padding: 10px 8px; border: 0; border-radius: 10px; background: none; color: var(--mmm-texto-2); font-weight: 700; line-height: 1.2;
+}
+.mmm-Segmento-opcao small { display: block; color: var(--mmm-texto-3); font-size: 12px; font-weight: 500; }
+.mmm-Segmento-opcao[aria-pressed="true"] { background: var(--mmm-veludo-2); color: var(--mmm-texto); }
+.mmm-Segmento-opcao[aria-pressed="true"] small { color: var(--mmm-texto-2); }
+
+/* rodapé fixo: a contagem, o motivo quando não dá e o Dar as cartas */
+.mmm-AberturaPe {
+  position: sticky; bottom: 0; z-index: 5; display: grid; gap: 10px; margin-top: 8px;
+  padding: 14px 0 calc(8px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, var(--mmm-sala) 72%, rgba(22, 15, 34, 0));
+}
+.mmm-AberturaPe { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+/* o rodapé é uma região à parte: a célula da grade em volta dele tem a altura dele e o sticky não teria onde andar */
+.mmm-PaginaAbertura .row:has(> .col > .mmm-AberturaPe), .mmm-PaginaAbertura .col:has(> .mmm-AberturaPe) { display: contents; }
+.mmm-AberturaPe > .container, .mmm-AberturaPe .row, .mmm-AberturaPe .col { display: contents; }
+.mmm-AberturaPe .mmm-Motivo { grid-column: 1 / -1; }
+.mmm-Contagem { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 6px; min-width: 0; color: var(--mmm-texto-2); font-weight: 600; }
+.mmm-Contagem b { color: var(--mmm-texto); font: 500 22px/1 var(--mmm-f-dado); }
+.mmm-Contagem-denovo {
+  min-height: 44px; padding: 0 12px; border: 1px solid var(--mmm-linha); border-radius: 12px; background: var(--mmm-veludo); color: var(--mmm-texto); font-weight: 700;
+}
+.mmm-Motivo {
+  margin: 0; padding: 10px 12px; border: 1px solid rgba(240, 86, 106, .4); border-radius: 12px; background: rgba(240, 86, 106, .14);
+  color: #ffd3d9; font-size: 14px; line-height: 1.4;
+}
+.mmm-Motivo[hidden] { display: none; }
+.t-Button.mmm-DarCartas { flex: none; min-height: 50px; margin: 0; padding: 12px 22px; border-radius: 999px; font-size: 16px; font-weight: 800; box-shadow: 0 8px 22px rgba(255, 201, 74, .28); }
+.t-Button.mmm-DarCartas.is-disabled {
+  --a-button-background-color: var(--mmm-linha);
+  --a-button-text-color: var(--mmm-texto-2);
+  --a-button-hover-background-color: var(--mmm-linha);
+  --a-button-hover-text-color: var(--mmm-texto-2);
+  --a-button-focus-background-color: var(--mmm-linha);
+  --a-button-focus-text-color: var(--mmm-texto-2);
+  --a-button-active-background-color: var(--mmm-linha);
+  /* o Core do APEX tira o toque de .t-Button.is-disabled; aqui o toque precisa chegar para explicar o motivo */
+  box-shadow: none; cursor: not-allowed; pointer-events: auto;
+}
+.mmm-AvisoVez p { margin: 0; padding: 12px 14px; border: 1px solid var(--mmm-manteiga); border-radius: 12px; background: rgba(255, 201, 74, .12); color: var(--mmm-texto); }
+
+/* ---------- página 30: a mesa do jogo (template Blank, sem o cabeçalho do tema) ---------- */
+body.mmm-PaginaJogo { background: radial-gradient(90% 55% at 50% -12%, #2f1f4a 0%, rgba(47, 31, 74, 0) 70%), var(--mmm-sala); color: var(--mmm-texto); overscroll-behavior: none; }
+.mmm-PaginaJogo .t-Body-contentInner { padding: 0; }
+.mmm-Jogo { display: flex; flex-direction: column; max-width: 1280px; min-height: 100dvh; margin: 0 auto; }
+/* baralho, duelo e roleta ocupam a tela do aparelho; o resto rola como página */
+.mmm-Jogo[data-tela="baralho"], .mmm-Jogo[data-tela="duelo"], .mmm-Jogo[data-tela="roleta"] { height: 100dvh; min-height: 0; }
+.mmm-Jogo :where(button) { font: inherit; cursor: pointer; }
+.mmm-Jogo button:focus-visible, .mmm-Jogo a:focus-visible { outline: 3px solid var(--mmm-manteiga); outline-offset: 3px; }
+.mmm-Jogo > .mmm-Topo { display: flex; flex: none; align-items: center; gap: 10px; padding: 10px var(--mmm-gutter) 8px; }
+.mmm-Marca {
+  display: inline-flex; align-items: center; min-height: 44px; margin-right: auto; padding: 4px 0; color: var(--mmm-manteiga);
+  font: 400 clamp(17px, 4.6vw, 21px)/1 var(--mmm-f-letreiro); letter-spacing: .02em; text-decoration: none; text-shadow: 0 0 14px rgba(255, 201, 74, .35);
+}
+.mmm-Marca:hover, .mmm-Marca:focus { color: var(--mmm-lampada); text-decoration: none; }
+.mmm-BotaoIcone {
+  display: inline-grid; flex: none; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--mmm-linha); border-radius: 12px;
+  background: var(--mmm-sala-2); color: var(--mmm-texto-2);
+}
+.mmm-BotaoIcone[aria-pressed="true"] { border-color: var(--mmm-manteiga); color: var(--mmm-manteiga); }
+.mmm-BotaoIcone.is-disabled { opacity: .35; cursor: not-allowed; }
+.mmm-BotaoIcone--perigo { border-color: rgba(240, 86, 106, .55); color: #ffc2ca; }
+.mmm-BotaoIcone .fa, .mmm-BotaoIcone .mmm-Icone { font-size: 18px; }
+.mmm-Mesa { position: relative; display: flex; flex: 1; flex-direction: column; min-height: 0; }
+.mmm-Tela { display: flex; flex: 1; flex-direction: column; min-height: 0; }
+.mmm-Jogo[data-tela="duelo"] .mmm-Tela, .mmm-Jogo[data-tela="roleta"] .mmm-Tela { overflow-y: auto; }
+.mmm-Tela-titulo {
+  margin: 0; color: var(--mmm-manteiga); font: 400 clamp(24px, 7vw, 34px)/1.05 var(--mmm-f-letreiro); text-wrap: balance;
+}
+.mmm-Tela-titulo:focus { outline: none; }
+.mmm-Pausa {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin: 0 var(--mmm-gutter) 10px; padding: 10px 12px;
+  border: 1px solid var(--mmm-linha); border-radius: 12px; background: var(--mmm-veludo); color: var(--mmm-texto);
+}
+.mmm-Pausa p { margin: 0; }
+
+/* botões da mesa: o principal (manteiga), o secundário de veludo, o de perigo e o link */
+.mmm-JogoBotao {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 9px 14px; border: 1px solid var(--mmm-linha);
+  border-radius: 12px; background: var(--mmm-veludo); color: var(--mmm-texto); font-size: 14px; font-weight: 700; line-height: 1.2; text-decoration: none;
+}
+a.mmm-JogoBotao:hover, a.mmm-JogoBotao:focus, .mmm-JogoBotao:hover { background: var(--mmm-veludo-2); color: var(--mmm-texto); text-decoration: none; }
+.mmm-JogoBotao--pri {
+  min-height: 50px; padding: 12px 22px; border: 0; border-radius: 999px; background: var(--mmm-manteiga); box-shadow: 0 8px 22px rgba(255, 201, 74, .28);
+  color: var(--mmm-tinta); font-size: 16px; font-weight: 800;
+}
+a.mmm-JogoBotao--pri:hover, a.mmm-JogoBotao--pri:focus, .mmm-JogoBotao--pri:hover { background: var(--mmm-lampada); color: var(--mmm-tinta); }
+.mmm-JogoBotao--perigo { border-color: rgba(240, 86, 106, .55); background: rgba(240, 86, 106, .1); color: #ffc2ca; }
+.mmm-JogoBotao--perigo:hover { background: rgba(240, 86, 106, .2); color: #ffd7dc; }
+.mmm-JogoBotao--link { border-color: transparent; background: none; color: var(--mmm-texto-2); }
+.mmm-JogoBotao--mini { padding: 6px 10px; font-size: 12.5px; }
+.mmm-JogoBotao.is-disabled { box-shadow: none; opacity: .45; cursor: not-allowed; }
+.mmm-JogoBotao .mmm-Icone { width: 18px; height: 18px; }
+.mmm-Jogo .mmm-Botoes { justify-content: center; }
+
+/* ---------- baralho ---------- */
+.mmm-Baralho { padding: 0 var(--mmm-gutter); }
+.mmm-JogoCab { display: flex; flex: none; align-items: center; gap: 10px; padding: 2px 0 10px; }
+.mmm-Progresso { flex: 1; height: 6px; overflow: hidden; border-radius: 999px; background: var(--mmm-sala-2); }
+.mmm-Progresso i { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--mmm-manteiga); transition: width .3s; }
+.mmm-Progresso-num { min-width: 44px; color: var(--mmm-texto-2); font: 500 13px/1 var(--mmm-f-dado); text-align: right; }
+.mmm-JogoCorpo { display: grid; flex: 1; grid-template-columns: minmax(0, 1fr); gap: 18px; min-height: 0; }
+.mmm-Baralho-mesa { position: relative; display: grid; place-items: center; min-height: 0; container-type: size; }
+.mmm-Pilha { position: relative; width: min(100cqw, 66.6cqh); max-height: 100%; aspect-ratio: 2 / 3; container-type: inline-size; }
+.mmm-Carta {
+  position: absolute; inset: 0; border-radius: 20px; transform-origin: 50% 90%; will-change: transform;
+  touch-action: none; user-select: none; -webkit-user-select: none;
+}
+.mmm-Carta[data-pos="1"] { transform: translateY(12px) scale(.95); filter: brightness(.7); }
+.mmm-Carta[data-pos="2"] { transform: translateY(24px) scale(.9); filter: brightness(.5); }
+.mmm-Carta-gira { position: absolute; inset: 0; border-radius: inherit; transform-style: preserve-3d; transition: transform .5s; }
+.mmm-Carta.is-virada .mmm-Carta-gira { transform: rotateY(180deg); }
+.mmm-Carta-face {
+  position: absolute; inset: 0; overflow: hidden; border-radius: inherit; background: var(--mmm-veludo);
+  box-shadow: 0 22px 44px var(--mmm-sombra), inset 0 0 0 1px rgba(255, 255, 255, .06);
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.mmm-Carta-poster { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.mmm-SemCapa {
+  display: grid; place-items: center; width: 100%; height: 100%; padding: 12px; background: var(--mmm-veludo); color: var(--mmm-texto-2);
+  font-weight: 800; text-align: center; overflow-wrap: anywhere;
+}
+.mmm-Carta-info {
+  position: absolute; right: 0; bottom: 0; left: 0; display: grid; gap: 7px; padding: 60px 14px 14px;
+  background: linear-gradient(to top, rgba(14, 8, 22, .96) 30%, rgba(14, 8, 22, 0));
+}
+.mmm-Carta-titulo { color: var(--mmm-texto); font: 800 clamp(16px, 7.2cqw, 26px)/1.1 var(--mmm-f-texto); overflow-wrap: anywhere; }
+.mmm-Carta-termina { color: var(--mmm-lampada); font: 500 12.5px/1.2 var(--mmm-f-dado); }
+.mmm-Carta-logos { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+.mmm-Carta-logos img { width: 26px; height: 26px; border-radius: 7px; }
+.mmm-Carta-mais { color: var(--mmm-texto-2); font: 500 12px/1 var(--mmm-f-dado); }
+.mmm-Carta-servico { padding: 6px 8px; border-radius: 7px; background: rgba(22, 15, 34, .85); color: var(--mmm-texto-2); font: 500 12px/1 var(--mmm-f-dado); }
+.mmm-Carta-virar {
+  position: absolute; top: 10px; right: 10px; z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
+  border: 0; border-radius: 50%; background: rgba(22, 15, 34, .78); color: var(--mmm-texto);
+}
+.mmm-Carta-virar[aria-pressed="true"] { color: var(--mmm-manteiga); }
+.mmm-Carta-verso { display: flex; flex-direction: column; gap: 10px; padding: 18px 16px 16px; overflow-y: auto; transform: rotateY(180deg); }
+.mmm-Carta-versoTitulo { margin: 0; padding-right: 48px; color: var(--mmm-texto); font-size: 19px; line-height: 1.2; }
+.mmm-Carta-sinopse { margin: 0; color: var(--mmm-texto-2); font-size: 14.5px; line-height: 1.5; }
+.mmm-Carta-sinopse.is-vazia { font-style: italic; }
+.mmm-Carta-trailer { justify-content: center; }
+.mmm-Carimbo {
+  position: absolute; top: 26px; z-index: 3; padding: 6px 12px; border: 3px solid currentColor; border-radius: 8px;
+  font: 400 26px/1 var(--mmm-f-letreiro); letter-spacing: .04em; opacity: 0; pointer-events: none;
+}
+.mmm-Carimbo--quero { left: 18px; color: var(--mmm-menta); transform: rotate(-12deg); }
+.mmm-Carimbo--nao { right: 18px; color: var(--mmm-texto-2); transform: rotate(12deg); }
+.mmm-Carimbo--super { top: 40%; left: 50%; color: var(--mmm-manteiga); transform: translateX(-50%) rotate(-6deg); }
+.mmm-Carimbo--veto { top: 40%; left: 50%; color: var(--mmm-cortina); transform: translateX(-50%) rotate(6deg); }
+
+.mmm-Acoes { display: flex; flex: none; align-items: flex-end; justify-content: center; gap: clamp(10px, 4vw, 22px); padding: 12px 0 calc(10px + env(safe-area-inset-bottom, 0px)); }
+.mmm-Acao { display: grid; justify-items: center; gap: 5px; min-width: 54px; padding: 0; border: 0; background: none; color: var(--mmm-texto-2); font-size: 12px; font-weight: 700; }
+.mmm-Acao-bola {
+  position: relative; display: grid; place-items: center; width: 54px; height: 54px; border: 2px solid var(--mmm-linha); border-radius: 50%;
+  background: var(--mmm-sala-2); box-shadow: 0 8px 18px var(--mmm-sombra); transition: transform .12s;
+}
+.mmm-Acao:active .mmm-Acao-bola { transform: scale(.92); }
+.mmm-Acao-bola .mmm-Icone { width: 26px; height: 26px; }
+.mmm-Acao.is-grande .mmm-Acao-bola { width: 66px; height: 66px; }
+.mmm-Acao.is-grande .mmm-Acao-bola .mmm-Icone { width: 30px; height: 30px; }
+.mmm-Acao--nao .mmm-Acao-bola { color: var(--mmm-texto); }
+.mmm-Acao--quero .mmm-Acao-bola { border-color: var(--mmm-menta); background: var(--mmm-menta); color: var(--mmm-tinta); }
+.mmm-Acao--super .mmm-Acao-bola { border-color: var(--mmm-manteiga); color: var(--mmm-manteiga); }
+.mmm-Acao--veto .mmm-Acao-bola { border-color: var(--mmm-cortina); color: var(--mmm-cortina); }
+.mmm-Acao-ficha {
+  position: absolute; top: -4px; right: -4px; display: grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px;
+  background: var(--mmm-papel); color: var(--mmm-tinta); font: 500 11px/1 var(--mmm-f-dado);
+}
+.mmm-Acao.is-disabled { opacity: .35; cursor: not-allowed; }
+.mmm-Jogo .mmm-Acao:focus-visible { outline: none; }
+.mmm-Acao:focus-visible .mmm-Acao-bola { outline: 3px solid var(--mmm-manteiga); outline-offset: 3px; }
+.mmm-Lateral { display: none; }
+
+/* ---------- espera ---------- */
+.mmm-Centro { display: grid; flex: 1; align-content: center; place-items: center; gap: 16px; padding: 24px var(--mmm-gutter) calc(24px + env(safe-area-inset-bottom, 0px)); text-align: center; }
+.mmm-Centro-texto { max-width: 36ch; margin: 0; color: var(--mmm-texto-2); line-height: 1.5; }
+.mmm-Esperando { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 18px; margin: 0; padding: 0; list-style: none; }
+.mmm-PessoaEspera { display: grid; justify-items: center; align-content: start; gap: 6px; min-width: 80px; max-width: 140px; color: var(--mmm-texto); font-size: 13px; font-weight: 700; }
+.mmm-PessoaEspera .mmm-Avatar { width: 54px; height: 54px; font-size: 20px; }
+.mmm-PessoaEspera-nome { overflow-wrap: anywhere; }
+.mmm-PessoaEspera-situacao { color: var(--mmm-texto-2); font-weight: 600; }
+.mmm-PessoaEspera.is-pronto .mmm-PessoaEspera-situacao { color: var(--mmm-menta); }
+.mmm-PessoaEspera.is-saiu { opacity: .6; }
+.mmm-PessoaEspera-sinal { color: #ffc2ca; font-size: 12px; font-weight: 600; }
+@media (prefers-reduced-motion: no-preference) {
+  .mmm-PessoaEspera.is-votando .mmm-Avatar { animation: mmm-pulso 1s ease-in-out infinite; }
+}
+@keyframes mmm-pulso { 50% { transform: scale(1.12); box-shadow: 0 0 0 6px rgba(255, 255, 255, .08); } }
+
+/* ---------- revelação ---------- */
+.mmm-Revelacao { display: grid; align-content: start; gap: 16px; padding: 0 var(--mmm-gutter); }
+.mmm-Revelacao-resumo { margin: 6px 0 0; color: var(--mmm-texto-2); }
+.mmm-Reveladas { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 12px 10px; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 700px) { .mmm-Reveladas { grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: 16px 14px; } }
+.mmm-Mini { position: relative; min-width: 0; perspective: 800px; }
+.mmm-Mini-gira { position: relative; aspect-ratio: 2 / 3; transform-style: preserve-3d; transition: transform .55s; }
+.mmm-Mini.is-aberta .mmm-Mini-gira { transform: rotateY(180deg); }
+.mmm-Mini-face { position: absolute; inset: 0; overflow: hidden; border-radius: 10px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.mmm-Mini-costas { border: 2px solid var(--mmm-linha); background: repeating-linear-gradient(45deg, rgba(255, 201, 74, .12) 0 6px, transparent 6px 12px), var(--mmm-veludo-2); }
+.mmm-Mini-frente { background: var(--mmm-veludo); transform: rotateY(180deg); }
+.mmm-Mini-poster { display: block; width: 100%; height: 100%; object-fit: cover; }
+.mmm-Mini .mmm-SemCapa { font-size: 12px; }
+.mmm-Mini.is-fora .mmm-Mini-poster { filter: grayscale(1) brightness(.45); }
+.mmm-Fita {
+  position: absolute; right: 6px; bottom: 6px; left: 6px; padding: 4px; border-radius: 6px; color: var(--mmm-tinta);
+  font: 400 11px/1 var(--mmm-f-letreiro); letter-spacing: .03em; text-align: center;
+}
+.mmm-Fita--match { background: var(--mmm-menta); }
+.mmm-Fita--super { background: var(--mmm-manteiga); }
+.mmm-Fita--veto { background: var(--mmm-cortina); }
+.mmm-Votos { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; min-height: 22px; margin-top: 6px; }
+.mmm-Voto { position: relative; }
+.mmm-Voto i { position: absolute; right: -4px; bottom: -3px; display: grid; place-items: center; width: 13px; height: 13px; border-radius: 50%; background: var(--mmm-sala); font-style: normal; }
+.mmm-Voto i .mmm-Icone { width: 9px; height: 9px; stroke-width: 3; }
+.mmm-Voto[data-v="quero"] i { color: var(--mmm-menta); }
+.mmm-Voto[data-v="super"] i { color: var(--mmm-manteiga); }
+.mmm-Voto[data-v="nao"] i { color: var(--mmm-texto-3); }
+.mmm-Voto[data-v="veto"] i { color: var(--mmm-cortina); }
+.mmm-Voto[data-v="nao"] .mmm-Avatar, .mmm-Voto[data-v="veto"] .mmm-Avatar { opacity: .45; }
+.mmm-RodapeJogo { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 0 8px; }
+.mmm-RodapeJogo.is-centro { justify-content: center; }
+.mmm-Revelacao .mmm-RodapeJogo {
+  position: sticky; bottom: 0; padding: 22px 0 calc(8px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, var(--mmm-sala) 72%, rgba(22, 15, 34, 0));
+}
+.mmm-Sintonia { margin: 0; color: var(--mmm-texto-2); font-weight: 600; }
+.mmm-Sintonia b { color: var(--mmm-texto); font: 500 18px/1 var(--mmm-f-dado); }
+
+/* ---------- final: duelos ---------- */
+.mmm-Final { padding: 0 var(--mmm-gutter); }
+.mmm-Final-cab { flex: none; padding: 4px 0 12px; text-align: center; }
+.mmm-Final-cab small { color: var(--mmm-texto-2); font: 500 12px/1.3 var(--mmm-f-dado); letter-spacing: .14em; text-transform: uppercase; }
+.mmm-Final-cab .mmm-Tela-titulo { margin-top: 6px; }
+.mmm-Duelo { display: grid; flex: 1; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; min-height: 240px; container-type: size; }
+.mmm-Lado { position: relative; display: grid; align-self: center; gap: 8px; min-width: 0; padding: 0; border: 0; background: none; color: var(--mmm-texto); text-align: left; }
+.mmm-Lado-capa {
+  position: relative; display: block; width: min(100%, calc((100cqh - 64px) * 2 / 3)); aspect-ratio: 2 / 3; margin: 0 auto; overflow: hidden; border-radius: 14px;
+  background: var(--mmm-veludo); box-shadow: 0 14px 30px var(--mmm-sombra); transition: transform .25s, box-shadow .25s, filter .25s;
+}
+.mmm-Lado-poster { display: block; width: 100%; height: 100%; object-fit: cover; }
+.mmm-Lado-texto { display: grid; gap: 4px; min-width: 0; }
+.mmm-Lado-nome { font-size: 14.5px; font-weight: 800; line-height: 1.2; text-align: center; overflow-wrap: anywhere; }
+.mmm-Lado-meta { color: var(--mmm-texto-2); font-size: 12px; text-align: center; }
+.mmm-Lado.is-escolhido .mmm-Lado-capa { box-shadow: 0 0 0 4px var(--mmm-manteiga), 0 14px 30px var(--mmm-sombra); transform: translateY(-4px); }
+.mmm-Lado.is-perdeu .mmm-Lado-capa { filter: grayscale(1) brightness(.5); transform: scale(.94); }
+.mmm-Lado.is-assistindo { cursor: default; }
+.mmm-Lado-votos { position: absolute; top: 8px; right: 0; left: 0; display: flex; justify-content: center; gap: 4px; }
+.mmm-Versus { justify-self: center; color: var(--mmm-cortina); font: 400 22px/1 var(--mmm-f-letreiro); }
+/* celular em pé: um pôster em cima do outro, com o nome ao lado */
+@media (max-aspect-ratio: 4 / 5) {
+  .mmm-Duelo { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr); gap: 6px; }
+  .mmm-Lado {
+    grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 14px; height: 100%; min-height: 0; padding: 6px;
+    border: 1px solid var(--mmm-linha); border-radius: 18px; background: var(--mmm-sala-2);
+  }
+  /* largura explícita: o Safari não deriva a coluna "auto" da altura + aspect-ratio */
+  .mmm-Lado-capa { width: min(46cqw, calc((50cqh - 34px) * 2 / 3)); margin: 0; }
+  .mmm-Lado-nome { font-size: 17px; text-align: left; }
+  .mmm-Lado-meta { font-size: 13px; text-align: left; }
+  .mmm-Lado.is-escolhido { border-color: var(--mmm-manteiga); }
+}
+.mmm-Final-bye { margin: 8px 0 0; color: var(--mmm-lampada); font-size: 13.5px; text-align: center; }
+.mmm-ChaveFinal { display: flex; flex: none; flex-wrap: wrap; justify-content: center; gap: 6px; padding: 12px 0 10px; }
+.mmm-ChaveFinal span { width: 30px; height: 6px; border-radius: 999px; background: var(--mmm-sala-2); }
+.mmm-ChaveFinal span.is-feito { background: var(--mmm-manteiga); }
+.mmm-ChaveFinal span.is-agora { background: var(--mmm-texto-2); }
+.mmm-Final-dica { display: grid; flex: none; justify-items: center; gap: 10px; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); color: var(--mmm-texto-2); text-align: center; }
+.mmm-Final-dica p { margin: 0; }
+.mmm-Final-dica .mmm-Esperando { gap: 10px 14px; }
+.mmm-Final-dica .mmm-PessoaEspera .mmm-Avatar { width: 34px; height: 34px; font-size: 14px; }
+
+/* ---------- final: roleta ---------- */
+.mmm-RoletaArea { display: grid; flex: 1; place-items: center; min-height: 260px; container-type: size; }
+.mmm-RoletaPalco { position: relative; width: min(96cqw, 96cqh); aspect-ratio: 1; }
+.mmm-RoletaCanvas { display: block; width: 100%; height: 100%; }
+.mmm-RoletaPonteiro {
+  position: absolute; top: -2%; left: 50%; z-index: 1; width: 9%; aspect-ratio: 36 / 46; transform: translateX(-50%);
+  filter: drop-shadow(0 0 10px rgba(255, 201, 74, .65)) drop-shadow(0 4px 6px var(--mmm-sombra));
+}
+.mmm-RoletaPonteiro::before { content: ""; position: absolute; inset: 0; background: linear-gradient(var(--mmm-lampada), var(--mmm-manteiga)); clip-path: polygon(50% 100%, 4% 36%, 4% 0, 96% 0, 96% 36%); }
+.mmm-RoletaPonteiro::after { content: ""; position: absolute; top: 18%; left: 50%; width: 22%; aspect-ratio: 1; border-radius: 50%; background: var(--mmm-sala); transform: translateX(-50%); }
+.mmm-Legenda { display: flex; flex: none; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 0; padding: 8px 0 0; list-style: none; }
+.mmm-Leg {
+  display: inline-flex; align-items: center; gap: 7px; max-width: 100%; padding: 3px 10px 3px 3px; border: 1px solid var(--mmm-linha); border-radius: 10px;
+  background: var(--mmm-sala-2); color: var(--mmm-texto); font-size: 12.5px; font-weight: 700;
+}
+.mmm-Leg-poster { flex: none; width: 20px; aspect-ratio: 2 / 3; border-radius: 4px; object-fit: cover; }
+.mmm-Leg .mmm-SemCapa { width: 20px; height: 30px; padding: 0; font-size: 0; }
+.mmm-Leg span { min-width: 0; max-width: 16ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mmm-Leg b { color: var(--mmm-manteiga); font: 500 12px/1 var(--mmm-f-dado); }
+.mmm-Leg.is-vence { border-color: var(--mmm-manteiga); background: rgba(255, 201, 74, .16); }
+
+/* ---------- ingresso ---------- */
+.mmm-TelaIngresso { padding: 0 var(--mmm-gutter) calc(24px + env(safe-area-inset-bottom, 0px)); }
+.mmm-Ingresso-wrap { display: grid; gap: 16px; width: 100%; max-width: 460px; margin: 0 auto; padding-top: 4px; }
+.mmm-Ingresso-cab { text-align: center; }
+.mmm-Ingresso-cab .mmm-Tela-titulo { font-size: clamp(30px, 9vw, 44px); line-height: 1; text-shadow: 0 0 22px rgba(255, 201, 74, .45); }
+.mmm-Ingresso-cab p { margin: 6px 0 0; color: var(--mmm-texto-2); }
+.mmm-Ingresso {
+  --mmm-furo: 14px;
+  position: relative; border-radius: 18px; background: var(--mmm-papel); color: var(--mmm-tinta);
+  -webkit-mask: radial-gradient(circle var(--mmm-furo) at 0 68%, transparent 98%, #000) left / 51% 100% no-repeat,
+                radial-gradient(circle var(--mmm-furo) at 100% 68%, transparent 98%, #000) right / 51% 100% no-repeat;
+  mask: radial-gradient(circle var(--mmm-furo) at 0 68%, transparent 98%, #000) left / 51% 100% no-repeat,
+        radial-gradient(circle var(--mmm-furo) at 100% 68%, transparent 98%, #000) right / 51% 100% no-repeat;
+  filter: drop-shadow(0 16px 30px var(--mmm-sombra));
+}
+.mmm-Ingresso-topo { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 14px; padding: 16px; }
+.mmm-Ingresso-poster { display: block; width: 96px; aspect-ratio: 2 / 3; border-radius: 8px; object-fit: cover; }
+.mmm-Ingresso .mmm-SemCapa { width: 96px; height: 144px; border-radius: 8px; background: #ecdcbc; color: var(--mmm-tinta); font-size: 12px; }
+.mmm-Ingresso-dados { min-width: 0; }
+.mmm-Ingresso-rotulo { color: #6f564c; font: 500 10.5px/1.3 var(--mmm-f-dado); letter-spacing: .16em; text-transform: uppercase; overflow-wrap: anywhere; }
+.mmm-Ingresso-titulo { margin: 6px 0 8px; font: 800 21px/1.12 var(--mmm-f-texto); overflow-wrap: anywhere; }
+.mmm-Ingresso .mmm-LinhaMeta { color: #5c4239; }
+.mmm-Ingresso .mmm-LinhaMeta-item + .mmm-LinhaMeta-item::before { color: #8a6f62; }
+.mmm-Ingresso-campos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 0 16px 16px; }
+.mmm-Ingresso-campos b { display: block; margin-top: 4px; font: 500 16px/1.15 var(--mmm-f-dado); }
+.mmm-Ingresso-picote { height: 0; margin: 0 22px; border-top: 2px dashed #cdb894; }
+.mmm-Ingresso-canhoto { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px 16px; }
+.mmm-Ingresso-canhoto .mmm-Avatares { margin-top: 6px; }
+.mmm-Ingresso-canhoto .mmm-Avatar { border-color: var(--mmm-papel); }
+.mmm-Ingresso-codigo { color: #6f564c; font: 500 12px/1 var(--mmm-f-dado); letter-spacing: .2em; white-space: nowrap; }
+.mmm-OndeBloco { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--mmm-linha); border-radius: var(--mmm-raio); background: var(--mmm-sala-2); }
+.mmm-OndeBloco h2, .mmm-Jogo .mmm-Justica h2 { margin: 0; color: var(--mmm-texto); font-size: 15px; font-weight: 800; }
+.mmm-OndeBloco > p { margin: 0; color: var(--mmm-texto-2); }
+.mmm-Servico.is-seu { color: var(--mmm-menta); }
+.mmm-OndeBloco .mmm-Botoes { justify-content: flex-start; }
+.mmm-OndeBloco .mmm-Botoes > * { flex: 1 1 140px; }
+.mmm-Assistir-espera { color: var(--mmm-texto-2); font-weight: 600; }
+.mmm-Assistir-sem { margin: 0; color: var(--mmm-texto-2); font-size: 14px; }
+.mmm-Jogo .mmm-Justica {
+  display: grid; gap: 8px; padding: 14px; border: 1px solid var(--mmm-linha); border-radius: var(--mmm-raio); background: linear-gradient(135deg, #2f2046, #241838);
+}
+.mmm-Jogo .mmm-Justica p { margin: 0; color: var(--mmm-texto-2); font-size: 14px; }
+.mmm-Jogo .mmm-Justica .mmm-CartaVez { color: var(--mmm-tinta); }
+.mmm-TelaIngresso .mmm-Botoes > * { flex: 1 1 140px; }
+.mmm-Confete { position: fixed; inset: 0; z-index: 30; width: 100%; height: 100%; pointer-events: none; }
+
+/* ---------- telas largas: tablet e iPad ---------- */
+@media (min-width: 900px) {
+  .mmm-JogoCorpo { grid-template-columns: minmax(0, 1fr) 300px; }
+  .mmm-Lateral { display: grid; align-content: start; gap: 14px; padding: 4px 0 12px; overflow-y: auto; }
+  .mmm-Painel { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--mmm-linha); border-radius: var(--mmm-raio); background: var(--mmm-sala-2); }
+  .mmm-Painel h2 { margin: 0; color: var(--mmm-texto); font-size: 14px; font-weight: 800; }
+  .mmm-Painel-lista { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .mmm-Painel-linha { display: flex; align-items: center; gap: 10px; color: var(--mmm-texto); font-weight: 600; }
+  .mmm-Painel-linha small { margin-left: auto; color: var(--mmm-texto-2); font: 500 12px/1 var(--mmm-f-dado); }
+  .mmm-Painel-linha--super .mmm-Icone { color: var(--mmm-manteiga); }
+  .mmm-Painel-linha--veto .mmm-Icone { color: var(--mmm-cortina); }
+  .mmm-Teclas { color: var(--mmm-texto-2); font-size: 13px; }
+  .mmm-Teclas kbd { padding: 3px 6px; border: 1px solid var(--mmm-linha); border-radius: 5px; color: var(--mmm-texto-2); font: 500 11px/1 var(--mmm-f-dado); }
+}
+@media (max-height: 640px) {
+  .mmm-Acao-bola { width: 48px; height: 48px; }
+  .mmm-Acao.is-grande .mmm-Acao-bola { width: 56px; height: 56px; }
+  .mmm-Acao-rotulo { display: none; }
+}
+/* celular deitado: carta à esquerda, botões em coluna à direita */
+@media (orientation: landscape) and (max-height: 520px) {
+  .mmm-Baralho { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto minmax(0, 1fr); column-gap: 18px; padding-bottom: 10px; }
+  .mmm-JogoCab { grid-column: 1 / -1; }
+  .mmm-Acoes { flex-direction: column; justify-content: center; gap: 10px; padding: 0 0 8px; }
+  .mmm-Acao-rotulo { display: none; }
+  .mmm-Final-cab { padding-bottom: 4px; }
+  .mmm-Final-cab .mmm-Tela-titulo { font-size: 22px; }
+}
+.mmm-Pergunta-nota { margin: 0; color: var(--mmm-texto-2); font-size: 13.5px; line-height: 1.45; }
+.mmm-Pergunta-nota[hidden] { display: none; }
+
+/* ---------- polimento ---------- */
+
+/* página 1: no celular o tema dá 8px de margem em cima ao campo de rótulo oculto que abre a linha da grade
+   (.container > .row > .col:first-child > .t-Form-fieldContainer--hiddenLabel); no cabeçalho da lista o seletor
+   Tudo/Filmes/Séries descia e o Editar, centrado na caixa com a margem, ficava 4px acima dele. Sem a margem, os dois têm
+   52px e a mesma linha (o seletor tem o mesmo peso do tema e vem depois) */
+.mmm-SecaoCab-acoes > .container > .row > .col > .t-Form-fieldContainer { margin: 0; margin-block-start: 0; }
+
+/* ---------- mensagens de página do APEX (sucesso e erro, em todas as páginas) no visual do aviso do app ---------- */
+/* o cartão creme do mmm-Toast, no alto e abaixo do cabeçalho, no meio da tela e na largura do texto (até 560px); o de
+   erro com a faixa e o ícone em coral. O fechar fica dentro do cartão, com 44px e o nome "Fechar" (mensagens do app) */
+/* o tema pinta cada tipo pela classe dele (.t-Alert--page.t-Alert--success, o verde; .t-Alert--warning, o amarelo): as
+   cores vão com o mesmo peso, depois dele */
+.t-Alert--page.t-Alert--success, .t-Alert--page.t-Alert--warning, .t-Alert--page.t-Alert--danger, .t-Alert--page.t-Alert--info {
+  --ut-alert-type-background-color: var(--mmm-papel);
+  --ut-alert-type-text-color: var(--mmm-tinta);
+  --ut-alert-type-border-width: 0px;
+  --ut-alert-type-border-radius: 12px;
+  --ut-alert-type-box-shadow: 0 10px 26px var(--mmm-sombra);
+  --ut-alert-icon-background-color: transparent;
+  --ut-alert-icon-text-color: inherit;
+}
+.t-Alert--page {
+  top: calc(var(--ut-header-height, 3rem) + 10px + env(safe-area-inset-top, 0px));
+  left: var(--mmm-gutter); right: var(--mmm-gutter); inset-inline: var(--mmm-gutter);
+  width: fit-content; min-width: 0; max-width: min(560px, calc(100% - 2 * var(--mmm-gutter))); margin-inline: auto;
+  font-family: var(--mmm-f-texto);
+}
+.t-Alert--page .t-Alert-wrap { align-items: center; gap: 4px; padding: 6px 6px 6px 16px; }
+.t-Alert--page .t-Alert-content { padding: 6px 0; }
+.t-Alert--page .t-Alert-title, .t-Alert--page .a-Notification-title {
+  margin: 0; color: var(--mmm-tinta); font: 700 15px/1.35 var(--mmm-f-texto); overflow-wrap: anywhere;
+}
+.t-Alert--page.t-Alert--success .t-Alert-title { padding: 0; }
+/* sucesso como o aviso do app, sem ícone */
+.t-Alert--page.t-Alert--success .t-Alert-icon { display: none; }
+.t-Alert--page.t-Alert--warning.t-Alert--warning, .t-Alert--page.t-Alert--danger.t-Alert--danger {
+  --ut-alert-type-box-shadow: inset 5px 0 0 var(--mmm-cortina), 0 10px 26px var(--mmm-sombra);
+}
+.t-Alert--page.t-Alert--warning .t-Alert-icon, .t-Alert--page.t-Alert--danger .t-Alert-icon { padding: 0 4px 0 0; color: #c8324a; }
+.t-Alert--page .t-Alert-icon .t-Icon { --ut-alert-icon-size: 22px; }
+.t-Alert--page .t-Alert-body { margin: 0; }
+.t-Alert--page .a-Notification { margin: 0; }
+.t-Alert--page .a-Notification-title { font-weight: 800; }
+.t-Alert--page .a-Notification-list { max-height: 9rem; margin-top: 2px; }
+.t-Alert--page .a-Notification-item { color: var(--mmm-tinta); font: 600 14px/1.4 var(--mmm-f-texto); }
+.t-Alert--page .a-Notification-item:only-child { padding-inline-start: 0; }
+.t-Alert--page .a-Notification-item:only-child::before { display: none; }
+.t-Alert--page .a-Notification-link { color: var(--mmm-tinta); text-decoration: underline; }
+/* o APEX põe o foco no erro (tabindex -1) para o leitor de tela ler; o cartão não é um controle, sem anel em volta */
+.t-Alert--page:focus { outline: none; }
+.t-Alert--page .t-Alert-buttons { align-self: flex-start; padding: 0; }
+.t-Alert--page .t-Button.t-Button--closeAlert {
+  position: static; display: inline-grid; place-items: center; width: 44px; height: 44px; min-width: 44px; padding: 0;
+  border: 0; border-radius: 50%; background: transparent; box-shadow: none; color: var(--mmm-tinta);
+}
+.t-Alert--page .t-Button.t-Button--closeAlert:hover { transform: none; background: rgba(43, 26, 40, .08); }
+.t-Alert--page .t-Button.t-Button--closeAlert:active { transform: scale(.92); }
+.t-Alert--page .t-Button.t-Button--closeAlert:focus-visible { outline: 3px solid var(--mmm-veludo-2); outline-offset: -3px; }
+.t-Alert--page .t-Button--closeAlert .t-Icon { font-size: 16px; }
+/* no celular o cartão fixo no alto cobria o voltar, o sobretítulo e o título da página (e o erro fica até a pessoa
+   fechar). O span de cada mensagem, que abre o conteúdo logo abaixo do título, vira a âncora: sem altura, grudando embaixo
+   do cabeçalho do app quando a página rola, e o cartão sai 10px abaixo dela. Com a página no alto o cartão fica depois do
+   título; no meio da página continua à vista, e nada pula quando ele aparece ou some */
+@media (max-width: 639.98px) {
+  .t-Body-mainContent > .apex-page-success, .t-Body-mainContent > .apex-page-error {
+    position: sticky; top: calc(var(--ut-header-height, 3rem) + env(safe-area-inset-top, 0px)); z-index: 1000;
+  }
+  .t-Body-mainContent > .apex-page-success .t-Alert--page, .t-Body-mainContent > .apex-page-error .t-Alert--page { position: absolute; top: 10px; }
+}
+/* erro no campo (validação), embaixo dele: o coral claro que o app já usa, legível no fundo escuro */
+.t-Form-error { color: #ffc2ca; font-size: 13px; font-weight: 600; line-height: 1.35; }
+.t-Form-fieldContainer .apex-page-item-error { border-color: var(--mmm-cortina); }
+
+/* ---------- menus do APEX (o da seta do grupo na página 1 e o da conta): o roxo do letreiro e a fonte do app ---------- */
+.a-Menu {
+  --a-menu-background-color: #2a1840;
+  --a-menu-text-color: var(--mmm-texto);
+  --a-menu-default-background-color: transparent;
+  --a-menu-default-text-color: var(--mmm-texto);
+  --a-menu-border-color: #5a3f80;
+  --a-menu-border-width: 1px;
+  --a-menu-border-radius: 14px;
+  --a-menu-shadow: 0 18px 40px var(--mmm-sombra);
+  /* o item com o foco (teclado, toque ou mouse): o veludo claro, e não o azul do tema */
+  --a-menu-focused-background-color: #4b3768;
+  --a-menu-focused-text-color: var(--mmm-texto);
+  --a-menu-sep-border-color: #5a3f80;
+  --a-menu-sep-spacing-y: 6px;
+  --a-menu-padding-y: 6px;
+  --a-menu-font-size: 15px;
+  --a-menu-line-height: 20px;
+  --a-menu-item-border-radius: 10px;
+  --a-menu-item-height: 44px;
+  font-family: var(--mmm-f-texto);
+}
+.a-Menu .a-Menu-content { background: linear-gradient(160deg, #3d2557 0%, #2a1840 100%); }
+.a-Menu .a-Menu-item { margin-inline: 6px; }
+.a-Menu .a-Menu-label { font-weight: 600; }
+.a-Menu .a-Menu-statusCol { color: var(--mmm-menu-icone, var(--mmm-texto-2)); }
+.a-Menu .a-Menu-item.is-focused { --mmm-menu-icone: var(--mmm-texto); }
+/* o item atual em amarelo, com o foco ou sem: o grupo aberto (o do check) e, no menu da conta, a página em que a pessoa
+   está (o mmm.js põe o número dela no data-mmm-pagina do body) */
+.a-Menu .a-Menu-item:has(.fa-check),
+body[data-mmm-pagina="9"] .t-NavigationBar-menu .a-Menu-item:has(a[href*="/perfil"]),
+body[data-mmm-pagina="4"] .t-NavigationBar-menu .a-Menu-item:has(a[href*="/membros"]),
+body[data-mmm-pagina="5"] .t-NavigationBar-menu .a-Menu-item:has(a[href*="/servicos"]),
+body[data-mmm-pagina="6"] .t-NavigationBar-menu .a-Menu-item:has(a[href*="/historico"]),
+body[data-mmm-pagina="2"] .t-NavigationBar-menu .a-Menu-item:has(a[href*="/grupos"]),
+body[data-mmm-pagina="7"] .t-NavigationBar-menu .a-Menu-item:has(a[href*="/sobre"]) {
+  --a-menu-default-text-color: var(--mmm-manteiga);
+  --a-menu-focused-text-color: var(--mmm-manteiga);
+  --mmm-menu-icone: var(--mmm-manteiga);
+}
+.a-Menu .a-Menu-item:has(.fa-check) .a-Menu-label { font-weight: 800; }
+
+/* ---------- página 9: avisos deste aparelho (o mmm.js põe data-avisos na região) ---------- */
+#avisos:not([data-avisos="ligado"]) .mmm-Avisos-ligado,
+#avisos:not([data-avisos="ligado"]) .js-mmm-desligar-avisos,
+#avisos[data-avisos="ligado"] .mmm-Avisos-desligado,
+#avisos[data-avisos="ligado"] .js-mmm-avisos { display: none; }
+.mmm-Avisos-selo {
+  display: inline-flex; align-items: center; gap: 7px; margin-right: 4px; padding: 3px 10px 3px 8px; border-radius: 999px;
+  background: rgba(79, 214, 166, .14); color: var(--mmm-menta); font-weight: 800; white-space: nowrap;
+}
+.mmm-Avisos-selo::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--mmm-menta); }
+
+/* ---------- gaveta Adicionar: a espera da busca, da pessoa e da saga (o TMDB respondendo) ---------- */
+/* com a altura da lista anterior guardada na região, a espera fica no alto e as linhas não esticam */
+.mmm-Espera { display: grid; gap: 10px; align-content: start; }
+.mmm-Espera-cab { display: flex; align-items: center; gap: 10px; min-height: 24px; }
+.mmm-Espera-frase { margin: 0; color: var(--mmm-texto-2); font-size: 14px; line-height: 1.35; overflow-wrap: anywhere; }
+.mmm-Espera-frase b { color: var(--mmm-texto); font-weight: 800; }
+/* três lâmpadas do letreiro acendendo em fila; paradas e acesas com prefers-reduced-motion */
+.mmm-Lampadas { display: inline-flex; flex: none; gap: 5px; }
+.mmm-Lampada { width: 8px; height: 8px; border-radius: 50%; background: var(--mmm-lampada); box-shadow: 0 0 8px rgba(255, 231, 163, .55); }
+.mmm-Espera-onde { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.mmm-Espera-grupo {
+  padding: 4px 10px; border: 1px solid var(--mmm-linha); border-radius: 999px; background: var(--mmm-sala);
+  color: var(--mmm-texto-2); font: 500 11.5px/1.3 var(--mmm-f-dado); letter-spacing: .06em; text-transform: uppercase;
+}
+/* linhas no formato do resultado (pôster de 44px e duas linhas de texto): a lista que chega ocupa o mesmo lugar */
+.mmm-Espera-linhas { display: grid; gap: 8px; }
+.mmm-Espera-linha { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; align-items: center; padding: 8px; border-radius: 12px; background: var(--mmm-sala); }
+.mmm-Espera-capa { display: block; width: 44px; aspect-ratio: 2 / 3; border-radius: 6px; background: var(--mmm-veludo); }
+.mmm-Espera-texto { display: grid; gap: 8px; }
+.mmm-Espera-texto > span { display: block; width: 40%; height: 10px; border-radius: 5px; background: var(--mmm-veludo); }
+.mmm-Espera-texto > span:first-child { width: 70%; height: 12px; }
+@media (prefers-reduced-motion: no-preference) {
+  .mmm-Lampada { opacity: .25; animation: mmm-lampada 1.2s ease-in-out infinite; }
+  .mmm-Lampada:nth-child(2) { animation-delay: .2s; }
+  .mmm-Lampada:nth-child(3) { animation-delay: .4s; }
+  .mmm-Espera-capa, .mmm-Espera-texto > span { animation: mmm-brilho 1.4s ease-in-out infinite; }
+}
+@keyframes mmm-lampada { 0%, 100% { opacity: .25; } 40% { opacity: 1; } }
+@keyframes mmm-brilho { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+/* 429 ou queda de rede: a falha no lugar dos resultados, com o Tentar de novo */
+.mmm-BuscaFalha { display: grid; gap: 8px; justify-items: start; padding: 4px 2px; }
+.mmm-BuscaFalha .mmm-Credito { color: var(--mmm-texto-2); font-size: 14px; }
+.mmm-Resultados .mmm-BuscaFalha .t-Button { min-height: 44px; }
+
+/* ---------- relógio por carta ---------- */
+
+/* página 20: a pergunta do relógio tem quatro opções; no celular estreito o texto quebra sem estourar a linha */
+#mmm-pergunta-relogio .mmm-Segmento-opcao { min-width: 0; padding-inline: 4px; overflow-wrap: anywhere; }
+
+/* baralho: o relógio da carta no cabeçalho, ao lado do progresso. O anel esvazia com o tempo (a fração vem do mmm-sessao.js
+   pela variável --mmm-relogio); nos últimos segundos fica coral, e a carta do topo ganha a borda coral */
+.mmm-Relogio {
+  --mmm-relogio: 1;
+  --mmm-relogio-cor: var(--mmm-manteiga);
+  display: inline-flex; flex: none; align-items: center; gap: 6px; min-width: 74px; height: 40px; padding: 0 12px 0 7px;
+  border: 1px solid var(--mmm-linha); border-radius: 999px; background: var(--mmm-sala-2); color: var(--mmm-texto);
+  font: 500 17px/1 var(--mmm-f-dado); font-variant-numeric: tabular-nums;
+}
+.mmm-Relogio-anel {
+  position: relative; flex: none; width: 24px; height: 24px; border-radius: 50%;
+  background: conic-gradient(var(--mmm-relogio-cor) calc(var(--mmm-relogio) * 1turn), var(--mmm-linha) 0);
+}
+.mmm-Relogio-anel::after { content: ""; position: absolute; inset: 4px; border-radius: 50%; background: var(--mmm-sala-2); }
+.mmm-Relogio-num { min-width: 2ch; text-align: right; }
+.mmm-Relogio-un { margin-left: -2px; color: var(--mmm-texto-2); font-size: 13px; }
+.mmm-Relogio-lendo { display: none; }
+/* sinopse aberta: o relógio parado (até 10 s por carta), tracejado e com o "lendo" */
+.mmm-Relogio.is-lendo { --mmm-relogio-cor: var(--mmm-texto-3); border-style: dashed; color: var(--mmm-texto-2); }
+.mmm-Relogio.is-lendo .mmm-Relogio-lendo { display: inline; color: var(--mmm-texto-2); font: 700 12px/1 var(--mmm-f-texto); }
+.mmm-Relogio.is-urgente { --mmm-relogio-cor: var(--mmm-cortina); border-color: var(--mmm-cortina); background: rgba(240, 86, 106, .16); color: #ffd7dc; }
+.mmm-Relogio.is-urgente .mmm-Relogio-anel::after { background: #3a1a35; }
+.mmm-Baralho.is-urgente .mmm-Carta[data-pos="0"] .mmm-Carta-face {
+  box-shadow: 0 0 0 3px var(--mmm-cortina), 0 22px 44px var(--mmm-sombra), inset 0 0 0 1px rgba(255, 255, 255, .06);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mmm-Relogio.is-urgente { animation: mmm-relogio-pulso 1s ease-in-out infinite; }
+  .mmm-Baralho.is-urgente .mmm-Carta[data-pos="0"] .mmm-Carta-face { animation: mmm-relogio-brilho 1s ease-in-out infinite; }
+}
+@keyframes mmm-relogio-pulso { 50% { transform: scale(1.08); } }
+@keyframes mmm-relogio-brilho {
+  50% { box-shadow: 0 0 0 6px rgba(240, 86, 106, .5), 0 22px 44px var(--mmm-sombra), inset 0 0 0 1px rgba(255, 255, 255, .06); }
+}
+/* celular deitado e telas baixas: o relógio cabe na linha do cabeçalho */
+@media (max-height: 640px) {
+  .mmm-Relogio { height: 36px; min-width: 66px; font-size: 15px; }
+}
+
+/* espera: há quanto tempo quem ainda vota abriu o baralho (conta no aparelho entre um estado e outro) */
+.mmm-PessoaEspera-tempo {
+  display: inline-flex; align-items: center; gap: 4px; color: var(--mmm-lampada); font: 500 13px/1 var(--mmm-f-dado);
+  font-variant-numeric: tabular-nums;
+}
+.mmm-PessoaEspera-tempo .mmm-Icone { width: 14px; height: 14px; }
+
+/* revelação: quanto tempo cada um levou no baralho e quem foi o mais rápido; aparece com as cartas já viradas */
+.mmm-Tempos {
+  display: grid; gap: 10px; padding: 14px; border: 1px solid var(--mmm-linha); border-radius: var(--mmm-raio); background: var(--mmm-sala-2);
+}
+.mmm-Revelacao.is-virando .mmm-Tempos { visibility: hidden; }
+.mmm-Tempos-titulo { margin: 0; color: var(--mmm-texto); font-size: 15px; font-weight: 800; }
+.mmm-Tempos-destaque { margin: 0; color: var(--mmm-texto); font-weight: 700; line-height: 1.45; }
+.mmm-Tempos-destaque .mmm-Icone { width: 18px; height: 18px; margin-right: 6px; color: var(--mmm-manteiga); vertical-align: -3px; }
+.mmm-Tempos-destaqueTempo { color: var(--mmm-manteiga); font: 500 16px/1 var(--mmm-f-dado); }
+.mmm-Tempos-lista { display: grid; gap: 8px; max-width: 440px; margin: 0; padding: 0; list-style: none; }
+.mmm-Tempos-item { display: flex; align-items: center; gap: 10px; min-height: 34px; color: var(--mmm-texto); font-weight: 600; }
+.mmm-Tempos-nome { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.mmm-Tempos-simulado { color: var(--mmm-texto-3); font-size: 12px; font-weight: 500; }
+.mmm-Tempos-tempo { flex: none; color: var(--mmm-texto-2); font: 500 15px/1 var(--mmm-f-dado); font-variant-numeric: tabular-nums; }
+.mmm-Tempos-item.is-rapido .mmm-Tempos-tempo { color: var(--mmm-manteiga); }
+.mmm-Tempos-item.is-rapido .mmm-Avatar { box-shadow: 0 0 0 2px var(--mmm-manteiga); }
+
+/* ---------- lembrar de mim: a caixa "Manter conectado neste aparelho" da entrada ---------- */
+/* logo abaixo do Continuar com o Google; a caixa no veludo do app e, marcada, na manteiga do letreiro */
+.mmm-Manter {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 44px; margin: -4px 0 -2px; padding: 0 6px; cursor: pointer;
+  color: var(--mmm-texto-2); font: 600 14px/1.3 var(--mmm-f-texto); -webkit-user-select: none; user-select: none;
+}
+.mmm-Manter input {
+  -webkit-appearance: none; appearance: none; flex: none; display: grid; place-content: center;
+  width: 22px; height: 22px; margin: 0; border: 2px solid var(--mmm-linha); border-radius: 7px;
+  background: var(--mmm-veludo); cursor: pointer;
+}
+.mmm-Manter input::before {
+  content: ""; width: 12px; height: 12px; transform: scale(0); transition: transform .12s ease-out;
+  background: var(--mmm-tinta); clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+.mmm-Manter input:checked { border-color: var(--mmm-manteiga); background: var(--mmm-manteiga); }
+.mmm-Manter input:checked::before { transform: scale(1); }
+.mmm-Manter input:focus-visible { outline: 3px solid var(--mmm-manteiga); outline-offset: 2px; }
+.mmm-Manter:hover input:not(:checked) { border-color: var(--mmm-texto-3); }
+.mmm-Manter input:checked + span { color: var(--mmm-texto); }
+@media (prefers-reduced-motion: reduce) {
+  .mmm-Manter input::before { transition: none; }
+}
+
+/* ==================== menus, confirmações e páginas de grupo ==================== */
+
+/* ---------- baralho: a pilha anda junto com a saída da carta ---------- */
+/* o votar marca a pilha (data-anda) quando a carta sai: as de trás sobem uma posição com a mesma curva, e o fim da
+   saída reaproveita as mesmas cartas (antes a de trás esperava e pulava para a frente) */
+.mmm-Carta { transition: transform .32s cubic-bezier(.3, .7, .4, 1), filter .32s, opacity .32s; }
+.mmm-Pilha[data-anda] .mmm-Carta[data-pos="1"] { transform: none; filter: none; }
+.mmm-Pilha[data-anda] .mmm-Carta[data-pos="2"] { transform: translateY(12px) scale(.95); filter: brightness(.7); }
+/* a que entra por baixo da pilha vem do fundo */
+.mmm-Carta[data-pos="3"] { transform: translateY(36px) scale(.85); filter: brightness(.4); opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .mmm-Carta { transition: none; }
+}
+
+/* ---------- confirmações e avisos do APEX (apex.message.confirm e alert, e a confirmação nativa dos botões) ----------
+   o cartão roxo dos menus, sem o ícone e sem a linha do meio; Cancelar no botão secundário do app e a ação em amarelo,
+   ou em coral quando apaga ou encerra (estilo danger) */
+.ui-dialog.ui-dialog--notification {
+  max-width: calc(100vw - 32px);
+  overflow: hidden;
+  border: 1px solid #5a3f80;
+  border-radius: 18px;
+  background: linear-gradient(160deg, #3d2557 0%, #2a1840 100%);
+  box-shadow: 0 24px 60px var(--mmm-sombra);
+  color: var(--mmm-texto);
+  font-family: var(--mmm-f-texto);
+}
+.ui-dialog--notification .ui-dialog-titlebar { display: none; }
+.ui-dialog--notification .ui-dialog-content { padding: 22px 22px 4px; background: none; color: inherit; }
+.ui-dialog--notification .a-AlertMessage { display: block; padding: 0; }
+.ui-dialog--notification .a-AlertMessage-icon { display: none; }
+.ui-dialog--notification .a-AlertMessage-body { padding: 0; }
+.ui-dialog--notification .a-AlertMessage-title:not(.u-vh) { margin: 0 0 6px; color: var(--mmm-texto); font-size: 17px; font-weight: 800; }
+.ui-dialog--notification .a-AlertMessage-details { color: var(--mmm-texto); font-size: 16px; line-height: 1.45; overflow-wrap: anywhere; }
+.ui-dialog.ui-dialog--notification .ui-dialog-buttonpane { margin: 0; padding: 16px 18px 18px; border: 0; background: none; }
+.ui-dialog--notification .ui-dialog-buttonpane .ui-dialog-buttonset { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; float: none; }
+.ui-dialog--notification .ui-dialog-buttonpane .ui-button { margin: 0; font-family: var(--mmm-f-texto); font-size: 15px; box-shadow: none; }
+.ui-dialog--notification .ui-dialog-buttonpane .ui-button.js-confirmBtn {
+  border: 1px solid transparent; background: var(--mmm-manteiga); color: var(--mmm-tinta); font-weight: 800;
+}
+.ui-dialog--notification .ui-dialog-buttonpane .ui-button.js-confirmBtn:hover { background: var(--mmm-lampada); }
+.ui-dialog--danger .ui-dialog-buttonpane .ui-button.js-confirmBtn { background: var(--mmm-cortina); color: #fff; }
+.ui-dialog--danger .ui-dialog-buttonpane .ui-button.js-confirmBtn:hover { background: #ff6f81; }
+.ui-dialog--notification .ui-dialog-buttonpane .ui-button:focus-visible { outline: 3px solid var(--mmm-lampada); outline-offset: 2px; }
+
+/* ---------- menu da conta: o grupo aberto como título, as páginas dele, uma linha e o resto ---------- */
+/* o primeiro item é o grupo aberto (vai à lista dele): em amarelo e mais forte, como um título */
+.t-NavigationBar-menu .a-Menu-item:has(a[href*="/inicio"]) {
+  --a-menu-default-text-color: var(--mmm-manteiga);
+  --a-menu-focused-text-color: var(--mmm-manteiga);
+  --mmm-menu-icone: var(--mmm-manteiga);
+}
+.t-NavigationBar-menu .a-Menu-item:has(a[href*="/inicio"]) .a-Menu-label { font-weight: 800; }
+/* menu de cada grupo em Meus grupos: o Excluir em coral */
+.mmm-GrupoMenu .a-Menu-item:has(.fa-trash-o) {
+  --a-menu-default-text-color: #ffc2ca;
+  --a-menu-focused-text-color: #ffd7dc;
+  --mmm-menu-icone: #ffc2ca;
+}
+
+/* ---------- Meus grupos (página 2) ---------- */
+.mmm-MeusGrupos { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.mmm-MeuGrupo {
+  display: flex; align-items: center; gap: 4px; padding: 4px 4px 4px 0;
+  border: 1px solid var(--mmm-linha); border-radius: var(--mmm-raio); background: var(--mmm-sala-2);
+}
+.mmm-MeuGrupo.is-ativo { border-color: rgba(255, 201, 74, .55); }
+.mmm-MeuGrupo-abrir {
+  display: flex; flex: 1; align-items: center; gap: 12px; min-width: 0; min-height: 56px; padding: 8px 4px 8px 12px;
+  border-radius: calc(var(--mmm-raio) - 2px); color: var(--mmm-texto); text-decoration: none;
+}
+.mmm-MeuGrupo-abrir:hover, .mmm-MeuGrupo-abrir:focus-visible { background: var(--mmm-veludo); color: var(--mmm-texto); text-decoration: none; }
+.mmm-MeuGrupo-abrir:focus-visible { outline: 3px solid var(--mmm-lampada); outline-offset: -3px; }
+.mmm-MeuGrupo .mmm-Avatar { width: 40px; height: 40px; font-size: 15px; }
+.mmm-MeuGrupo-texto { display: grid; flex: 1; min-width: 0; }
+.mmm-MeuGrupo-nome { overflow: hidden; font-size: 16px; font-weight: 800; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
+.mmm-MeuGrupo-sub { color: var(--mmm-texto-2); font-size: 13px; }
+.mmm-MeuGrupo-selo {
+  flex: none; padding: 4px 9px; border-radius: 999px; background: rgba(255, 201, 74, .14); color: var(--mmm-manteiga);
+  font: 500 11.5px/1.2 var(--mmm-f-dado); letter-spacing: .04em; white-space: nowrap;
+}
+/* tela estreita (celular, o Fold fechado): o selo desce para baixo do nome, que fica com a largura toda */
+@media (max-width: 480px) {
+  .mmm-MeuGrupo-abrir { display: grid; grid-template-columns: 40px minmax(0, 1fr); column-gap: 12px; row-gap: 4px; }
+  .mmm-MeuGrupo-abrir .mmm-Avatar { grid-row: 1 / span 2; align-self: center; }
+  .mmm-MeuGrupo-selo { grid-column: 2; justify-self: start; }
+}
+.mmm-MeuGrupo-mais {
+  display: grid; flex: none; place-items: center; width: 44px; height: 44px; padding: 0;
+  border: 0; border-radius: 12px; background: none; color: var(--mmm-texto-2); font-size: 18px; cursor: pointer;
+}
+.mmm-MeuGrupo-mais:hover, .mmm-MeuGrupo-mais:focus-visible { background: var(--mmm-veludo); color: var(--mmm-texto); }
+.mmm-MeuGrupo-mais:focus-visible { outline: 3px solid var(--mmm-lampada); outline-offset: -3px; }
+.mmm-MeusGrupos-vazio { margin: 0; color: var(--mmm-texto-2); font-size: 15px; line-height: 1.5; }
+/* o Tenho um código: o campo e o Entrar lado a lado quando cabem */
+.mmm-Codigo .t-Region-body { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; }
+.mmm-Codigo .t-Form-fieldContainer { flex: 1 1 220px; margin: 0; }
+.mmm-Codigo .t-Region-buttons { padding-top: 0; }
+/* a gaveta do Renomear: o campo de rótulo flutuante, como o do Novo grupo. O padding das gavetas de rótulo em cima
+   (mmm-Gaveta, a do Adicionar) tirava o espaço do rótulo e o texto subia para baixo dele: aqui fica o do tema */
+.mmm-Gaveta .t-Form-fieldContainer--floatingLabel .apex-item-text {
+  padding-block: var(--ut-field-fl-label-offset, calc(var(--a-field-input-padding-y, .25rem) - var(--a-field-input-border-width, 1px)))
+    calc(var(--a-field-input-padding-y, .25rem) - var(--a-field-input-border-width, 1px));
+  padding-inline: var(--ut-field-input-padding-x-offset, calc(var(--a-field-input-padding-x, .25rem) - var(--a-field-input-border-width, 1px)))
+    calc(var(--a-field-input-padding-x, .25rem) - var(--a-field-input-border-width, 1px));
+}
+
+/* ---------- gaveta lateral do APEX (a da antiga página 3, do Novo grupo) ---------- */
+.ui-dialog--apex.t-Drawer--pullOutEnd { border-left: 1px solid #5a3f80; background: var(--mmm-sala); }
+.ui-dialog--apex.t-Drawer--pullOutEnd .ui-dialog-titlebar { padding: 14px 14px 10px 18px; border: 0; background: var(--mmm-sala); }
+.ui-dialog--apex.t-Drawer--pullOutEnd .ui-dialog-title { color: var(--mmm-texto); font: 800 18px/1.3 var(--mmm-f-texto); }
+.ui-dialog--apex.t-Drawer--pullOutEnd .ui-dialog-titlebar-close {
+  width: 44px; height: 44px; border: 1px solid var(--mmm-linha); border-radius: 12px; background: var(--mmm-sala-2); color: var(--mmm-texto-2);
+}
+.t-Dialog-page.mmm-Pagina, .t-Dialog-page.mmm-Pagina .t-Dialog-body, .t-Dialog-page.mmm-Pagina .t-Dialog-footer { background: var(--mmm-sala); }
+.t-Dialog-page.mmm-Pagina .t-Dialog-footer { border-top: 1px solid var(--mmm-linha); }
+.t-Dialog-page.mmm-Pagina .t-ButtonRegion { background: none; }
+
+/* ---------- ajustes da ficha ---------- */
+/* Trailer e Ver no TMDB são links com altura mínima: sem flex o texto ficava no alto do botão */
+.mmm-Botoes > .t-Button { display: inline-flex; align-items: center; }
+
+/* ---------- ingresso rasgado e nota ---------- */
+/* o cartão da página 1: o ingresso de quem estava na plateia, depois do filme */
+.mmm-IngressoPendente {
+  display: grid; gap: 12px; margin-top: 16px; padding: 16px; border: 1px solid var(--mmm-linha); border-radius: 18px;
+  background: linear-gradient(160deg, var(--mmm-veludo), var(--mmm-sala-2));
+  transition: opacity .35s ease, transform .35s ease;
+}
+.mmm-IngressoPendente.is-saindo { opacity: 0; transform: translateY(-6px); }
+.mmm-IngressoPendente-chamada { margin: 0; color: var(--mmm-texto); font-weight: 600; line-height: 1.4; }
+.mmm-IngressoPendente-chamada b { color: var(--mmm-manteiga); }
+
+.mmm-IngressoPalco { position: relative; display: grid; gap: 14px; justify-items: center; }
+.mmm-IngressoPalco .mmm-Ingresso { width: 100%; }
+.mmm-IngressoPalco-rasgar { width: 100%; }
+.mmm-IngressoPalco .mmm-Ingresso-topo { grid-template-columns: 72px minmax(0, 1fr); gap: 12px; padding: 14px; }
+.mmm-IngressoPalco .mmm-Ingresso-poster, .mmm-IngressoPalco .mmm-SemCapa { width: 72px; height: auto; }
+.mmm-IngressoPalco .mmm-SemCapa { height: 108px; }
+.mmm-IngressoPalco .mmm-Ingresso-titulo { font-size: 18px; }
+.mmm-IngressoPalco .mmm-Ingresso-campos { padding: 0 14px 14px; }
+.mmm-IngressoPalco .mmm-Ingresso-campos b { font-size: 14px; }
+
+/* rasgado: sem o canhoto e com a borda de baixo picotada (os furos dos lados já foram com o canhoto) */
+.mmm-Ingresso.is-rasgado {
+  -webkit-mask: none; mask: none; border-radius: 18px 18px 0 0;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), 96% 100%, 92% calc(100% - 6px), 88% 100%, 84% calc(100% - 6px),
+    80% 100%, 76% calc(100% - 6px), 72% 100%, 68% calc(100% - 6px), 64% 100%, 60% calc(100% - 6px), 56% 100%,
+    52% calc(100% - 6px), 48% 100%, 44% calc(100% - 6px), 40% 100%, 36% calc(100% - 6px), 32% 100%, 28% calc(100% - 6px),
+    24% 100%, 20% calc(100% - 6px), 16% 100%, 12% calc(100% - 6px), 8% 100%, 4% calc(100% - 6px), 0 100%);
+  filter: none; padding-bottom: 6px;
+}
+.mmm-Ingresso.is-puxado { animation: mmm-puxao .22s ease-out; }
+@keyframes mmm-puxao { 40% { transform: translateY(-4px) rotate(-.6deg); } 100% { transform: none; } }
+
+/* o canhoto que se solta: uma cópia por cima, fora da máscara do ingresso */
+.mmm-CanhotoSolto {
+  position: absolute; z-index: 2; box-sizing: border-box; border-radius: 0 0 18px 18px; background: var(--mmm-papel); color: var(--mmm-tinta);
+  clip-path: polygon(0 6px, 4% 0, 8% 6px, 12% 0, 16% 6px, 20% 0, 24% 6px, 28% 0, 32% 6px, 36% 0, 40% 6px, 44% 0, 48% 6px, 52% 0,
+    56% 6px, 60% 0, 64% 6px, 68% 0, 72% 6px, 76% 0, 80% 6px, 84% 0, 88% 6px, 92% 0, 96% 6px, 100% 0, 100% 100%, 0 100%);
+  padding-top: 20px; transform-origin: 88% 0; pointer-events: none;
+  animation: mmm-rasgo .95s cubic-bezier(.32, .62, .42, 1) forwards;
+}
+@keyframes mmm-rasgo {
+  0% { transform: none; opacity: 1; }
+  18% { transform: translateY(6px) rotate(-3deg); opacity: 1; }
+  100% { transform: translate(-18px, 190px) rotate(-16deg); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mmm-CanhotoSolto { animation: mmm-some .25s linear forwards; }
+  .mmm-Ingresso.is-puxado { animation: none; }
+  .mmm-IngressoPendente { transition: none; }
+}
+@keyframes mmm-some { to { opacity: 0; } }
+
+/* a nota: de 1 a 5 pipocas */
+.mmm-NotaPainel {
+  display: grid; justify-items: center; gap: 10px; width: 100%; box-sizing: border-box; padding: 16px; border: 1px solid var(--mmm-linha);
+  border-radius: 16px; background: var(--mmm-veludo);
+}
+.mmm-NotaPainel-pergunta { margin: 0; color: var(--mmm-texto); font-size: 17px; font-weight: 800; text-align: center; }
+.mmm-NotaPainel-pipocas { display: flex; gap: 4px; }
+.mmm-NotaPipoca {
+  display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 0; border-radius: 12px; background: transparent;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.mmm-NotaPipoca:focus-visible { outline: 2px solid var(--mmm-manteiga); outline-offset: 2px; }
+.mmm-NotaPipoca-icone {
+  width: 34px; height: 32px; background: var(--mmm-linha); transition: background-color .15s ease, transform .15s ease;
+  -webkit-mask: url("pipoca.svg") center / contain no-repeat; mask: url("pipoca.svg") center / contain no-repeat;
+}
+.mmm-NotaPipoca:hover .mmm-NotaPipoca-icone { background: var(--mmm-texto-3); }
+.mmm-NotaPipoca.is-acesa .mmm-NotaPipoca-icone { background: var(--mmm-manteiga); transform: scale(1.08); }
+@media (prefers-reduced-motion: reduce) { .mmm-NotaPipoca-icone { transition: none; } .mmm-NotaPipoca.is-acesa .mmm-NotaPipoca-icone { transform: none; } }
+.mmm-NotaPainel-rotulo { min-height: 1.3em; margin: 0; color: var(--mmm-texto-2); font: 500 13px/1.3 var(--mmm-f-dado); }
+.mmm-NotaPainel .mmm-JogoBotao--pri { width: 100%; }
+.mmm-NotaPainel .mmm-JogoBotao--pri:disabled { opacity: .45; box-shadow: none; cursor: default; }
+
+/* página 6: para assistir e já assistiram, com as notas */
+.mmm-AssistidosNotas-titulo { margin: 4px 0 10px; color: var(--mmm-texto); font: 800 15px/1.3 var(--mmm-f-texto); }
+.mmm-AssistidosLista { display: grid; gap: 14px; margin: 0 0 18px; padding: 0; list-style: none; }
+.mmm-AssistidoItem { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.mmm-AssistidoItem-poster { display: block; width: 46px; height: 69px; border-radius: 6px; object-fit: cover; background: var(--mmm-veludo-2); }
+.mmm-AssistidoItem-texto { display: grid; gap: 2px; min-width: 0; }
+.mmm-AssistidoItem-texto b { color: var(--mmm-texto); overflow-wrap: anywhere; }
+.mmm-AssistidoItem-data { color: var(--mmm-texto-3); font: 500 11px/1.3 var(--mmm-f-dado); letter-spacing: .08em; text-transform: uppercase; }
+.mmm-AssistidoItem-texto > span:not(.mmm-AssistidoItem-data) { color: var(--mmm-texto-2); font-size: 13px; }
+.mmm-AssistidoItem .t-Button { min-height: 44px; white-space: nowrap; }
+.mmm-Notas { display: grid; gap: 6px; margin-top: 6px; }
+.mmm-Notas-media { display: inline-flex; align-items: center; gap: 8px; }
+.mmm-Notas-media b { color: var(--mmm-manteiga); font: 500 14px/1 var(--mmm-f-dado); }
+.mmm-Nota {
+  display: inline-block; width: 70px; height: 13px;
+  background: linear-gradient(to right, var(--mmm-manteiga) var(--mmm-cheio, 0%), var(--mmm-linha) 0);
+  -webkit-mask: url("pipoca.svg") 0 0 / 14px 13px repeat-x; mask: url("pipoca.svg") 0 0 / 14px 13px repeat-x;
+}
+.mmm-Nota--5 { --mmm-cheio: 10%; } .mmm-Nota--10 { --mmm-cheio: 20%; } .mmm-Nota--15 { --mmm-cheio: 30%; }
+.mmm-Nota--20 { --mmm-cheio: 40%; } .mmm-Nota--25 { --mmm-cheio: 50%; } .mmm-Nota--30 { --mmm-cheio: 60%; }
+.mmm-Nota--35 { --mmm-cheio: 70%; } .mmm-Nota--40 { --mmm-cheio: 80%; } .mmm-Nota--45 { --mmm-cheio: 90%; }
+.mmm-Nota--50 { --mmm-cheio: 100%; }
+.mmm-Notas-cada { display: flex; flex-wrap: wrap; gap: 6px 12px; margin: 0; padding: 0; list-style: none; color: var(--mmm-texto-2); font-size: 13px; }
+.mmm-Notas-cada li { display: inline-flex; align-items: center; gap: 6px; }
+.mmm-Notas-cada b { color: var(--mmm-texto); font-family: var(--mmm-f-dado); font-weight: 500; }
+.mmm-AssistidosNotas-vazio { margin: 8px 0; color: var(--mmm-texto-2); text-align: center; }
+@media (max-width: 420px) {
+  .mmm-AssistidoItem { grid-template-columns: 46px minmax(0, 1fr); align-items: start; }
+  .mmm-AssistidoItem > .t-Button { grid-column: 2; justify-self: start; }
+}
+
+/* a folha da página 6: o ingresso por cima da lista */
+.mmm-ComFolha { overflow: hidden; }
+.mmm-IngressoFolha {
+  position: fixed; inset: 0; z-index: 900; display: grid; place-items: center; box-sizing: border-box; padding: 16px; overflow-y: auto;
+  background: rgba(10, 6, 18, .8);
+}
+.mmm-IngressoFolha-caixa { display: grid; gap: 12px; width: 100%; max-width: 420px; }
+.mmm-IngressoFolha-fechar { justify-self: end; }
+
+/* a dica do ingresso da página 30 */
+.mmm-Ingresso-dica { margin: 0; color: var(--mmm-texto-2); font-size: 14px; text-align: center; }
+
+/* ---------- rasgar na página 30 e o foco do duelo no navegador ---------- */
+/* o ingresso do DEU MATCH entra no palco do rasgo com o tamanho de sempre (o compacto é o da lista e o da folha) */
+.mmm-TelaIngresso .mmm-IngressoPalco .mmm-Ingresso-topo { grid-template-columns: 96px minmax(0, 1fr); gap: 14px; padding: 16px; }
+.mmm-TelaIngresso .mmm-IngressoPalco .mmm-Ingresso-poster { width: 96px; }
+.mmm-TelaIngresso .mmm-IngressoPalco .mmm-SemCapa { width: 96px; height: 144px; }
+.mmm-TelaIngresso .mmm-IngressoPalco .mmm-Ingresso-titulo { font-size: 21px; }
+.mmm-TelaIngresso .mmm-IngressoPalco .mmm-Ingresso-campos { padding: 0 16px 16px; }
+.mmm-TelaIngresso .mmm-IngressoPalco .mmm-Ingresso-campos b { font-size: 16px; }
+
+/* duelo no navegador (fora do celular em pé): depois do voto o foco volta ao lado escolhido, e o anel em volta do botão
+   inteiro (pôster e nome) somava-se à moldura do escolhido. O anel passa a contornar só o pôster, e some no escolhido,
+   que já tem a moldura */
+@media (min-aspect-ratio: 4 / 5) {
+  .mmm-Jogo .mmm-Lado:focus-visible { outline: none; }
+  .mmm-Jogo .mmm-Lado:focus-visible .mmm-Lado-capa { outline: 3px solid var(--mmm-manteiga); outline-offset: 4px; }
+  .mmm-Jogo .mmm-Lado.is-escolhido:focus-visible .mmm-Lado-capa { outline: none; }
+}
+
+/* ---------- teclado do celular sobre a gaveta de baixo ---------- */
+/* com o teclado aberto o mmm.js põe a classe mmm-ComTeclado e as medidas (--mmm-teclado, a altura que ele cobre, e
+   --mmm-visivel, a que sobra): a gaveta sobe até a borda dele e, se não couber, rola por dentro com os botões ao alcance.
+   Sem teclado nada muda */
+.mmm-ComTeclado .ui-dialog.t-Drawer--pullOutBottom.mmm-Folha {
+  bottom: var(--mmm-teclado, 0px) !important;
+  max-block-size: calc(var(--mmm-visivel, 100dvh) - 8px) !important;
+  padding-bottom: 0;
+}
+.mmm-ComTeclado .ui-dialog.t-Drawer--pullOutBottom.mmm-Folha .ui-dialog-content {
+  height: auto !important;
+  /* 68 px: a barra do título da gaveta (14 + 44 do fechar + 10) */
+  max-block-size: calc(var(--mmm-visivel, 100dvh) - 8px - 68px) !important;
+  overflow-y: auto;
+}
