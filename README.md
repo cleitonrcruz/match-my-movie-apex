@@ -16,7 +16,7 @@
 
 ## O que faz
 
-<p align="justify">Cada grupo tem uma lista do que quer ver, com o catálogo do TMDB, os pôsteres, onde assistir no Brasil, quem sugeriu e quanta vontade a pessoa tem, de uma a três pipocas. Dá para adicionar pela busca, por filme, série, pessoa ou saga, ou colando a lista antiga do bloco de notas. Na Hora do Cinema, o grupo responde a abertura (filme ou série, tempo, clima, criança, aluguel e relógio por carta) e recebe um baralho de até 15 cartas, que cada um vota no próprio celular, com super e veto. A revelação é simultânea, o desempate sai por duelo ou roleta, e o vencedor vira um ingresso com o botão Assistir. Depois de assistir, alguém rasga o ingresso e cada um dá a sua nota. O que viram fora do jogo também entra: na ficha do título, o Já assistimos pede a nota e leva o título da lista para os assistidos. Os convites saem por link, com cartão de prévia no WhatsApp, ou por código; o push avisa quando a sessão começa e quem ainda falta votar; e o login é com a conta Google, com a opção de manter conectado no aparelho.</p>
+<p align="justify">Cada grupo tem uma lista do que quer ver, com o catálogo do TMDB, os pôsteres, onde assistir no Brasil, quem sugeriu e quanta vontade a pessoa tem, de uma a três pipocas. Dá para adicionar pela busca, por filme, série, pessoa ou saga, ou colando a lista antiga do bloco de notas. Na Hora do Cinema, o grupo responde a abertura (filme ou série, tempo, clima, criança, aluguel e relógio por carta) e recebe um baralho de até 15 cartas, que cada um vota no próprio celular, com super e veto. A revelação é simultânea, o desempate sai por duelo ou roleta, e o vencedor vira um ingresso com o botão Assistir. Depois de assistir, alguém rasga o ingresso e cada um dá a sua nota. O que viram fora do jogo também entra: na ficha do título, o Já assistimos pede a nota e leva o título da lista para os assistidos. No fim da ficha, o Você também pode gostar mostra as recomendações do TMDB que o grupo ainda não viu nem escolheu na Hora do Cinema; o toque abre a ficha do título, e o Adicionar à lista o põe na lista com a vontade de quem adicionou. Os convites saem por link, com cartão de prévia no WhatsApp, ou por código; o push avisa quando a sessão começa e quem ainda falta votar; e o login é com a conta Google, com a opção de manter conectado no aparelho.</p>
 
 ## Stack
 
@@ -52,8 +52,8 @@
 | `db/05_politicas.sql` | As políticas de VPD |
 | `db/05_util_http.sql` | `MMM_PKG_UTIL` e `MMM_PKG_HTTP`: configuração, push, log e as chamadas HTTP, com disjuntor e cota |
 | `db/06_grupo_demo.sql` | `MMM_PKG_GRUPO` e `MMM_PKG_DEMO`: grupos, convites e a demonstração |
-| `db/07_tmdb.sql` | `MMM_PKG_TMDB`: busca, detalhes, onde assistir, sagas e pessoas |
-| `db/08_sa_lista.sql` | `MMM_PKG_SA` e `MMM_PKG_LISTA`: o botão Assistir e a lista do grupo |
+| `db/07_tmdb.sql` | `MMM_PKG_TMDB`: busca, detalhes, onde assistir, sagas, pessoas e recomendações |
+| `db/08_sa_lista.sql` | `MMM_PKG_SA` e `MMM_PKG_LISTA`: o botão Assistir, a lista do grupo e a ficha do título |
 | `db/09_jogo.sql` | `MMM_PKG_JOGO`: abertura, baralho, votos, revelação, duelo, roleta e placar |
 | `db/10_retencao.sql` | `MMM_PKG_RETENCAO`: expurgos, a faxina da demo, a anonimização de contas e o alerta de renovação parada |
 | `db/11_lembrar.sql` | `MMM_PKG_LEMBRAR`: manter conectado no aparelho |

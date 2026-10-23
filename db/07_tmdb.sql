@@ -14,6 +14,8 @@ create or replace package MMM_PKG_TMDB authid definer as
 
     -- acha ou cria o titulo pelo id do TMDB; chamado pelo Adicionar (dentro da sessao APEX)
     function garantir_titulo(p_tipo in varchar2, p_id_tmdb in number) return number;
+    -- o mesmo, pela ficha aberta no Voce tambem pode gostar: o titulo novo e uma chamada por toque, no limite da sessao
+    function titulo_da_ficha(p_tipo in varchar2, p_id_tmdb in number) return number;
 
     function buscar_json(p_termo in varchar2) return clob;
     -- p_continuar = 'S': processa so as linhas que ficaram NAO_PROCESSADA no pedido anterior
@@ -44,6 +46,7 @@ create or replace package MMM_PKG_TMDB authid definer as
     function ler_pessoa(p_creditos in clob, p_hoje in date default null) return clob;
     function ler_saga(p_colecao in clob, p_hoje in date default null) return clob;
     function ler_extras(p_detalhes in clob, p_tipo in varchar2) return clob;
+    function ler_recomendacoes(p_detalhes in clob, p_tipo in varchar2) return varchar2;
 
     -- resposta da tela a partir do que o TMDB ja respondeu: guarda os titulos na colecao da sessao (o Adicionar cai nesses
     -- dados se os detalhes falharem) e marca o que esta na lista e o que o grupo ja viu
@@ -57,7 +60,7 @@ create or replace package MMM_PKG_TMDB authid definer as
     -- visitante da demo: as chamadas que o job vai fazer por ele (partes novas da saga) contam no teto da visita e da hora
     procedure reservar_demo(p_qtd in pls_integer);
 
-    -- avulso: elenco e saga dos titulos em uso que entraram antes da busca por pessoa e saga
+    -- avulso: elenco, saga e recomendacoes dos titulos em uso que ainda nao tem
     procedure job_repor_detalhes;
 
 end MMM_PKG_TMDB;
@@ -621,6 +624,54 @@ create or replace package body MMM_PKG_TMDB as
         return l_saida;
     end ler_extras;
 
+    -- Voce tambem pode gostar: as recomendacoes do TMDB (nao os "similar", que comparam so genero e palavra-chave e
+    -- trazem muito titulo sem relacao), na ordem dele, sem adulto e sem poster, ate 20 e ate caber na coluna
+    -- (4000 bytes; o grupo esconde os que ja viu na hora de mostrar). Nulo = a resposta nao trouxe o bloco (o valor de antes
+    -- fica); [] = trouxe e veio vazio
+    function ler_recomendacoes(p_detalhes in clob, p_tipo in varchar2) return varchar2 is
+        l_saida varchar2(4000);
+        l_veio  pls_integer;
+    begin
+        select count(*)
+          into l_veio
+          from dual
+         where json_exists(p_detalhes, '$.recommendations.results');
+        if l_veio = 0 then
+            return null;
+        end if;
+        select json_arrayagg(r.ITEM format json order by r.POS returning varchar2(4000))
+          into l_saida
+          from (select x.ITEM,
+                       x.POS,
+                       sum(lengthb(x.ITEM) + 1) over (order by x.POS) as ACUMULADO
+                  from (select json_object(
+                                   'tipo'       value case j.MIDIA when 'movie' then 'FILME' when 'tv' then 'SERIE' else p_tipo end,
+                                   'idTmdb'     value j.ID,
+                                   'titulo'     value substr(coalesce(j.TITLE, j.NAME), 1, 80),
+                                   'ano'        value to_number(substr(coalesce(j.LANCAMENTO, j.ESTREIA), 1, 4) default null on conversion error),
+                                   'posterPath' value j.POSTER
+                                   absent on null returning varchar2(400)) as ITEM,
+                               row_number() over (order by j.N) as POS
+                          from json_table(p_detalhes, '$.recommendations.results[*]' columns (
+                                   N          for ordinality,
+                                   ID         number        path '$.id',
+                                   MIDIA      varchar2(10)  path '$.media_type',
+                                   TITLE      varchar2(400) path '$.title',
+                                   NAME       varchar2(400) path '$.name',
+                                   LANCAMENTO varchar2(10)  path '$.release_date',
+                                   ESTREIA    varchar2(10)  path '$.first_air_date',
+                                   POSTER     varchar2(200) path '$.poster_path',
+                                   ADULTO     varchar2(5)   path '$.adult')) j
+                         where j.ID is not null
+                           and coalesce(j.TITLE, j.NAME) is not null
+                           and regexp_like(j.POSTER, c_caminho_imagem)
+                           and nvl(j.ADULTO, 'false') <> 'true'
+                           and nvl(j.MIDIA, 'movie') in ('movie', 'tv')) x
+                 where x.POS <= 20) r
+         where r.ACUMULADO <= 3900;
+        return nvl(l_saida, '[]');
+    end ler_recomendacoes;
+
     procedure gravar_generos(p_id_titulo in number, p_tipo in varchar2, p_corpo in clob, p_agora in timestamp with time zone) is
     begin
         merge into MMM_GENERO g
@@ -727,8 +778,8 @@ create or replace package body MMM_PKG_TMDB as
 
     function baixar_detalhes(p_tipo in varchar2, p_id_tmdb in number, p_interativo in boolean, p_id_titulo in number) return MMM_PKG_HTTP.t_resposta is
     begin
-        -- uma chamada traz detalhes, trailer, classificacao, onde assistir, traducoes (para a sinopse vazia) e o elenco
-        -- (as pessoas da ficha; na serie o aggregate_credits, que soma as temporadas)
+        -- uma chamada traz detalhes, trailer, classificacao, onde assistir, traducoes (para a sinopse vazia), o elenco
+        -- (as pessoas da ficha; na serie o aggregate_credits, que soma as temporadas) e as recomendacoes (a primeira pagina)
         -- na tela, uma tentativa e sem espera: o pedido segura uma das poucas vagas HTTP da ATP; quem repete e o job
         return MMM_PKG_HTTP.chamar(
                    p_sistema    => 'TMDB',
@@ -738,8 +789,8 @@ create or replace package body MMM_PKG_TMDB as
                                    || '&include_video_language=' || MMM_PKG_HTTP.escapar('pt,en')
                                    || '&append_to_response=' || MMM_PKG_HTTP.escapar(
                                           case p_tipo
-                                              when 'FILME' then 'videos,release_dates,watch/providers,translations,credits'
-                                              else 'videos,content_ratings,watch/providers,translations,aggregate_credits'
+                                              when 'FILME' then 'videos,release_dates,watch/providers,translations,credits,recommendations'
+                                              else 'videos,content_ratings,watch/providers,translations,aggregate_credits,recommendations'
                                           end),
                    p_timeout    => case when p_interativo then 5 else 15 end,
                    p_tentativas => case when p_interativo then 1 else 2 end,
@@ -776,6 +827,7 @@ create or replace package body MMM_PKG_TMDB as
         l_id_saga     number;
         l_saga_nome   varchar2(400);
         l_pessoas     varchar2(4000);
+        l_recomendacoes varchar2(4000);
     begin
         select coalesce(jt.TITLE, jt.NAME),
                coalesce(jt.ORIGINAL_TITLE, jt.ORIGINAL_NAME),
@@ -923,6 +975,7 @@ create or replace package body MMM_PKG_TMDB as
                nvl(json_query(l_extras, '$.pessoas' returning varchar2(4000)), '[]')
           into l_id_saga, l_saga_nome, l_pessoas
           from dual;
+        l_recomendacoes := ler_recomendacoes(p_corpo, p_tipo);
 
         update MMM_TITULO
            set SITUACAO           = 'OK',
@@ -945,6 +998,7 @@ create or replace package body MMM_PKG_TMDB as
                ID_SAGA_TMDB       = l_id_saga,
                SAGA_NOME          = substr(l_saga_nome, 1, 300),
                PESSOAS_JSON       = l_pessoas,
+               RECOMENDACOES_JSON = nvl(l_recomendacoes, RECOMENDACOES_JSON),
                SINCRONIZADO_EM    = l_agora,
                FALHAS_SEGUIDAS    = 0,
                ULTIMA_FALHA_EM    = null,
@@ -1292,6 +1346,24 @@ create or replace package body MMM_PKG_TMDB as
         end if;
         return l_id;
     end garantir_titulo;
+
+    function titulo_da_ficha(p_tipo in varchar2, p_id_tmdb in number) return number is
+        l_situacao MMM_TITULO.SITUACAO%type;
+    begin
+        if p_tipo is null or p_tipo not in ('FILME', 'SERIE') or p_id_tmdb is null then
+            raise_application_error(-20610, 'Título inválido.');
+        end if;
+        -- so o titulo que vai ao TMDB conta no limite da sessao: os que o catalogo ja tem abrem sem rede
+        select max(SITUACAO)
+          into l_situacao
+          from MMM_TITULO
+         where TIPO    = p_tipo
+           and ID_TMDB = p_id_tmdb;
+        if nvl(l_situacao, 'PENDENTE') = 'PENDENTE' then
+            conferir_ritmo;
+        end if;
+        return garantir_titulo(p_tipo, p_id_tmdb);
+    end titulo_da_ficha;
 
     function titulo_da_sessao(p_tipo in varchar2, p_id_tmdb in number) return number is
         l_id MMM_TITULO.ID_TITULO%type;
@@ -2010,12 +2082,13 @@ create or replace package body MMM_PKG_TMDB as
     begin
         -- "em uso" sai de view com VPD: dentro do APEX so renovaria o grupo ativo
         MMM_PKG_UTIL.exigir_job_do_dono;
-        -- quem ainda nao foi lido com o elenco (PESSOAS_JSON nulo), pela mesma rotina do job da noite: um de cada vez,
-        -- devagar, parando no circuito ou na credencial. Cada renovacao reinicia o prazo de 6 meses do TMDB
+        -- quem ainda nao foi lido com o elenco ou com as recomendacoes (PESSOAS_JSON ou RECOMENDACOES_JSON nulo), pela mesma
+        -- rotina do job da noite: um de cada vez, devagar, parando no circuito ou na credencial. Cada renovacao reinicia o
+        -- prazo de 6 meses do TMDB
         for t in (select t.ID_TITULO
                     from MMM_TITULO t
                    where t.SITUACAO     = 'OK'
-                     and t.PESSOAS_JSON is null
+                     and (t.PESSOAS_JSON is null or t.RECOMENDACOES_JSON is null)
                      and exists (select 1 from MMM_V_TITULO_EM_USO u where u.ID_TITULO = t.ID_TITULO)
                    order by t.SINCRONIZADO_EM
                    fetch first 1000 rows only) loop

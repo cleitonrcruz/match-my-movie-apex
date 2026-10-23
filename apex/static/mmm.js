@@ -234,15 +234,25 @@
     window.history.pushState({ mmmGaveta: id }, "");
   };
 
+  // entradas que a gaveta pôs no histórico: uma, e na ficha mais uma por título aberto pelo Você também pode gostar
+  function entradasDaGaveta(id) {
+    var s = window.history.state;
+    if (!s || s.mmmGaveta !== id) { return 0; }
+    return 1 + (id === "mmm-ficha" ? Number(s.mmmFicha) || 0 : 0);
+  }
+
   mmm.fecharGaveta = function (id) {
-    if (window.history.state && window.history.state.mmmGaveta === id) {
-      window.history.back();
+    var n = entradasDaGaveta(id);
+    if (n) {
+      window.history.go(-n);
     } else {
       apex.theme.closeRegion(id);
     }
   };
 
   window.addEventListener("popstate", function () {
+    // dentro da ficha, o Voltar leva ao título de antes em vez de fechar a gaveta
+    if (fichaVoltou(window.history.state)) { return; }
     document.querySelectorAll(".mmm-Gaveta").forEach(function (g) {
       if (g.id) { apex.theme.closeRegion(g.id); }
     });
@@ -318,6 +328,17 @@
     if (!corpo) { return; }
     corpo.textContent = "";
 
+    // título aberto pelo Você também pode gostar: o caminho de volta fica à vista (o app instalado no iPhone não tem Voltar)
+    var anterior = posFicha > 0 ? fichas[posFicha - 1] : null;
+    if (anterior) {
+      var volta = el("button", "mmm-FichaVoltar js-mmm-ficha-voltar");
+      volta.type = "button";
+      volta.setAttribute("aria-label", "Voltar para " + anterior.titulo);
+      volta.appendChild(mmm.seta("‹"));
+      volta.appendChild(el("span", null, anterior.titulo));
+      corpo.appendChild(volta);
+    }
+
     var fundo = el("div", "mmm-Ficha-fundo");
     fundo.appendChild(mmm.imagem(t.fundo, "fundo", "(min-width: 560px) 560px, 100vw", ""));
     corpo.appendChild(fundo);
@@ -388,6 +409,11 @@
     botoes.appendChild(linkExterno("t-Button", t.tmdbUrl, "Ver no TMDB"));
     corpo.appendChild(botoes);
 
+    // fora da lista (aberto pelo Você também pode gostar): Adicionar à lista, só na página 1, onde está o MMM_ADICIONAR
+    if (!t.item && t.idTmdb && String(apex.env.APP_PAGE_ID) === "1") {
+      corpo.appendChild(blocoAdicionar(t, anterior));
+    }
+
     // Já assistimos: só na página 1, onde está a lista e o mmm-ingresso.js traz o painel das pipocas
     if (t.item && String(apex.env.APP_PAGE_ID) === "1" && mmm.ingresso && mmm.ingresso.painelNota) {
       var vimos = el("button", "t-Button mmm-Botao--largo js-mmm-assistimos", "Já assistimos");
@@ -412,13 +438,165 @@
       vez.dataset.tituloId = String(t.id);
       corpo.appendChild(vez);
     }
+
+    var recomendadas = fileiraRecomendadas(t);
+    if (recomendadas) { corpo.appendChild(recomendadas); }
+  }
+
+  // a mesma pergunta da gaveta Adicionar, com as pipocas; a origem conta de qual título veio a ideia
+  var VONTADES = [[1, "Tanto faz"], [2, "Quero"], [3, "Quero muito"]];
+  function blocoAdicionar(t, anterior) {
+    var bloco = el("fieldset", "mmm-FichaAdd");
+    bloco.appendChild(el("legend", null, "Quanta vontade?"));
+    var opcoes = el("div", "mmm-FichaAdd-opcoes");
+    VONTADES.forEach(function (v) {
+      var r = document.createElement("input");
+      r.type = "radio";
+      r.name = "mmm-ficha-vontade";
+      r.id = "mmm-ficha-vontade-" + v[0];
+      r.value = String(v[0]);
+      r.checked = v[0] === 2;
+      var rotulo = el("label");
+      rotulo.htmlFor = r.id;
+      var pipocas = el("span", "mmm-Pipocas mmm-Pipocas--" + v[0]);
+      pipocas.setAttribute("aria-hidden", "true");
+      rotulo.appendChild(pipocas);
+      rotulo.appendChild(document.createTextNode(v[1]));
+      opcoes.appendChild(r);
+      opcoes.appendChild(rotulo);
+    });
+    bloco.appendChild(opcoes);
+    var b = el("button", "mmm-JogoBotao mmm-JogoBotao--pri js-mmm-ficha-adicionar", "Adicionar à lista");
+    b.type = "button";
+    b.dataset.tipo = t.tipo;
+    b.dataset.tmdb = String(t.idTmdb);
+    b.dataset.nome = t.titulo;
+    if (anterior) { b.dataset.origem = "Parecido com " + anterior.titulo; }
+    bloco.appendChild(b);
+    return bloco;
+  }
+
+  // Você também pode gostar: as recomendações do TMDB que o grupo ainda não viu, numa fileira que rola de lado; o toque
+  // abre a ficha do título (o que o catálogo ainda não tem vem do TMDB na hora)
+  function fileiraRecomendadas(t) {
+    var lista = (t.recomendacoes || []).filter(function (r) {
+      return r && r.idTmdb && r.titulo && (r.tipo === "FILME" || r.tipo === "SERIE");
+    });
+    if (!lista.length) { return null; }
+    var bloco = el("section", "mmm-FichaRecom");
+    var titulo = el("h3", null, "Você também pode gostar");
+    titulo.id = "mmm-ficha-recom";
+    bloco.appendChild(titulo);
+    var fila = el("ul", "mmm-FichaRecom-fila");
+    // o Safari tira a semântica de lista de quem não tem marcador
+    fila.setAttribute("role", "list");
+    fila.setAttribute("aria-labelledby", titulo.id);
+    lista.forEach(function (r) {
+      var item = el("li", "mmm-FichaRecom-item");
+      var b = el("button", "mmm-Poster-abrir js-mmm-recomendado");
+      b.type = "button";
+      b.dataset.tipo = r.tipo;
+      b.dataset.tmdb = String(r.idTmdb);
+      b.dataset.chave = r.tipo + ":" + r.idTmdb;
+      b.setAttribute("aria-label", r.titulo + (r.ano ? ", " + r.ano : "") + (r.naLista === true ? ", na lista" : ""));
+      var capa = el("span", "mmm-Poster-capa");
+      capa.appendChild(mmm.imagem(r.posterPath, "poster", "104px", ""));
+      if (r.naLista === true) { capa.appendChild(el("span", "mmm-FichaRecom-selo", "Na lista")); }
+      b.appendChild(capa);
+      b.appendChild(el("span", "mmm-Poster-titulo", r.titulo));
+      if (r.ano) { b.appendChild(el("span", "mmm-Poster-meta", String(r.ano))); }
+      item.appendChild(b);
+      fila.appendChild(item);
+    });
+    bloco.appendChild(fila);
+    return bloco;
+  }
+
+  // os títulos da ficha aberta: o da lista e os que vieram pelo Você também pode gostar, cada um com uma entrada no
+  // histórico ({ mmmGaveta: "mmm-ficha", mmmFicha: posição }). O Voltar (do Android ou o do topo) volta um; fechar a gaveta
+  // tira todas
+  var fichas = [];          // [{ id, titulo, voltarPara }]; voltarPara: o pôster que abriu o título seguinte
+  var posFicha = 0;
+  var fichaAberta = false;
+  var pedidoFicha = 0;      // resposta atrasada não desenha por cima da ficha seguinte
+  var abrindoRecomendada = false;
+
+  // quem rola a gaveta é uma caixa do tema por dentro dela: o primeiro ancestral que rola de verdade
+  function rolagemDe(no) {
+    for (var n = no && no.parentElement; n && n !== document.body; n = n.parentElement) {
+      var o = window.getComputedStyle(n).overflowY;
+      if ((o === "auto" || o === "scroll") && n.scrollHeight > n.clientHeight) { return n; }
+    }
+    return null;
+  }
+
+  // título novo na ficha: do topo, com o foco no nome; na volta, o foco no pôster que tinha aberto o seguinte
+  function mostrarFicha(t, focoEm) {
+    desenharFicha(t);
+    var corpo = document.getElementById("mmm-ficha-corpo");
+    var rolagem = rolagemDe(corpo);
+    var poster = focoEm && corpo ? corpo.querySelector('.js-mmm-recomendado[data-chave="' + CSS.escape(focoEm) + '"]') : null;
+    if (poster) {
+      poster.focus();
+      return;
+    }
+    if (rolagem) { rolagem.scrollTop = 0; }
+    var titulo = document.getElementById("mmm-ficha-titulo");
+    if (titulo) { titulo.focus({ preventScroll: true }); }
+  }
+
+  function buscarFicha(dados, depois) {
+    var pedido = ++pedidoFicha;
+    return mmm.chamar("MMM_FICHA", dados).then(function (r) {
+      if (pedido === pedidoFicha) { depois(r.titulo); }
+    }, mmm.erro);
+  }
+
+  // popstate: o histórico voltou (ou avançou) para outro título da ficha aberta
+  function fichaVoltou(estado) {
+    if (!fichaAberta || !estado || estado.mmmGaveta !== "mmm-ficha") { return false; }
+    var pos = Number(estado.mmmFicha) || 0;
+    if (pos === posFicha || !fichas[pos]) { return true; }
+    var voltando = pos < posFicha;
+    posFicha = pos;
+    buscarFicha({ x01: String(fichas[pos].id) }, function (t) {
+      if (fichaAberta) { mostrarFicha(t, voltando ? fichas[pos].voltarPara : null); }
+    });
+    return true;
+  }
+
+  function abrirRecomendada(b) {
+    if (abrindoRecomendada) { return; }
+    abrindoRecomendada = true;
+    b.setAttribute("aria-busy", "true");
+    var espera = apex.util.showSpinner($(b.querySelector(".mmm-Poster-capa")));
+    var daqui = posFicha;
+    buscarFicha({ x02: b.dataset.tipo, x03: b.dataset.tmdb }, function (t) {
+      if (!fichaAberta || posFicha !== daqui) { return; }
+      fichas = fichas.slice(0, daqui + 1);
+      fichas[daqui].voltarPara = b.dataset.chave;
+      fichas.push({ id: t.id, titulo: t.titulo });
+      posFicha = fichas.length - 1;
+      window.history.pushState({ mmmGaveta: "mmm-ficha", mmmFicha: posFicha }, "");
+      mostrarFicha(t);
+    }).then(fim, fim);
+    function fim() {
+      abrindoRecomendada = false;
+      espera.remove();
+      b.removeAttribute("aria-busy");
+    }
   }
 
   mmm.ficha = {
     abrir: function (tituloId) {
+      var pedido = ++pedidoFicha;
       return mmm.chamar("MMM_FICHA", { x01: String(tituloId) }).then(function (r) {
+        if (pedido !== pedidoFicha) { return; }
+        fichas = [{ id: r.titulo.id, titulo: r.titulo.titulo }];
+        posFicha = 0;
         desenharFicha(r.titulo);
         mmm.abrirGaveta("mmm-ficha");
+        fichaAberta = true;
       }, mmm.erro);
     }
   };
@@ -619,18 +797,51 @@
       var d = this.dataset;
       var alvo = { tipo: d.tipo, id: d.id, nome: d.nome, fotoPath: d.foto || null, area: d.area || null };
       if (!mmm.explorar) { return; }
-      // a ficha fecha antes: a entrada dela sai do histórico e o Voltar do Android passa a fechar a gaveta Adicionar
-      if (window.history.state && window.history.state.mmmGaveta === "mmm-ficha") {
+      // a ficha fecha antes: as entradas dela saem do histórico e o Voltar do Android passa a fechar a gaveta Adicionar
+      var entradas = entradasDaGaveta("mmm-ficha");
+      if (entradas) {
         var depois = function () {
           window.removeEventListener("popstate", depois);
           window.setTimeout(function () { mmm.explorar.abrir(alvo); }, 0);
         };
         window.addEventListener("popstate", depois);
-        window.history.back();
+        window.history.go(-entradas);
       } else {
         apex.theme.closeRegion("mmm-ficha");
         mmm.explorar.abrir(alvo);
       }
+    })
+    .on("click.mmm", ".js-mmm-recomendado", function () {
+      abrirRecomendada(this);
+    })
+    .on("click.mmm", ".js-mmm-ficha-voltar", function () {
+      if (entradasDaGaveta("mmm-ficha") > 1) {
+        window.history.back();
+      } else if (posFicha > 0) {
+        fichaVoltou({ mmmGaveta: "mmm-ficha", mmmFicha: posFicha - 1 });
+      }
+    })
+    // o título entra na lista com a vontade escolhida; a ficha volta já como da lista (Já assistimos e Tirar da lista)
+    .on("click.mmm", ".js-mmm-ficha-adicionar", function () {
+      var b = this;
+      if (b.disabled) { return; }
+      var marcada = document.querySelector('#mmm-ficha-corpo input[name="mmm-ficha-vontade"]:checked');
+      var dados = { x01: b.dataset.tipo, x02: b.dataset.tmdb, x03: marcada ? marcada.value : "2" };
+      if (b.dataset.origem) { dados.x04 = b.dataset.origem; }
+      var nome = b.dataset.nome || "O título";
+      b.disabled = true;
+      mmm.chamar("MMM_ADICIONAR", dados).then(function () {
+        mmm.toast(nome + " entrou na lista");
+        var atual = fichas[posFicha];
+        var lista = function () { return atualizarLista(); };
+        if (!atual) { return lista(); }
+        return buscarFicha({ x01: String(atual.id) }, function (t) {
+          if (fichaAberta) { mostrarFicha(t); }
+        }).then(lista);
+      }, function (e) {
+        b.disabled = false;
+        mmm.erro(e);
+      });
     })
     .on("click.mmm", ".js-mmm-som", alternarSom)
     .on("click.mmm", ".js-mmm-avisos", function () {
@@ -664,11 +875,11 @@
       }
       mmm.toast("Copie o link: " + url);
     })
-    // fechou a gaveta pelo X ou tocando fora: tira a entrada que o abrirGaveta pôs no histórico
+    // fechou a gaveta pelo X ou tocando fora: tira as entradas que ela pôs no histórico
     .on("dialogclose.mmm", ".mmm-Gaveta", function () {
-      if (window.history.state && window.history.state.mmmGaveta === this.id) {
-        window.history.back();
-      }
+      var entradas = entradasDaGaveta(this.id);
+      if (this.id === "mmm-ficha") { fichaAberta = false; }
+      if (entradas) { window.history.go(-entradas); }
     });
 
   function prepararToast() {

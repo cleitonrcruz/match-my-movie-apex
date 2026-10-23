@@ -206,6 +206,7 @@ create table MMM_TITULO (
     ID_SAGA_TMDB        number(10),
     SAGA_NOME           varchar2(300 char),
     PESSOAS_JSON        varchar2(4000 char),
+    RECOMENDACOES_JSON  varchar2(4000 char),
     SINCRONIZADO_EM     timestamp with time zone not null,
     PROVEDORES_EM       timestamp with time zone,
     SA_CONSULTADO_EM    timestamp with time zone,
@@ -228,7 +229,8 @@ create table MMM_TITULO (
     constraint MMM_TITULO_CLASSIFICACAO_CK check (CLASSIFICACAO in ('L', '10', '12', '14', '16', '18')),
     constraint MMM_TITULO_SINOPSE_IDIOMA_CK check (regexp_like(SINOPSE_IDIOMA, '^[a-z]{2}(-[A-Z]{2})?$')),
     constraint MMM_TITULO_FALHAS_CK check (FALHAS_SEGUIDAS >= 0),
-    constraint MMM_TITULO_PESSOAS_CK check (PESSOAS_JSON is json)
+    constraint MMM_TITULO_PESSOAS_CK check (PESSOAS_JSON is json),
+    constraint MMM_TITULO_RECOMENDACOES_CK check (RECOMENDACOES_JSON is json)
 );
 
 create index MMM_TITULO_SINCRONIZADO_IX on MMM_TITULO (SINCRONIZADO_EM);
@@ -243,6 +245,7 @@ comment on column MMM_TITULO.LINK_ONDE_ASSISTIR is 'Campo link de /watch/provide
 comment on column MMM_TITULO.ID_SAGA_TMDB is 'Filme: belongs_to_collection.id dos detalhes, para o Faz parte da saga da ficha. Dado do TMDB: renovado e apagado com o titulo.';
 comment on column MMM_TITULO.SAGA_NOME is 'Filme: belongs_to_collection.name como o TMDB manda (a tela tira o ": Colecao" do fim).';
 comment on column MMM_TITULO.PESSOAS_JSON is 'Pessoas da ficha (Mais com): ate 3 do elenco e quem dirigiu o filme ou criou a serie, [{"id","nome","papel":"ELENCO|DIRECAO|CRIACAO","fotoPath"}]. Nulo = detalhes ainda nao lidos com o elenco; [] = lido e sem ninguem.';
+comment on column MMM_TITULO.RECOMENDACOES_JSON is 'Voce tambem pode gostar, na ficha: as recomendacoes do TMDB (ate 20, fora os adultos e os sem poster), [{"tipo","idTmdb","titulo","ano","posterPath"}]. Nulo = detalhes ainda nao lidos com as recomendacoes; [] = lido e sem nenhuma. Dado do TMDB: renovado e apagado com o titulo.';
 comment on column MMM_TITULO.SINCRONIZADO_EM is 'Ultima leitura bem-sucedida dos detalhes no TMDB. A contagem dos 6 meses parte daqui.';
 comment on column MMM_TITULO.ULTIMO_STATUS_HTTP is 'Status da ultima tentativa; dois 404 seguidos apagam o titulo.';
 

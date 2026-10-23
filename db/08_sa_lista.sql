@@ -620,6 +620,7 @@ create or replace package body MMM_PKG_LISTA as
                    'titulo' value json_object(
                        'id'            value t.ID_TITULO,
                        'tipo'          value t.TIPO,
+                       'idTmdb'        value t.ID_TMDB,
                        'titulo'        value t.TITULO,
                        'ano'           value t.ANO,
                        'duracao'       value t.DURACAO_MIN,
@@ -676,6 +677,49 @@ create or replace package body MMM_PKG_LISTA as
                                                              'nome' value MMM_PKG_TMDB.nome_saga(t.SAGA_NOME))
                                              end format json,
                        'pessoas'       value t.PESSOAS_JSON format json,
+                       -- Voce tambem pode gostar: ate 10, na ordem do TMDB, sem o que o grupo ativo ja viu ou escolheu na Hora
+                       -- do Cinema (a mesma regra do Voces ja viram da busca) e com o que esta na lista marcado
+                       'recomendacoes' value (select json_arrayagg(
+                                                         json_object(
+                                                             'tipo'       value r.TIPO,
+                                                             'idTmdb'     value r.ID_TMDB,
+                                                             'titulo'     value r.TITULO,
+                                                             'ano'        value r.ANO,
+                                                             'posterPath' value r.POSTER,
+                                                             'naLista'    value case r.NA_LISTA when 'S' then 'true' else 'false' end format json
+                                                             absent on null)
+                                                         order by r.POS returning clob)
+                                                from (select j.TIPO,
+                                                             j.ID_TMDB,
+                                                             j.TITULO,
+                                                             j.ANO,
+                                                             j.POSTER,
+                                                             row_number() over (order by j.N) as POS,
+                                                             case when exists (select 1
+                                                                                 from MMM_LISTA_ITEM li
+                                                                                 join MMM_TITULO tl
+                                                                                   on tl.ID_TITULO = li.ID_TITULO
+                                                                                where li.RETIRADO_EM is null
+                                                                                  and tl.TIPO    = j.TIPO
+                                                                                  and tl.ID_TMDB = j.ID_TMDB) then 'S' else 'N' end as NA_LISTA
+                                                        from MMM_TITULO tr,
+                                                             json_table(tr.RECOMENDACOES_JSON, '$[*]' columns (
+                                                                 N       for ordinality,
+                                                                 TIPO    varchar2(5)   path '$.tipo',
+                                                                 ID_TMDB number        path '$.idTmdb',
+                                                                 TITULO  varchar2(400) path '$.titulo',
+                                                                 ANO     number        path '$.ano',
+                                                                 POSTER  varchar2(200) path '$.posterPath')) j
+                                                       where tr.ID_TITULO = p_id_titulo
+                                                         and j.TIPO in ('FILME', 'SERIE')
+                                                         and j.ID_TMDB is not null
+                                                         and not exists (select 1
+                                                                           from MMM_ASSISTIDO a
+                                                                           join MMM_TITULO ta
+                                                                             on ta.ID_TITULO = a.ID_TITULO
+                                                                          where ta.TIPO    = j.TIPO
+                                                                            and ta.ID_TMDB = j.ID_TMDB)) r
+                                               where r.POS <= 10) format json,
                        'item'          value (select json_object(
                                                          'id'      value li.ID_LISTA_ITEM,
                                                          'pipocas' value li.PIPOCAS,

@@ -1889,3 +1889,52 @@ body[data-mmm-pagina="7"] .t-NavigationBar-menu .a-Menu-item:has(a[href*="/sobre
 .mmm-NotaPainel-aviso { margin: 0; color: var(--mmm-texto-2); font-size: 14px; line-height: 1.4; text-align: center; }
 /* na ficha os filhos ja tem margem lateral: com a largura de 100% o painel passava da borda */
 .mmm-Ficha > .mmm-NotaPainel { width: auto; }
+
+/* ---------- ficha: Você também pode gostar, Adicionar à lista e o Voltar ---------- */
+/* a fileira rola de lado até a borda da gaveta; o primeiro pôster alinha com o texto da ficha */
+.mmm-FichaRecom { display: grid; gap: 10px; min-width: 0; }
+.mmm-Ficha > .mmm-FichaRecom { margin-inline: 0; }
+.mmm-FichaRecom h3 { margin: 0 18px; color: var(--mmm-texto); font-size: 15px; font-weight: 800; }
+.mmm-FichaRecom-fila {
+  display: flex; gap: 12px; margin: 0; padding: 8px 18px 10px; list-style: none;
+  overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scroll-padding-inline: 18px;
+  scrollbar-width: thin; scrollbar-color: var(--mmm-linha) transparent;
+}
+.mmm-FichaRecom-item { flex: 0 0 104px; min-width: 0; scroll-snap-align: start; }
+.mmm-FichaRecom .mmm-Poster-capa { box-shadow: 0 6px 14px var(--mmm-sombra); }
+.mmm-FichaRecom-selo {
+  position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 3px 6px; border-radius: 6px;
+  background: rgba(22, 15, 34, .86); color: var(--mmm-menta); font: 700 11px/1.2 var(--mmm-f-texto); text-align: center;
+}
+.mmm-FichaRecom .mmm-Poster-abrir[aria-busy="true"] { cursor: progress; }
+.mmm-FichaRecom .mmm-Poster-abrir[aria-busy="true"] .mmm-Poster-capa { opacity: .6; }
+
+/* Adicionar à lista: as pipocas da vontade como na gaveta Adicionar */
+.mmm-FichaAdd {
+  display: grid; gap: 12px; min-width: 0; margin: 0; padding: 14px;
+  border: 1px solid var(--mmm-linha); border-radius: var(--mmm-raio); background: var(--mmm-sala);
+}
+.mmm-FichaAdd legend { float: left; width: 100%; margin: 0; padding: 0; color: var(--mmm-texto); font-size: 15px; font-weight: 800; }
+.mmm-FichaAdd-opcoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.mmm-FichaAdd-opcoes input { position: absolute; width: 1px; height: 1px; margin: 0; opacity: 0; pointer-events: none; }
+.mmm-FichaAdd-opcoes label {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px;
+  border: 1px solid var(--mmm-linha); border-radius: 999px; background: var(--mmm-sala-2);
+  color: var(--mmm-texto); font-size: 14px; font-weight: 700; cursor: pointer;
+}
+.mmm-FichaAdd-opcoes input:checked + label { border-color: var(--mmm-manteiga); background: var(--mmm-veludo-2); }
+.mmm-FichaAdd-opcoes input:focus-visible + label { outline: 3px solid var(--mmm-manteiga); outline-offset: 2px; }
+.mmm-FichaAdd .mmm-JogoBotao--pri { width: 100%; font-family: inherit; cursor: pointer; }
+.mmm-FichaAdd .mmm-JogoBotao--pri:disabled { opacity: .45; box-shadow: none; cursor: default; }
+
+/* o caminho de volta, sobre o fundo, no lado oposto ao fechar da gaveta */
+.mmm-Ficha { position: relative; }
+.mmm-Ficha > .mmm-FichaVoltar {
+  position: absolute; top: 12px; left: 12px; z-index: 2; display: inline-flex; align-items: center; gap: 6px;
+  max-width: calc(100% - 92px); min-height: 44px; margin: 0; padding: 0 14px 0 10px;
+  border: 1px solid var(--mmm-linha); border-radius: 12px; background: rgba(22, 15, 34, .8);
+  color: var(--mmm-texto); font: 700 14px/1.2 var(--mmm-f-texto); cursor: pointer;
+}
+.mmm-FichaVoltar span:not(.mmm-Seta) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mmm-FichaVoltar .mmm-Seta { color: var(--mmm-manteiga); font-size: 22px; line-height: 1; }
+.mmm-FichaVoltar:focus-visible { outline: 3px solid var(--mmm-manteiga); outline-offset: 2px; }
